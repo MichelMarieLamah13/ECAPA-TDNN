@@ -18,9 +18,9 @@ from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 from scipy.io import wavfile
 
-## ========== ===========
-## Parse input arguments
-## ========== ===========
+# ========== ===========
+# Parse input arguments
+# ========== ===========
 parser = argparse.ArgumentParser(description="VoxCeleb downloader");
 
 parser.add_argument('--save_path', type=str, default="data", help='Target directory');
@@ -35,9 +35,9 @@ parser.add_argument('--augment', dest='augment', action='store_true', help='Down
 args = parser.parse_args();
 
 
-## ========== ===========
-## MD5SUM
-## ========== ===========
+# ========== ===========
+# MD5SUM
+# ========== ===========
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
@@ -46,16 +46,16 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
-## ========== ===========
-## Download with wget
-## ========== ===========
+# ========== ===========
+# Download with wget
+# ========== ===========
 def download(args, lines):
     for line in lines:
         url = line.split()[0]
         md5gt = line.split()[1]
         outfile = url.split('/')[-1]
 
-        ## Download files
+        # Download files
         out = subprocess.call(
             'wget %s --user %s --password %s -O %s/%s' % (url, args.user, args.password, args.save_path, outfile),
             shell=True)
@@ -63,7 +63,7 @@ def download(args, lines):
             raise ValueError(
                 'Download failed %s. If download fails repeatedly, use alternate URL on the VoxCeleb website.' % url)
 
-        ## Check MD5
+        # Check MD5
         md5ck = md5('%s/%s' % (args.save_path, outfile))
         if md5ck == md5gt:
             print('Checksum successful %s.' % outfile)
@@ -71,19 +71,19 @@ def download(args, lines):
             raise Warning('Checksum failed %s.' % outfile)
 
 
-## ========== ===========
-## Concatenate file parts
-## ========== ===========
+# ========== ===========
+# Concatenate file parts
+# ========== ===========
 def concatenate(args, lines):
     for line in lines:
         infile = line.split()[0]
         outfile = line.split()[1]
         md5gt = line.split()[2]
 
-        ## Concatenate files
+        # Concatenate files
         out = subprocess.call('cat %s/%s > %s/%s' % (args.save_path, infile, args.save_path, outfile), shell=True)
 
-        ## Check MD5
+        # Check MD5
         md5ck = md5('%s/%s' % (args.save_path, outfile))
         if md5ck == md5gt:
             print('Checksum successful %s.' % outfile)
@@ -93,9 +93,9 @@ def concatenate(args, lines):
         out = subprocess.call('rm %s/%s' % (args.save_path, infile), shell=True)
 
 
-## ========== ===========
-## Extract zip files
-## ========== ===========
+# ========== ===========
+# Extract zip files
+# ========== ===========
 def is_within_directory(directory, target):
     abs_directory = os.path.abspath(directory)
     abs_target = os.path.abspath(target)
@@ -123,9 +123,9 @@ def full_extract(args, fname):
             zf.extractall(args.save_path)
 
 
-## ========== ===========
-## Partially extract zip files
-## ========== ===========
+# ========== ===========
+# Partially extract zip files
+# ========== ===========
 def part_extract(args, fname, target):
     print('Extracting %s' % fname)
     with ZipFile(fname, 'r') as zf:
@@ -136,9 +136,9 @@ def part_extract(args, fname, target):
             # zf.extractall(args.save_path)
 
 
-## ========== ===========
-## Convert
-## ========== ===========
+# ========== ===========
+# Convert
+# ========== ===========
 class ConvertDataset(Dataset):
     def __init__(self, files):
         self.files = files
@@ -169,28 +169,39 @@ def convert(args):
         sys.stdout.flush()
 
 
-## ========== ===========
-## Split MUSAN for faster random access
-## ========== ===========
-def split_musan(args):
-    files = glob.glob('%s/musan/*/*/*.wav' % args.save_path)
+# ========== ===========
+# Split MUSAN for faster random access
+# ========== ===========
+class MusanSplitDataset(Dataset):
+    def __init__(self, files):
+        self.files = files
 
-    audlen = 16000 * 5
-    audstr = 16000 * 3
+    def __len__(self):
+        return len(self.files)
 
-    for idx, file in enumerate(files):
+    def __getitem__(self, idx):
+        audlen = 16000 * 5
+        audstr = 16000 * 3
+        file = self.files[idx]
         fs, aud = wavfile.read(file)
         writedir = os.path.splitext(file.replace('/musan/', '/musan_split/'))[0]
-        os.makedirs(writedir)
+        os.makedirs(writedir, exist_ok=True)
         for st in range(0, len(aud) - audlen, audstr):
             wavfile.write(writedir + '/%05d.wav' % (st / fs), fs, aud[st:st + audlen])
 
-        print(idx, file)
+
+def split_musan(args):
+    files = glob.glob('%s/musan/*/*/*.wav' % args.save_path)
+    dataset = MusanSplitDataset(files)
+    loader = DataLoader(dataset, batch_size=10, num_workers=5)
+    for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
+        print(f"Batch [{idx}/{len(loader)}] DONE")
+        sys.stdout.flush()
 
 
-## ========== ===========
-## Main script
-## ========== ===========
+# ========== ===========
+# Main script
+# ========== ===========
 if __name__ == "__main__":
 
     os.makedirs(args.save_path, exist_ok=True)
