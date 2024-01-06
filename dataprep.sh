@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=dataprep_ecapa
 #SBATCH --partition=gpu
+#SBATCH --gres=gpu:1
 #SBATCH --time=7-00:00:00
 # #SBATCH --mem=60GB
 # #SBATCH --cpus-per-task=20
