@@ -47,7 +47,6 @@ def md5(fname):
 ## Download with wget
 ## ========== ===========
 def download(args, lines):
-    os.makedirs(args.save_path, exist_ok=True)
     for line in lines:
         url = line.split()[0]
         md5gt = line.split()[1]
@@ -175,8 +174,7 @@ def split_musan(args):
 ## ========== ===========
 if __name__ == "__main__":
 
-    if not os.path.exists(args.save_path):
-        raise ValueError('Target directory does not exist.')
+    os.makedirs(args.save_path, exist_ok=True)
 
     f = open('lists/fileparts.txt', 'r')
     fileparts = f.readlines()
