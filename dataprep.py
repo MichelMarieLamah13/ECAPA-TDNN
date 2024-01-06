@@ -165,7 +165,7 @@ def convert(args):
     loader = DataLoader(dataset, batch_size=100, num_workers=5)
     print('Converting files from AAC to WAV')
     for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
-        print(f"Batch {idx} DONE")
+        print(f"Batch [{idx}/{len(loader)}] DONE")
         sys.stdout.flush()
 
 
