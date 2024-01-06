@@ -202,6 +202,7 @@ if __name__ == "__main__":
         concatenate(args, files)
         for file in files:
             full_extract(args, os.path.join(args.save_path, file.split()[1]))
+        os.makedirs(f'{args.save_path}/aac/', exist_ok=True)
         out = subprocess.call(
             'mv %s/dev/aac/* %s/aac/ && rm -r %s/dev' % (args.save_path, args.save_path, args.save_path), shell=True)
         out = subprocess.call('mv %s/wav %s/voxceleb1' % (args.save_path, args.save_path), shell=True)
