@@ -5,8 +5,8 @@
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=32GB
 # #SBATCH --cpus-per-task=5
-#SBATCH --output=dataprep_output.log
-#SBATCH --error=dataprep_error.log
+#SBATCH --output=eval_list_output.log
+#SBATCH --error=eval_list_error.log
 
 
 source /etc/profile.d/conda.sh
