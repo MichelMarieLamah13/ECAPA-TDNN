@@ -3,6 +3,8 @@ This is the main code of the ECAPATDNN project, to define the parameters and bui
 """
 
 import argparse, glob, os, torch, warnings, time
+import sys
+
 from tools import *
 from dataLoader import train_loader
 from ECAPAModel import ECAPAModel
@@ -18,18 +20,20 @@ parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
 parser.add_argument("--lr_decay", type=float, default=0.97, help='Learning rate decay every [test_step] epochs')
 
 # Training and evaluation path/lists, save path
-parser.add_argument('--train_list', type=str, default="/data08/VoxCeleb2/train_list.txt",
-                    help='The path of the training list, https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/train_list.txt')
-parser.add_argument('--train_path', type=str, default="/data08/VoxCeleb2/train/wav",
-                    help='The path of the training data, eg:"/data08/VoxCeleb2/train/wav" in my case')
-parser.add_argument('--eval_list', type=str, default="/data08/VoxCeleb1/veri_test2.txt",
-                    help='The path of the evaluation list, veri_test2.txt comes from https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/veri_test2.txt')
-parser.add_argument('--eval_path', type=str, default="/data08/VoxCeleb1/test/wav",
-                    help='The path of the evaluation data, eg:"/data08/VoxCeleb1/test/wav" in my case')
-parser.add_argument('--musan_path', type=str, default="/data08/Others/musan_split",
-                    help='The path to the MUSAN set, eg:"/data08/Others/musan_split" in my case')
-parser.add_argument('--rir_path', type=str, default="/data08/Others/RIRS_NOISES/simulated_rirs",
-                    help='The path to the RIR set, eg:"/data08/Others/RIRS_NOISES/simulated_rirs" in my case');
+parser.add_argument('--train_list', type=str, default="data/voxceleb2/train_list.txt",
+                    help='The path of the training list, '
+                         'https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/train_list.txt')
+parser.add_argument('--train_path', type=str, default="data/voxceleb2",
+                    help='The path of the training data, eg:"data/voxceleb2" in my case')
+parser.add_argument('--eval_list', type=str, default="data/voxceleb1/veri_test2.txt",
+                    help='The path of the evaluation list: veri_test2.txt, list_test_all2.txt, list_test_hard2.txt'
+                         'veri_test2.txt comes from https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/veri_test2.txt')
+parser.add_argument('--eval_path', type=str, default="data/voxceleb1/",
+                    help='The path of the evaluation data, eg:"data/voxceleb1/" in my case')
+parser.add_argument('--musan_path', type=str, default="data/musan_split",
+                    help='The path to the MUSAN set, eg:"data/musan_split" in my case')
+parser.add_argument('--rir_path', type=str, default="data/RIRS_NOISES/simulated_rirs",
+                    help='The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case')
 parser.add_argument('--save_path', type=str, default="exps/exp1", help='Path to save the score.txt and models')
 parser.add_argument('--initial_model', type=str, default="", help='Path of the initial_model')
 
@@ -64,6 +68,7 @@ if args.eval:
     s.load_parameters(args.initial_model)
     EER, minDCF = s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path)
     print("EER %2.2f%%, minDCF %.4f%%" % (EER, minDCF))
+    sys.stdout.flush()
     quit()
 
 # If initial_model is exist, system will train from the initial_model
