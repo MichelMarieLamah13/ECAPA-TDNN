@@ -24,7 +24,8 @@ class EmbeddingsDataset(Dataset):
         file = self.files[idx]
         audio, _ = soundfile.read(os.path.join(self.eval_path, file))
         # Full utterance
-        data_1 = torch.FloatTensor(numpy.stack([audio], axis=0)).cuda()
+        # data_1 = torch.FloatTensor(numpy.stack([audio], axis=0)).cuda()
+        data_1 = torch.FloatTensor(numpy.stack([audio], axis=0))
 
         # Spliited utterance matrix
         max_audio = 300 * 160 + 240
@@ -36,7 +37,8 @@ class EmbeddingsDataset(Dataset):
         for asf in startframe:
             feats.append(audio[int(asf):int(asf) + max_audio])
         feats = numpy.stack(feats, axis=0).astype(numpy.float64)
-        data_2 = torch.FloatTensor(feats).cuda()
+        # data_2 = torch.FloatTensor(feats).cuda()
+        data_2 = torch.FloatTensor(feats)
         # Speaker embeddings
         with torch.no_grad():
             embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
