@@ -282,7 +282,7 @@ if __name__ == "__main__":
         print(f"BEGIN split_musan")
         sys.stdout.flush()
         split_musan(args)
-        print(f"BEGIN split_musan")
+        print(f"END split_musan")
         sys.stdout.flush()
 
     if args.download:
