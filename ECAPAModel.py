@@ -76,9 +76,11 @@ class ECAPAModel(nn.Module):
     def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, **kwargs):
         super(ECAPAModel, self).__init__()
         # ECAPA-TDNN
-        self.speaker_encoder = ECAPA_TDNN(C=C).cuda()
+        # self.speaker_encoder = ECAPA_TDNN(C=C).cuda()
+        self.speaker_encoder = ECAPA_TDNN(C=C)
         # Classifier
-        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).cuda()
+        # self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).cuda()
+        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
@@ -94,7 +96,8 @@ class ECAPAModel(nn.Module):
         for num, (data, labels) in enumerate(loader, start=1):
             self.zero_grad()
             labels = torch.LongTensor(labels).cuda()
-            speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
+            # speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
+            speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
             nloss.backward()
             self.optim.step()
