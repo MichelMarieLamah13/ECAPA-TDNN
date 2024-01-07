@@ -50,15 +50,26 @@ class ECAPAModel(nn.Module):
         files = []
         embeddings = {}
         lines = open(eval_list).read().splitlines()
-        print("BEGIN split")
+        print("BEGIN filter")
         sys.stdout.flush()
-        for line in tqdm.tqdm(lines):
+        filtered_lines = []
+        for line in lines:
             _, part1, part2 = line.split()
             path1 = os.path.join(eval_path, part1)
             path2 = os.path.join(eval_path, part2)
             if os.path.exists(path1) and os.path.exists(path2):
-                files.append(path1)
-                files.append(path2)
+                filtered_lines.append(line)
+
+        lines = filtered_lines
+        print("END filter")
+        sys.stdout.flush()
+
+        print("BEGIN split")
+        sys.stdout.flush()
+        for line in tqdm.tqdm(lines):
+            _, part1, part2 = line.split()
+            files.append(part1)
+            files.append(part2)
         setfiles = list(set(files))
         setfiles.sort()
         print("END split")
@@ -96,15 +107,16 @@ class ECAPAModel(nn.Module):
         print("BEGIN scores")
         sys.stdout.flush()
         for line in tqdm.tqdm(lines):
-            embedding_11, embedding_12 = embeddings[line.split()[1]]
-            embedding_21, embedding_22 = embeddings[line.split()[2]]
+            part0, part1, part2 = line.split()
+            embedding_11, embedding_12 = embeddings[part1]
+            embedding_21, embedding_22 = embeddings[part2]
             # Compute the scores
             score_1 = torch.mean(torch.matmul(embedding_11, embedding_21.T))  # higher is positive
             score_2 = torch.mean(torch.matmul(embedding_12, embedding_22.T))
             score = (score_1 + score_2) / 2
             score = score.detach().cpu().numpy()
             scores.append(score)
-            labels.append(int(line.split()[0]))
+            labels.append(int(part0))
 
         print("END scores")
         sys.stdout.flush()
