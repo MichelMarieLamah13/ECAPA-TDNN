@@ -25,7 +25,7 @@ parser.add_argument('--train_list', type=str, default="data/voxceleb2/train_list
                          'https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/train_list.txt')
 parser.add_argument('--train_path', type=str, default="data/voxceleb2",
                     help='The path of the training data, eg:"data/voxceleb2" in my case')
-parser.add_argument('--eval_list', type=str, default="data/voxceleb1/veri_test2.txt",
+parser.add_argument('--eval_list', type=str, default="data/voxceleb1/list_test_all2.txt",
                     help='The path of the evaluation list: veri_test2.txt, list_test_all2.txt, list_test_hard2.txt'
                          'veri_test2.txt comes from https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/veri_test2.txt')
 parser.add_argument('--eval_path', type=str, default="data/voxceleb1/",
