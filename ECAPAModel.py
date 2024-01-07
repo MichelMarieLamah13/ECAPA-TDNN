@@ -50,12 +50,18 @@ class ECAPAModel(nn.Module):
         files = []
         embeddings = {}
         lines = open(eval_list).read().splitlines()
-        for line in lines:
+        print("BEGIN split")
+        sys.stdout.flush()
+        for line in tqdm.tqdm(lines):
             files.append(line.split()[1])
             files.append(line.split()[2])
         setfiles = list(set(files))
         setfiles.sort()
+        print("END split")
+        sys.stdout.flush()
 
+        print("BEGIN embeddings")
+        sys.stdout.flush()
         for idx, file in tqdm.tqdm(enumerate(setfiles), total=len(setfiles)):
             audio, _ = soundfile.read(os.path.join(eval_path, file))
             # Full utterance
@@ -80,8 +86,12 @@ class ECAPAModel(nn.Module):
                 embedding_2 = F.normalize(embedding_2, p=2, dim=1)
             embeddings[file] = [embedding_1, embedding_2]
         scores, labels = [], []
+        print("END embeddings")
+        sys.stdout.flush()
 
-        for line in lines:
+        print("BEGIN scores")
+        sys.stdout.flush()
+        for line in tqdm.tqdm(lines):
             embedding_11, embedding_12 = embeddings[line.split()[1]]
             embedding_21, embedding_22 = embeddings[line.split()[2]]
             # Compute the scores
@@ -92,10 +102,17 @@ class ECAPAModel(nn.Module):
             scores.append(score)
             labels.append(int(line.split()[0]))
 
+        print("END scores")
+        sys.stdout.flush()
+
+        print("BEGIN final score")
+        sys.stdout.flush()
         # Coumpute EER and minDCF
         EER = tuneThresholdfromScore(scores, labels, [1, 0.1])[1]
         fnrs, fprs, thresholds = ComputeErrorRates(scores, labels)
         minDCF, _ = ComputeMinDcf(fnrs, fprs, thresholds, 0.05, 1, 1)
+        print("END final score")
+        sys.stdout.flush()
 
         return EER, minDCF
 
