@@ -12,9 +12,10 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-#python3 dataprep.py --save_path data --download --user USERNAME --password PASSWORD
-#python3 dataprep.py --save_path data --extract
-#python3 dataprep.py --save_path data --convert
+rm -rf data/RIRS_NOISES
+rm -rf data/musan
+rm -f data/musan.tar.gz
+rm -f data/rirs_noises.zip
 python3 dataprep.py --save_path data --augment
 
 conda deactivate
