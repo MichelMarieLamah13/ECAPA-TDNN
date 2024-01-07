@@ -105,12 +105,32 @@ def is_within_directory(directory, target):
     return prefix == abs_directory
 
 
-def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
-    for member in tar.getmembers():
-        member_path = os.path.join(path, member.name)
-        if not is_within_directory(path, member_path):
+class SaveExtractDataset(Dataset):
+    def __init__(self, tar, path=".", members=None, numeric_owner=False):
+        self.tar = tar
+        self.files = self.tar.getmembers()
+        self.path = path
+        self.members = members
+        self.numeric_owner = numeric_owner
+
+    def __len__(self):
+        return len(self.files)
+
+    def __getitem__(self, idx):
+        member = self.files[idx]
+        member_path = os.path.join(self.path, member.name)
+        if not is_within_directory(self.path, member_path):
             raise Exception("Attempted Path Traversal in Tar File")
-        tar.extractall(path, members, numeric_owner=numeric_owner)
+        self.tar.extractall(self.path, self.members, numeric_owner=self.numeric_owner)
+        return member_path
+
+
+def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+    dataset = SaveExtractDataset(tar, path, members, numeric_owner)
+    loader = DataLoader(dataset, batch_size=10, num_workers=5)
+    for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
+        print(f"Batch [{idx}/{len(loader)}] DONE")
+        sys.stdout.flush()
 
 
 def full_extract(args, fname):
@@ -221,11 +241,30 @@ if __name__ == "__main__":
     f.close()
 
     if args.augment:
+        print(f"BEGIN download")
+        sys.stdout.flush()
         download(args, augfiles)
+        print(f"END download")
+        sys.stdout.flush()
+
+        print(f"BEGIN part_extract")
+        sys.stdout.flush()
         part_extract(args, os.path.join(args.save_path, 'rirs_noises.zip'),
                      ['RIRS_NOISES/simulated_rirs/mediumroom', 'RIRS_NOISES/simulated_rirs/smallroom'])
+        print(f"END part_extract")
+        sys.stdout.flush()
+
+        print(f"BEGIN full_extract")
+        sys.stdout.flush()
         full_extract(args, os.path.join(args.save_path, 'musan.tar.gz'))
+        print(f"END full_extract")
+        sys.stdout.flush()
+
+        print(f"BEGIN split_musan")
+        sys.stdout.flush()
         split_musan(args)
+        print(f"BEGIN split_musan")
+        sys.stdout.flush()
 
     if args.download:
         download(args, fileparts)
