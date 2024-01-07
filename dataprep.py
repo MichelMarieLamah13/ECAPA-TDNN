@@ -189,7 +189,7 @@ def part_extract(args, fname, target):
     sys.stdout.flush()
     with ZipFile(fname, 'r') as zf:
         dataset = PartExtractDataset(zf, args, target)
-        loader = DataLoader(dataset, batch_size=1, num_workers=5)
+        loader = DataLoader(dataset, batch_size=100, num_workers=5, shuffle=False)
         for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
             print(f"Batch [{idx}/{len(loader)}] DONE")
             sys.stdout.flush()
