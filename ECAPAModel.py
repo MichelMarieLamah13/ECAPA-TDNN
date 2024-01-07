@@ -124,9 +124,15 @@ class ECAPAModel(nn.Module):
         print("BEGIN final score")
         sys.stdout.flush()
         # Coumpute EER and minDCF
-        EER = tuneThresholdfromScore(scores, labels, [1, 0.1])[1]
-        fnrs, fprs, thresholds = ComputeErrorRates(scores, labels)
-        minDCF, _ = ComputeMinDcf(fnrs, fprs, thresholds, 0.05, 1, 1)
+        EER, minDCF = 0, 0
+        if len(scores) > 0 and len(labels) > 0:
+            EER = tuneThresholdfromScore(scores, labels, [1, 0.1])[1]
+            fnrs, fprs, thresholds = ComputeErrorRates(scores, labels)
+            minDCF, _ = ComputeMinDcf(fnrs, fprs, thresholds, 0.05, 1, 1)
+        else:
+            print(f"Pas de ligne correcte")
+            sys.stdout.flush()
+
         print("END final score")
         sys.stdout.flush()
 
