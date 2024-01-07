@@ -165,14 +165,34 @@ def full_extract(args, fname):
 # ========== ===========
 # Partially extract zip files
 # ========== ===========
+
+class PartExtractDataset(Dataset):
+    def __init__(self, zf, args, target):
+        self.zf = zf
+        self.args = args
+        self.target = target
+        self.files = self.zf.namelist()
+
+    def __len__(self):
+        return len(self.files)
+
+    def __getitem__(self, idx):
+        infile = self.files[idx]
+        if any([infile.startswith(x) for x in self.target]):
+            self.zf.extract(infile, self.args.save_path)
+
+        return infile
+
+
 def part_extract(args, fname, target):
     print('Extracting %s' % fname)
+    sys.stdout.flush()
     with ZipFile(fname, 'r') as zf:
-        for infile in zf.namelist():
-            if any([infile.startswith(x) for x in target]):
-                zf.extract(infile, args.save_path)
-            # pdb.set_trace()
-            # zf.extractall(args.save_path)
+        dataset = PartExtractDataset(zf, args, target)
+        loader = DataLoader(dataset, batch_size=1, num_workers=5)
+        for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
+            print(f"Batch [{idx}/{len(loader)}] DONE")
+            sys.stdout.flush()
 
 
 # ========== ===========
