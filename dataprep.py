@@ -189,6 +189,8 @@ class MusanSplitDataset(Dataset):
         for st in range(0, len(aud) - audlen, audstr):
             wavfile.write(writedir + '/%05d.wav' % (st / fs), fs, aud[st:st + audlen])
 
+        return file
+
 
 def split_musan(args):
     files = glob.glob('%s/musan/*/*/*.wav' % args.save_path)
