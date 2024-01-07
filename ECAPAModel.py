@@ -169,9 +169,14 @@ class ECAPAModel(nn.Module):
         emb_dataset = EmbeddingsDataset(setfiles, eval_path, self.speaker_encoder)
         emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=5)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
-            for file, embedding_1, embedding_2 in batch:
+            all_file, all_embedding_1, all_embedding_2 = batch
+            for i in range(len(all_file)):
+                file = all_file[i]
+                embedding_1 = all_embedding_1[i]
+                embedding_2 = all_embedding_2[i]
                 embeddings[file] = [embedding_1, embedding_2]
             print(f"Batch [{idx}/{len(emb_loader)}] DONE")
+            sys.stdout.flush()
 
         scores, labels = [], []
         print("END embeddings")
@@ -193,10 +198,14 @@ class ECAPAModel(nn.Module):
         scores_dataset = ScoresDataset(lines, embeddings)
         scores_loader = DataLoader(scores_dataset, batch_size=50, num_workers=5)
         for idx, batch in tqdm.tqdm(enumerate(scores_loader, start=1), total=len(scores_loader)):
-            for score, label in batch:
+            all_score, all_label = batch
+            for i in range(len(all_score)):
+                score = all_score[i]
+                label = all_label[i]
                 scores.append(score)
                 labels.append(label)
             print(f"Batch [{idx}/{len(emb_loader)}] DONE")
+            sys.stdout.flush()
 
         print("END scores")
         sys.stdout.flush()
