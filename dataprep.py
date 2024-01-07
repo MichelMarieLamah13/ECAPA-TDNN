@@ -145,16 +145,11 @@ class SaveExtractDataset(Dataset):
 
 
 def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
-    # for member in tqdm(tar.getmembers()):
-    #     member_path = os.path.join(path, member.name)
-    #     if not is_within_directory(path, member_path):
-    #         raise Exception("Attempted Path Traversal in Tar File")
-    #     tar.extractall(path, members, numeric_owner=numeric_owner)
-    dataset = SaveExtractDataset(tar, path, members, numeric_owner)
-    loader = DataLoader(dataset, batch_size=100, num_workers=5)
-    for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
-        print(f"Batch [{idx}/{len(loader)}] DONE")
-        sys.stdout.flush()
+    for member in tqdm(tar.getmembers()):
+        member_path = os.path.join(path, member.name)
+        if not is_within_directory(path, member_path):
+            raise Exception("Attempted Path Traversal in Tar File")
+        tar.extractall(path, members, numeric_owner=numeric_owner)
 
 
 def full_extract(args, fname):

@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=augment_ecapa
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+# #SBATCH --partition=gpu
+# #SBATCH --gres=gpu:1
 #SBATCH --time=7-00:00:00
-#SBATCH --mem=32GB
+#SBATCH --mem=64GB
 #SBATCH --cpus-per-task=5
 #SBATCH --output=augment_output.log
 #SBATCH --error=augment_error.log
