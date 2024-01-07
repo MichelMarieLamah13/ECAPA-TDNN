@@ -125,7 +125,7 @@ def is_within_directory(directory, target):
 
 
 class SaveExtractDataset(Dataset):
-    def __init__(self, tar, path=".", members=None, numeric_owner=False):
+    def __init__(self, tar, path, members=None, numeric_owner=False):
         self.tar = tar
         self.files = self.tar.getmembers()
         self.path = path
@@ -145,11 +145,16 @@ class SaveExtractDataset(Dataset):
 
 
 def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
-    for member in tqdm(tar.getmembers()):
-        member_path = os.path.join(path, member.name)
-        if not is_within_directory(path, member_path):
-            raise Exception("Attempted Path Traversal in Tar File")
-        tar.extractall(path, members, numeric_owner=numeric_owner)
+    # for member in tqdm(tar.getmembers()):
+    #     member_path = os.path.join(path, member.name)
+    #     if not is_within_directory(path, member_path):
+    #         raise Exception("Attempted Path Traversal in Tar File")
+    #     tar.extractall(path, members, numeric_owner=numeric_owner)
+    dataset = SaveExtractDataset(tar, path, members, numeric_owner)
+    loader = DataLoader(dataset, batch_size=100, num_workers=5)
+    for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
+        print(f"Batch [{idx}/{len(loader)}] DONE")
+        sys.stdout.flush()
 
 
 def full_extract(args, fname):
@@ -191,7 +196,6 @@ def part_extract(args, fname, target):
         for infile in tqdm(zf.namelist()):
             if any([infile.startswith(x) for x in target]):
                 zf.extract(infile, args.save_path)
-
 
 
 # ========== ===========
