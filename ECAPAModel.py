@@ -53,8 +53,12 @@ class ECAPAModel(nn.Module):
         print("BEGIN split")
         sys.stdout.flush()
         for line in tqdm.tqdm(lines):
-            files.append(line.split()[1])
-            files.append(line.split()[2])
+            _, part1, part2 = line.split()
+            path1 = os.path.join(eval_path, part1)
+            path2 = os.path.join(eval_path, part2)
+            if os.path.exists(path1) and os.path.exists(path2):
+                files.append(path1)
+                files.append(path2)
         setfiles = list(set(files))
         setfiles.sort()
         print("END split")
