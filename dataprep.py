@@ -188,11 +188,10 @@ def part_extract(args, fname, target):
     print('Extracting %s' % fname)
     sys.stdout.flush()
     with ZipFile(fname, 'r') as zf:
-        dataset = PartExtractDataset(zf, args, target)
-        loader = DataLoader(dataset, batch_size=100, num_workers=5, shuffle=False)
-        for idx, _ in tqdm(enumerate(loader, start=1), total=len(loader)):
-            print(f"Batch [{idx}/{len(loader)}] DONE")
-            sys.stdout.flush()
+        for infile in tqdm(zf.namelist()):
+            if any([infile.startswith(x) for x in target]):
+                zf.extract(infile, args.save_path)
+
 
 
 # ========== ===========
