@@ -9,6 +9,7 @@ from torch.utils.data import Dataset, DataLoader
 from tools import *
 from loss import AAMsoftmax
 from model import ECAPA_TDNN
+import random
 
 
 class EmbeddingsDataset(Dataset):
@@ -95,7 +96,8 @@ class ECAPAModel(nn.Module):
         lr = self.optim.param_groups[0]['lr']
         for num, (data, labels) in enumerate(loader, start=1):
             self.zero_grad()
-            labels = torch.LongTensor(labels).cuda()
+            # labels = torch.LongTensor(labels).cuda()
+            labels = torch.LongTensor(labels)
             # speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
             speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
@@ -127,6 +129,9 @@ class ECAPAModel(nn.Module):
                 filtered_lines.append(line)
 
         lines = filtered_lines
+        if len(lines) > 1000:
+            random.seed(0)
+            lines = random.sample(lines, 1000)
         print("END filter")
         sys.stdout.flush()
 

@@ -13,10 +13,16 @@ source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
 # wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/veri_test2.txt -P data/voxceleb1/
-# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/list_test_all2.txt -P data/voxceleb1/
-# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/list_test_hard2.txt -P data/voxceleb1/
+# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/veri_test.txt -P data/voxceleb1/
 
-wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/train_list.txt -P data/voxceleb2/
+# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/list_test_all2.txt -P data/voxceleb1/
+# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/list_test_all.txt -P data/voxceleb1/
+
+# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/list_test_hard2.txt -P data/voxceleb1/
+# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/list_test_hard.txt -P data/voxceleb1/
+
+
+# wget https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/train_list.txt -P data/voxceleb2/
 
 
 
