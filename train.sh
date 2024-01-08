@@ -14,4 +14,5 @@ conda activate ecapa_tdnn
 
 python trainECAPAModel.py --save_path exps/exp1
 
+
 conda deactivate

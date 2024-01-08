@@ -5,6 +5,8 @@ This is the main code of the ECAPATDNN project, to define the parameters and bui
 import argparse, glob, os, torch, warnings, time
 import sys
 
+from torch.utils.data import DataLoader
+
 from tools import *
 from dataLoader import train_loader
 from ECAPAModel import ECAPAModel
@@ -54,8 +56,8 @@ args = init_args(args)
 
 # Define the data loader
 trainloader = train_loader(**vars(args))
-trainLoader = torch.utils.data.DataLoader(trainloader, batch_size=args.batch_size, shuffle=True, num_workers=args.n_cpu,
-                                          drop_last=True)
+trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True, num_workers=args.n_cpu,
+                         drop_last=True)
 
 # Search for the exist models
 modelfiles = glob.glob('%s/model_0*.model' % args.model_save_path)
@@ -75,6 +77,7 @@ if args.eval:
 # If initial_model is exist, system will train from the initial_model
 if args.initial_model != "":
     print("Model %s loaded from previous state!" % args.initial_model)
+    sys.stdout.flush()
     s = ECAPAModel(**vars(args))
     s.load_parameters(args.initial_model)
     epoch = 1
@@ -82,6 +85,7 @@ if args.initial_model != "":
 # Otherwise, system will try to start from the saved model&epoch
 elif len(modelfiles) >= 1:
     print("Model %s loaded from previous state!" % modelfiles[-1])
+    sys.stdout.flush()
     epoch = int(os.path.splitext(os.path.basename(modelfiles[-1]))[0][6:]) + 1
     s = ECAPAModel(**vars(args))
     s.load_parameters(modelfiles[-1])
@@ -104,7 +108,7 @@ while True:
         print(time.strftime("%Y-%m-%d %H:%M:%S"),
               "%d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (epoch, acc, EERs[-1], min(EERs)))
         score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
-        epoch, lr, loss, acc, EERs[-1], min(EERs)))
+            epoch, lr, loss, acc, EERs[-1], min(EERs)))
         score_file.flush()
 
     if epoch >= args.max_epoch:
