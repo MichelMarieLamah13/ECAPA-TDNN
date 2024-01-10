@@ -94,7 +94,7 @@ class ECAPAModel(nn.Module):
         self.scheduler.step(epoch - 1)
         index, top1, loss = 0, 0, 0
         lr = self.optim.param_groups[0]['lr']
-        for num, (data, labels) in tqdm.tqdm(enumerate(loader, start=1)):
+        for num, (data, labels) in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
             # labels = torch.LongTensor(labels).cuda()
             labels = torch.LongTensor(labels)
@@ -106,9 +106,9 @@ class ECAPAModel(nn.Module):
             index += len(labels)
             top1 += prec
             loss += nloss.detach().cpu().numpy()
-            sys.stderr.write(time.strftime("%m-%d %H:%M:%S") + \
-                             " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
-                             " Loss: %.5f, ACC: %2.2f%% \n" % (loss / num, top1 / index * len(labels)))
+            print(time.strftime("%m-%d %H:%M:%S") + \
+                  " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
+                  " Loss: %.5f, ACC: %2.2f%% \n" % (loss / num, top1 / index * len(labels)))
             sys.stdout.flush()
         sys.stdout.write("\n")
         return loss / num, lr, top1 / index * len(labels)
