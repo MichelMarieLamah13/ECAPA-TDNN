@@ -24,17 +24,20 @@ class CustomWav2Vec2Model(nn.Module):
         pdb.set_trace()
         with torch.no_grad():
             x = self.processor(x, return_tensor='pt', sampling_rate=16_000)
-            x = x.input_values
-            output = self.model(x)
+            x = x.input_values[0]
+            outputs = self.model(x)
 
-        hidden_states = list(output.hidden_states)
-        # hidden_states = [h.squeeze(dim=0) for h in hidden_states]
-        state_dict = self.model.state_dict()
-        input_size = hidden_states[0].shape[1]  # Number of frames
-        n_layers = len(hidden_states)  # Number of layers
-        n_frames = hidden_states[0].shape[-1]
-        learnable_weights = [torch.randn(size=(input_size,)) for _ in range(n_layers)]
+        result = []
+        for output in outputs:
+            hidden_states = list(output.hidden_states)
+            # hidden_states = [h.squeeze(dim=0) for h in hidden_states]
+            state_dict = self.model.state_dict()
+            input_size = hidden_states[0].shape[1]  # Number of frames
+            n_layers = len(hidden_states)  # Number of layers
+            n_frames = hidden_states[0].shape[-1]
+            learnable_weights = [torch.randn(size=(input_size,)) for _ in range(n_layers)]
 
-        output = get_output_rep(hidden_states, learnable_weights, n_layers, n_frames)
+            output = get_output_rep(hidden_states, learnable_weights, n_layers, n_frames)
+            result.append(output)
 
-        return output
+        return np.array(result)
