@@ -12,6 +12,6 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 trainECAPAModel.py --eval --initial_model exps/pretrain.model
+python3 trainECAPAModel.py --eval --initial_model exps/pretrain.model --feat_type fbank --feat_dim 80
 
 conda deactivate
