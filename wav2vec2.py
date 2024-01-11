@@ -25,6 +25,7 @@ class CustomWav2Vec2Model(nn.Module):
         with torch.no_grad():
             x = self.processor(x, return_tensor='pt', sampling_rate=16_000)
             x = x.input_values[0]
+            x = torch.tensor(x)
             outputs = self.model(x)
 
         result = []
