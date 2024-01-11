@@ -44,6 +44,8 @@ parser.add_argument('--C', type=int, default=1024, help='Channel size for the sp
 parser.add_argument('--m', type=float, default=0.2, help='Loss margin in AAM softmax')
 parser.add_argument('--s', type=float, default=30, help='Loss scale in AAM softmax')
 parser.add_argument('--n_class', type=int, default=5994, help='Number of speakers')
+parser.add_argument('--feat_type', type=str, default='wav2vec2', help='Type of features: fbank, wav2vec2')
+parser.add_argument('--feat_dim', type=int, default=768, help='Dim of features: fbank(80), wav2vec2(768)')
 
 # Command
 parser.add_argument('--eval', dest='eval', action='store_true', help='Only do evaluation')

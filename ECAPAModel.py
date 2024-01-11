@@ -74,11 +74,11 @@ class ScoresDataset(Dataset):
 
 
 class ECAPAModel(nn.Module):
-    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, **kwargs):
+    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, feat_type, feat_dim, **kwargs):
         super(ECAPAModel, self).__init__()
         # ECAPA-TDNN
         # self.speaker_encoder = ECAPA_TDNN(C=C).cuda()
-        self.speaker_encoder = ECAPA_TDNN(C=C)
+        self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim)
         # Classifier
         # self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).cuda()
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s)

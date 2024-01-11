@@ -11,6 +11,8 @@ import math, torch, torchaudio
 import torch.nn as nn
 import torch.nn.functional as F
 
+from wav2vec2 import CustomWav2Vec2Model
+
 
 class SEModule(nn.Module):
     def __init__(self, channels, bottleneck=128):
@@ -135,18 +137,23 @@ class FbankAug(nn.Module):
 
 class ECAPA_TDNN(nn.Module):
 
-    def __init__(self, C):
+    def __init__(self, C, feat_dim=80, feat_type='fbank'):
         super(ECAPA_TDNN, self).__init__()
+        self.feat_dim = feat_dim
+        self.feat_type = feat_type
 
-        self.torchfbank = torch.nn.Sequential(
-            PreEmphasis(),
-            torchaudio.transforms.MelSpectrogram(sample_rate=16000, n_fft=512, win_length=400, hop_length=160, \
-                                                 f_min=20, f_max=7600, window_fn=torch.hamming_window, n_mels=80),
-        )
+        if self.feat_type == 'fbank':
+            self.torchfbank = torch.nn.Sequential(
+                PreEmphasis(),
+                torchaudio.transforms.MelSpectrogram(sample_rate=16000, n_fft=512, win_length=400, hop_length=160,
+                                                     f_min=20, f_max=7600, window_fn=torch.hamming_window,
+                                                     n_mels=self.feat_dim),
+            )
+            self.specaug = FbankAug()  # Spec augmentation
+        else:
+            self.wav2vec2 = CustomWav2Vec2Model()
 
-        self.specaug = FbankAug()  # Spec augmentation
-
-        self.conv1 = nn.Conv1d(80, C, kernel_size=5, stride=1, padding=2)
+        self.conv1 = nn.Conv1d(self.feat_dim, C, kernel_size=5, stride=1, padding=2)
         self.relu = nn.ReLU()
         self.bn1 = nn.BatchNorm1d(C)
         self.layer1 = Bottle2neck(C, C, kernel_size=3, dilation=2, scale=8)
@@ -168,11 +175,14 @@ class ECAPA_TDNN(nn.Module):
 
     def forward(self, x, aug):
         with torch.no_grad():
-            x = self.torchfbank(x) + 1e-6
-            x = x.log()
-            x = x - torch.mean(x, dim=-1, keepdim=True)
-            if aug == True:
-                x = self.specaug(x)
+            if self.feat_type == 'fbank':
+                x = self.torchfbank(x) + 1e-6
+                x = x.log()
+                x = x - torch.mean(x, dim=-1, keepdim=True)
+                if aug:
+                    x = self.specaug(x)
+            else:
+                x = self.wav2vec2(x)
 
         x = self.conv1(x)
         x = self.relu(x)
