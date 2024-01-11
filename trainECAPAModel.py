@@ -58,8 +58,9 @@ args = init_args(args)
 
 # Define the data loader
 trainloader = train_loader(**vars(args))
-trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True, num_workers=args.n_cpu,
-                         drop_last=True)
+# trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True, num_workers=args.n_cpu,
+#                          drop_last=True)
+trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True, num_workers=1, drop_last=True)
 
 # Search for the exist models
 modelfiles = glob.glob('%s/model_0*.model' % args.model_save_path)
