@@ -153,7 +153,7 @@ class ECAPA_TDNN(nn.Module):
             )
             self.specaug = FbankAug()  # Spec augmentation
         else:
-            self.learnable_weights = nn.Parameter(torch.zeros(13, 768))  # 13 couches: CNN + 12 transformers
+            self.learnable_weights = nn.Parameter(torch.ones(13, 768))  # 13 couches: CNN + 12 transformers
             self.wav2vec2 = CustomWav2Vec2Model()
 
         self.conv1 = nn.Conv1d(self.feat_dim, C, kernel_size=5, stride=1, padding=2)
