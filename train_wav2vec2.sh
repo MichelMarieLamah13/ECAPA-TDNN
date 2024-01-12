@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=train_wav2vec2
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:nvidia_a100-sxm4-80gb:1
+#SBATCH --gres=gpu:nvidia_a100-pcie-40gb:1
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=128GB
 #SBATCH --cpus-per-task=20
