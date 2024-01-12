@@ -8,6 +8,8 @@ This model is modified and combined based on the following three projects:
 '''
 
 import math, torch, torchaudio
+import pdb
+
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -151,6 +153,7 @@ class ECAPA_TDNN(nn.Module):
             )
             self.specaug = FbankAug()  # Spec augmentation
         else:
+            self.learnable_weight = nn.Parameter(torch.zeros(13))  # 13 couches: CNN + 12 transformers
             self.wav2vec2 = CustomWav2Vec2Model()
 
         self.conv1 = nn.Conv1d(self.feat_dim, C, kernel_size=5, stride=1, padding=2)
@@ -174,6 +177,7 @@ class ECAPA_TDNN(nn.Module):
         self.bn6 = nn.BatchNorm1d(192)
 
     def forward(self, x, aug):
+        pdb.set_trace()
         with torch.no_grad():
             if self.feat_type == 'fbank':
                 x = self.torchfbank(x) + 1e-6
@@ -183,6 +187,9 @@ class ECAPA_TDNN(nn.Module):
                     x = self.specaug(x)
             else:
                 x = self.wav2vec2(x)
+                norm_weights = F.softmax(self.feature_weight, dim=-1).unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
+                x = (norm_weights * x).sum(dim=0)
+                x = torch.transpose(x, 1, 2) + 1e-6
 
         x = self.conv1(x)
         x = self.relu(x)
