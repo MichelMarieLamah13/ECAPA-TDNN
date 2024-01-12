@@ -3,7 +3,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --time=7-00:00:00
-#SBATCH --mem=32GB
+#SBATCH --mem=64GB
 #SBATCH --cpus-per-task=5
 #SBATCH --output=train_wav2vec2_output.log
 #SBATCH --error=train_wav2vec2_error.log
