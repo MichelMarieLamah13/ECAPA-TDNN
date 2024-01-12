@@ -129,9 +129,6 @@ class ECAPAModel(nn.Module):
                 filtered_lines.append(line)
 
         lines = filtered_lines
-        if len(lines) > 1000:
-            random.seed(0)
-            lines = random.sample(lines, 1000)
         print("END filter")
         sys.stdout.flush()
 
