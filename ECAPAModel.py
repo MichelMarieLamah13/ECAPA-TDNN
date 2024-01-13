@@ -145,40 +145,40 @@ class ECAPAModel(nn.Module):
 
         print("BEGIN embeddings")
         sys.stdout.flush()
-        # for idx, file in tqdm.tqdm(enumerate(setfiles), total=len(setfiles)):
-        #     audio, _ = soundfile.read(os.path.join(eval_path, file))
-        #     # Full utterance
-        #     data_1 = torch.FloatTensor(numpy.stack([audio], axis=0)).cuda()
-        #
-        #     # Spliited utterance matrix
-        #     max_audio = 300 * 160 + 240
-        #     if audio.shape[0] <= max_audio:
-        #         shortage = max_audio - audio.shape[0]
-        #         audio = numpy.pad(audio, (0, shortage), 'wrap')
-        #     feats = []
-        #     startframe = numpy.linspace(0, audio.shape[0] - max_audio, num=5)
-        #     for asf in startframe:
-        #         feats.append(audio[int(asf):int(asf) + max_audio])
-        #     feats = numpy.stack(feats, axis=0).astype(numpy.float64)
-        #     data_2 = torch.FloatTensor(feats).cuda()
-        #     # Speaker embeddings
-        #     with torch.no_grad():
-        #         embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
-        #         embedding_1 = F.normalize(embedding_1, p=2, dim=1)
-        #         embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
-        #         embedding_2 = F.normalize(embedding_2, p=2, dim=1)
-        #     embeddings[file] = [embedding_1, embedding_2]
-        emb_dataset = EmbeddingsDataset(setfiles, eval_path, self.speaker_encoder)
-        emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=5)
-        for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
-            all_file, all_embedding_1, all_embedding_2 = batch
-            for i in range(len(all_file)):
-                file = all_file[i]
-                embedding_1 = all_embedding_1[i]
-                embedding_2 = all_embedding_2[i]
-                embeddings[file] = [embedding_1, embedding_2]
-            print(f"Batch [{idx}/{len(emb_loader)}] DONE")
-            sys.stdout.flush()
+        for idx, file in tqdm.tqdm(enumerate(setfiles), total=len(setfiles)):
+            audio, _ = soundfile.read(os.path.join(eval_path, file))
+            # Full utterance
+            data_1 = torch.FloatTensor(numpy.stack([audio], axis=0)).cuda()
+
+            # Spliited utterance matrix
+            max_audio = 300 * 160 + 240
+            if audio.shape[0] <= max_audio:
+                shortage = max_audio - audio.shape[0]
+                audio = numpy.pad(audio, (0, shortage), 'wrap')
+            feats = []
+            startframe = numpy.linspace(0, audio.shape[0] - max_audio, num=5)
+            for asf in startframe:
+                feats.append(audio[int(asf):int(asf) + max_audio])
+            feats = numpy.stack(feats, axis=0).astype(numpy.float64)
+            data_2 = torch.FloatTensor(feats).cuda()
+            # Speaker embeddings
+            with torch.no_grad():
+                embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
+                embedding_1 = F.normalize(embedding_1, p=2, dim=1)
+                embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
+                embedding_2 = F.normalize(embedding_2, p=2, dim=1)
+            embeddings[file] = [embedding_1, embedding_2]
+        # emb_dataset = EmbeddingsDataset(setfiles, eval_path, self.speaker_encoder)
+        # emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=5)
+        # for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
+        #     all_file, all_embedding_1, all_embedding_2 = batch
+        #     for i in range(len(all_file)):
+        #         file = all_file[i]
+        #         embedding_1 = all_embedding_1[i]
+        #         embedding_2 = all_embedding_2[i]
+        #         embeddings[file] = [embedding_1, embedding_2]
+        #     print(f"Batch [{idx}/{len(emb_loader)}] DONE")
+        #     sys.stdout.flush()
 
         scores, labels = [], []
         print("END embeddings")
@@ -186,28 +186,29 @@ class ECAPAModel(nn.Module):
 
         print("BEGIN scores")
         sys.stdout.flush()
-        # for line in tqdm.tqdm(lines):
-        #     part0, part1, part2 = line.split()
-        #     embedding_11, embedding_12 = embeddings[part1]
-        #     embedding_21, embedding_22 = embeddings[part2]
-        #     # Compute the scores
-        #     score_1 = torch.mean(torch.matmul(embedding_11, embedding_21.T))  # higher is positive
-        #     score_2 = torch.mean(torch.matmul(embedding_12, embedding_22.T))
-        #     score = (score_1 + score_2) / 2
-        #     score = score.detach().cpu().numpy()
-        #     scores.append(score)
-        #     labels.append(int(part0))
-        scores_dataset = ScoresDataset(lines, embeddings)
-        scores_loader = DataLoader(scores_dataset, batch_size=50, num_workers=5)
-        for idx, batch in tqdm.tqdm(enumerate(scores_loader, start=1), total=len(scores_loader)):
-            all_score, all_label = batch
-            for i in range(len(all_score)):
-                score = all_score[i]
-                label = all_label[i]
-                scores.append(score)
-                labels.append(label)
-            print(f"Batch [{idx}/{len(emb_loader)}] DONE")
-            sys.stdout.flush()
+        for line in tqdm.tqdm(lines):
+            part0, part1, part2 = line.split()
+            embedding_11, embedding_12 = embeddings[part1]
+            embedding_21, embedding_22 = embeddings[part2]
+            # Compute the scores
+            score_1 = torch.mean(torch.matmul(embedding_11, embedding_21.T))  # higher is positive
+            score_2 = torch.mean(torch.matmul(embedding_12, embedding_22.T))
+            score = (score_1 + score_2) / 2
+            score = score.detach().cpu().numpy()
+            scores.append(score)
+            labels.append(int(part0))
+
+        # scores_dataset = ScoresDataset(lines, embeddings)
+        # scores_loader = DataLoader(scores_dataset, batch_size=50, num_workers=5)
+        # for idx, batch in tqdm.tqdm(enumerate(scores_loader, start=1), total=len(scores_loader)):
+        #     all_score, all_label = batch
+        #     for i in range(len(all_score)):
+        #         score = all_score[i]
+        #         label = all_label[i]
+        #         scores.append(score)
+        #         labels.append(label)
+        #     print(f"Batch [{idx}/{len(scores_loader)}] DONE")
+        #     sys.stdout.flush()
 
         print("END scores")
         sys.stdout.flush()
