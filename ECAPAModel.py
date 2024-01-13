@@ -47,6 +47,7 @@ class EmbeddingsDataset(Dataset):
             embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
             embedding_2 = F.normalize(embedding_2, p=2, dim=1)
 
+        torch.cuda.empty_cache()
         return file, embedding_1, embedding_2
 
 

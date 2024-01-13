@@ -29,7 +29,7 @@ if __name__ == "__main__":
                              'https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/train_list.txt')
     parser.add_argument('--train_path', type=str, default="./../dataset/db/voxceleb2",
                         help='The path of the training data, eg:"data/voxceleb2" in my case')
-    parser.add_argument('--eval_list', type=str, default="data/voxceleb1/veri_test2.txt",
+    parser.add_argument('--eval_list', type=str, default="data/voxceleb1/list_test_hard2.txt",
                         help='The path of the evaluation list: veri_test2.txt, list_test_all2.txt, list_test_hard2.txt'
                              'veri_test2.txt comes from https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/veri_test2.txt')
     parser.add_argument('--eval_path', type=str, default="./../dataset/db/voxceleb1/",
@@ -75,9 +75,7 @@ if __name__ == "__main__":
         print("Model %s loaded from previous state!" % args.initial_model)
         sys.stdout.flush()
         s.load_parameters(args.initial_model)
-        torch.cuda.empty_cache()
         EER, minDCF = s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)
-        torch.cuda.empty_cache()
         print("EER %2.2f%%, minDCF %.4f%%" % (EER, minDCF))
         sys.stdout.flush()
         quit()
