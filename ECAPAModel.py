@@ -108,7 +108,7 @@ class ECAPAModel(nn.Module):
             loss += nloss.detach().cpu().numpy()
             print(time.strftime("%m-%d %H:%M:%S") + \
                   " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
-                  " Loss: %.5f, ACC: %2.2f%% \n" % (loss / num, top1 / index * len(labels)))
+                  " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * len(labels)))
             sys.stdout.flush()
         sys.stdout.write("\n")
         return loss / num, lr, top1 / index * len(labels)
