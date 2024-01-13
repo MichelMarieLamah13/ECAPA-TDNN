@@ -180,7 +180,6 @@ class ECAPAModel(nn.Module):
                 embeddings[file] = [embedding_1, embedding_2]
             print(f"Batch [{idx}/{len(emb_loader)}] DONE")
             sys.stdout.flush()
-            torch.cuda.empty_cache()
 
         scores, labels = [], []
         print("END embeddings")
