@@ -47,7 +47,6 @@ class EmbeddingsDataset(Dataset):
             embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
             embedding_2 = F.normalize(embedding_2, p=2, dim=1)
 
-        torch.cuda.empty_cache()
         return file, embedding_1, embedding_2
 
 
@@ -181,6 +180,7 @@ class ECAPAModel(nn.Module):
                 embeddings[file] = [embedding_1, embedding_2]
             print(f"Batch [{idx}/{len(emb_loader)}] DONE")
             sys.stdout.flush()
+            torch.cuda.empty_cache()
 
         scores, labels = [], []
         print("END embeddings")
