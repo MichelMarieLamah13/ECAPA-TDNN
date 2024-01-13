@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=eval_ecapa
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:nvidia_a100-sxm4-80gb:1
 #SBATCH --time=7-00:00:00
-#SBATCH --mem=32GB
-#SBATCH --cpus-per-task=5
+#SBATCH --mem=128GB
+#SBATCH --cpus-per-task=20
 #SBATCH --output=eval_output.log
 #SBATCH --error=eval_error.log
 
