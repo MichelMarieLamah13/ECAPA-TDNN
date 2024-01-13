@@ -113,7 +113,7 @@ class ECAPAModel(nn.Module):
         sys.stdout.write("\n")
         return loss / num, lr, top1 / index * len(labels)
 
-    def eval_network(self, eval_list, eval_path):
+    def eval_network(self, eval_list, eval_path, n_cpu=5):
         self.eval()
         files = []
         embeddings = {}
@@ -170,7 +170,7 @@ class ECAPAModel(nn.Module):
         #     embeddings[file] = [embedding_1, embedding_2]
 
         emb_dataset = EmbeddingsDataset(setfiles, eval_path, self.speaker_encoder)
-        emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=5)
+        emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
             all_file, all_embedding_1, all_embedding_2 = batch
             for i in range(len(all_file)):

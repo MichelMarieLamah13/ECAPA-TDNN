@@ -75,7 +75,7 @@ if __name__ == "__main__":
         print("Model %s loaded from previous state!" % args.initial_model)
         sys.stdout.flush()
         s.load_parameters(args.initial_model)
-        EER, minDCF = s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path)
+        EER, minDCF = s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)
         print("EER %2.2f%%, minDCF %.4f%%" % (EER, minDCF))
         sys.stdout.flush()
         quit()
@@ -110,7 +110,7 @@ if __name__ == "__main__":
         # Evaluation every [test_step] epochs
         if epoch % args.test_step == 0:
             s.save_parameters(args.model_save_path + "/model_%04d.model" % epoch)
-            EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path)[0])
+            EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)[0])
             print(time.strftime("%Y-%m-%d %H:%M:%S"),
                   "%d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (epoch, acc, EERs[-1], min(EERs)))
             score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
