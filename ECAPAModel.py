@@ -1,7 +1,7 @@
 '''
 This part is used to train the speaker model and evaluate the performances
 '''
-
+import numpy as np
 import torch, sys, os, tqdm, numpy, soundfile, time, pickle
 import torch.nn as nn
 from torch.nn.utils.rnn import pad_sequence, pad_packed_sequence, pack_padded_sequence
@@ -15,15 +15,10 @@ import random
 
 def collate_fn(batch):
     # Separate filenames, data_1, and data_2
-    batch = sorted(batch, key=lambda x: x[2], reverse=True)
     filenames, data_1, original_lengths_1, data_2 = zip(*batch)
-    max_length = original_lengths_1[0]
+    max_length = np.max(original_lengths_1)
     data_1_padded = [torch.nn.functional.pad(seq, (0, max_length - seq.size(1))) for seq in data_1]
-
-    # Pad sequences to have the same length within a batch
-    padded_data_1 = pad_sequence(data_1_padded, batch_first=False, padding_value=0)
-
-    return filenames, padded_data_1, original_lengths_1, data_2
+    return filenames, data_1_padded, original_lengths_1, data_2
 
 
 class EmbeddingsDataset(Dataset):
@@ -195,13 +190,11 @@ class ECAPAModel(nn.Module):
         emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
             all_file, all_data_1, all_lengths_1, all_data_2 = batch
-
-            all_data_1 = pack_padded_sequence(all_data_1, all_lengths_1, batch_first=False)
-            all_data_1 = pad_packed_sequence(all_data_1, batch_first=False)[0]
-
             for i in range(len(all_file)):
                 file = all_file[i]
-                data_1 = all_data_1[i].cuda()
+                length_1 = all_lengths_1[i]
+                data_1 = all_data_1[i][:, :length_1]
+                data_1 = data_1.cuda()
                 data_2 = all_data_2[i].cuda()
                 with torch.no_grad():
                     if self.learnable_weights is None:
