@@ -15,18 +15,15 @@ import random
 
 def collate_fn(batch):
     # Separate filenames, data_1, and data_2
-    filenames, data_1, original_lengths_1, data_2, original_lengths_2 = zip(*batch)
+    filenames, data_1, original_lengths_1, data_2 = zip(*batch)
 
     print(f'lengths1: {original_lengths_1}')
     sys.stdout.flush()
 
-    print(f'lengths2: {original_lengths_2}')
-    sys.stdout.flush()
     # Pad sequences to have the same length within a batch
-    padded_data_1 = pad_sequence(data_1, batch_first=True, padding_value=0)
-    padded_data_2 = pad_sequence(data_2, batch_first=True, padding_value=0)
+    padded_data_1 = pad_sequence(data_1, batch_first=False, padding_value=0)
 
-    return filenames, padded_data_1, original_lengths_1, padded_data_2, original_lengths_2
+    return filenames, padded_data_1, original_lengths_1, data_2
 
 
 class EmbeddingsDataset(Dataset):
@@ -55,7 +52,7 @@ class EmbeddingsDataset(Dataset):
         feats = numpy.stack(feats, axis=0).astype(numpy.float64)
         data_2 = torch.FloatTensor(feats)
 
-        return file, data_1, data_1.shape, data_2, data_2.shape
+        return file, data_1, data_1.shape[1], data_2
 
 
 class ScoresDataset(Dataset):
@@ -197,13 +194,10 @@ class ECAPAModel(nn.Module):
         emb_dataset = EmbeddingsDataset(setfiles, eval_path)
         emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
-            all_file, all_data_1, all_lengths_1, all_data_2, all_lengths_2 = batch
+            all_file, all_data_1, all_lengths_1, all_data_2 = batch
 
             all_data_1 = pack_padded_sequence(all_data_1, all_lengths_1, batch_first=True)
-            all_data_2 = pack_padded_sequence(all_data_2, all_lengths_2, batch_first=True)
-
             all_data_1 = pad_packed_sequence(all_data_1, batch_first=True)[0]
-            all_data_2 = pad_packed_sequence(all_data_2, batch_first=True)[0]
 
             for i in range(len(all_file)):
                 file = all_file[i]
