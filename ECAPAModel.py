@@ -15,6 +15,8 @@ import random
 
 def collate_fn(batch):
     # Separate filenames, data_1, and data_2
+    batch = sorted(batch, key=lambda x: x[2], reverse=True)
+
     filenames, data_1, original_lengths_1, data_2 = zip(*batch)
 
     print(f'lengths1: {original_lengths_1}')
