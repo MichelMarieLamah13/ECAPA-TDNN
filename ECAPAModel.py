@@ -16,14 +16,15 @@ import random
 def collate_fn(batch):
     # Separate filenames, data_1, and data_2
     batch = sorted(batch, key=lambda x: x[2], reverse=True)
-
     filenames, data_1, original_lengths_1, data_2 = zip(*batch)
+    max_length = original_lengths_1[0]
+    data_1_padded = [torch.nn.functional.pad(seq, (0, max_length - seq.size(1))) for seq in data_1]
 
     print(f'lengths1: {original_lengths_1}')
     sys.stdout.flush()
 
     # Pad sequences to have the same length within a batch
-    padded_data_1 = pad_sequence(data_1, batch_first=False, padding_value=0)
+    padded_data_1 = pad_sequence(data_1_padded, batch_first=False, padding_value=0)
 
     return filenames, padded_data_1, original_lengths_1, data_2
 
