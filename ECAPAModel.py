@@ -20,9 +20,6 @@ def collate_fn(batch):
     max_length = original_lengths_1[0]
     data_1_padded = [torch.nn.functional.pad(seq, (0, max_length - seq.size(1))) for seq in data_1]
 
-    print(f'lengths1: {original_lengths_1}')
-    sys.stdout.flush()
-
     # Pad sequences to have the same length within a batch
     padded_data_1 = pad_sequence(data_1_padded, batch_first=False, padding_value=0)
 
@@ -199,8 +196,8 @@ class ECAPAModel(nn.Module):
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
             all_file, all_data_1, all_lengths_1, all_data_2 = batch
 
-            all_data_1 = pack_padded_sequence(all_data_1, all_lengths_1, batch_first=True)
-            all_data_1 = pad_packed_sequence(all_data_1, batch_first=True)[0]
+            all_data_1 = pack_padded_sequence(all_data_1, all_lengths_1, batch_first=False)
+            all_data_1 = pad_packed_sequence(all_data_1, batch_first=False)[0]
 
             for i in range(len(all_file)):
                 file = all_file[i]
