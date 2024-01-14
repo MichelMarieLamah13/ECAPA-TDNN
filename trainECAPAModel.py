@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     # Initialization
     warnings.simplefilter("ignore")
-    torch.multiprocessing.set_start_method('spawn', force=True)
+    # torch.multiprocessing.set_start_method('spawn', force=True)
     torch.multiprocessing.set_sharing_strategy('file_system')
     args = parser.parse_args()
     args = init_args(args)
