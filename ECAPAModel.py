@@ -84,7 +84,7 @@ class ECAPAModel(nn.Module):
         super(ECAPAModel, self).__init__()
 
         self.learnable_weights = None
-        if self.feat_type == 'wav2vec2':
+        if feat_type == 'wav2vec2':
             # self.learnable_weights = nn.Parameter(torch.zeros(13, 768))  # 13 couches: CNN + 12 transformers
             self.learnable_weights = nn.Parameter(torch.ones(13))
 
