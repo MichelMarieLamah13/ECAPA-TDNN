@@ -43,12 +43,12 @@ class EmbeddingsDataset(Dataset):
         # data_2 = torch.FloatTensor(feats)
         # Speaker embeddings
         with torch.no_grad():
+            embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
+            embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
+
             if self.learnable_weights is not None:
                 embedding_1 = self.speaker_encoder.forward(data_1, aug=False, learnable_weights=self.learnable_weights)
                 embedding_2 = self.speaker_encoder.forward(data_2, aug=False, learnable_weights=self.learnable_weights)
-            else:
-                embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
-                embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
 
             embedding_1 = F.normalize(embedding_1, p=2, dim=1)
             embedding_2 = F.normalize(embedding_2, p=2, dim=1)
