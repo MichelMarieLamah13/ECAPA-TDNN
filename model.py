@@ -176,6 +176,7 @@ class ECAPA_TDNN(nn.Module):
         self.bn6 = nn.BatchNorm1d(192)
 
     def forward(self, x, aug, learnable_weights=None):
+        pdb.set_trace()
         with torch.no_grad():
             if learnable_weights is None:
                 x = self.torchfbank(x) + 1e-6
