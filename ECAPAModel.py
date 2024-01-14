@@ -17,12 +17,6 @@ def collate_fn(batch):
     # Separate filenames, data_1, and data_2
     filenames, data_1, original_lengths_1, data_2, original_lengths_2 = zip(*batch)
 
-    print(f'data1: {data_1}')
-    sys.stdout.flush()
-
-    print(f'data2: {data_2}')
-    sys.stdout.flush()
-
     print(f'lengths1: {original_lengths_1}')
     sys.stdout.flush()
 
@@ -61,7 +55,7 @@ class EmbeddingsDataset(Dataset):
         feats = numpy.stack(feats, axis=0).astype(numpy.float64)
         data_2 = torch.FloatTensor(feats)
 
-        return file, data_1, len(data_1[0]), data_2, len(data_2)
+        return file, data_1, data_1.shape, data_2, data_2.shape
 
 
 class ScoresDataset(Dataset):
