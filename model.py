@@ -153,8 +153,6 @@ class ECAPA_TDNN(nn.Module):
             )
             self.specaug = FbankAug()  # Spec augmentation
         else:
-            # self.learnable_weights = nn.Parameter(torch.zeros(13, 768))  # 13 couches: CNN + 12 transformers
-            self.learnable_weights = nn.Parameter(torch.ones(13))
             self.wav2vec2 = CustomWav2Vec2Model()
 
         self.conv1 = nn.Conv1d(self.feat_dim, C, kernel_size=5, stride=1, padding=2)
@@ -177,16 +175,16 @@ class ECAPA_TDNN(nn.Module):
         self.fc6 = nn.Linear(3072, 192)
         self.bn6 = nn.BatchNorm1d(192)
 
-    def forward(self, x, aug):
+    def forward(self, x, aug, learnable_weights=None):
         with torch.no_grad():
-            if self.feat_type == 'fbank':
+            if learnable_weights is None:
                 x = self.torchfbank(x) + 1e-6
                 x = x.log()
                 x = x - torch.mean(x, dim=-1, keepdim=True)
                 if aug:
                     x = self.specaug(x)
             else:
-                x = self.wav2vec2(x, self.learnable_weights) + 1e-6
+                x = self.wav2vec2(x, learnable_weights) + 1e-6
                 # x = x.log()
                 # x = x - torch.mean(x, dim=-1, keepdim=True)
 

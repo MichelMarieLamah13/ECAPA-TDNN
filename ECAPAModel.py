@@ -13,10 +13,11 @@ import random
 
 
 class EmbeddingsDataset(Dataset):
-    def __init__(self, files, eval_path, speaker_encoder):
+    def __init__(self, files, eval_path, speaker_encoder, learnable_weights=None):
         self.files = files
         self.eval_path = eval_path
         self.speaker_encoder = speaker_encoder
+        self.learnable_weights = learnable_weights
 
     def __len__(self):
         return len(self.files)
@@ -42,9 +43,14 @@ class EmbeddingsDataset(Dataset):
         # data_2 = torch.FloatTensor(feats)
         # Speaker embeddings
         with torch.no_grad():
-            embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
+            if self.learnable_weights is not None:
+                embedding_1 = self.speaker_encoder.forward(data_1, aug=False, learnable_weights=self.learnable_weights)
+                embedding_2 = self.speaker_encoder.forward(data_2, aug=False, learnable_weights=self.learnable_weights)
+            else:
+                embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
+                embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
+
             embedding_1 = F.normalize(embedding_1, p=2, dim=1)
-            embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
             embedding_2 = F.normalize(embedding_2, p=2, dim=1)
 
         return file, embedding_1, embedding_2
@@ -76,6 +82,12 @@ class ScoresDataset(Dataset):
 class ECAPAModel(nn.Module):
     def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, feat_type, feat_dim, **kwargs):
         super(ECAPAModel, self).__init__()
+
+        self.learnable_weights = None
+        if self.feat_type == 'wav2vec2':
+            # self.learnable_weights = nn.Parameter(torch.zeros(13, 768))  # 13 couches: CNN + 12 transformers
+            self.learnable_weights = nn.Parameter(torch.ones(13))
+
         # ECAPA-TDNN
         self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim).cuda()
         # self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim)
@@ -99,6 +111,10 @@ class ECAPAModel(nn.Module):
             labels = torch.LongTensor(labels).cuda()
             # labels = torch.LongTensor(labels)
             speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
+            if self.learnable_weights is not None:
+                speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True,
+                                                                 learnable_weights=self.learnable_weights)
+
             # speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
             nloss.backward()
@@ -169,7 +185,7 @@ class ECAPAModel(nn.Module):
         #         embedding_2 = F.normalize(embedding_2, p=2, dim=1)
         #     embeddings[file] = [embedding_1, embedding_2]
 
-        emb_dataset = EmbeddingsDataset(setfiles, eval_path, self.speaker_encoder)
+        emb_dataset = EmbeddingsDataset(setfiles, eval_path, self.speaker_encoder, self.learnable_weights)
         emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
             all_file, all_embedding_1, all_embedding_2 = batch
