@@ -64,13 +64,8 @@ class ScoresDataset(Dataset):
         part0, part1, part2 = line.split()
         embedding_11, embedding_12 = self.embeddings[part1]
         embedding_21, embedding_22 = self.embeddings[part2]
-        # Compute the scores
-        score_1 = torch.mean(torch.matmul(embedding_11, embedding_21.T))  # higher is positive
-        score_2 = torch.mean(torch.matmul(embedding_12, embedding_22.T))
-        score = (score_1 + score_2) / 2
-        score = score.detach().cpu().numpy()
 
-        return score, int(part0)
+        return embedding_11, embedding_12, embedding_21, embedding_22, int(part0)
 
 
 class ECAPAModel(nn.Module):
@@ -232,10 +227,19 @@ class ECAPAModel(nn.Module):
         scores_dataset = ScoresDataset(lines, embeddings)
         scores_loader = DataLoader(scores_dataset, batch_size=50, num_workers=n_cpu)
         for idx, batch in tqdm.tqdm(enumerate(scores_loader, start=1), total=len(scores_loader)):
-            all_score, all_label = batch
-            for i in range(len(all_score)):
-                score = all_score[i]
-                label = all_label[i]
+            embeddings_11, embeddings_21, embeddings_12, embeddings_22, labels = batch
+            for i in range(len(labels)):
+                # Compute the scores
+                embedding_11 = embeddings_11[i]
+                embedding_21 = embeddings_21[i]
+                embedding_12 = embeddings_12[i]
+                embedding_22 = embeddings_22[i]
+
+                score_1 = torch.mean(torch.matmul(embedding_11, embedding_21.T))  # higher is positive
+                score_2 = torch.mean(torch.matmul(embedding_12, embedding_22.T))
+                score = (score_1 + score_2) / 2
+                score = score.detach().cpu().numpy()
+                label = labels[i]
                 scores.append(score)
                 labels.append(label)
             print(f"Batch [{idx}/{len(scores_loader)}] DONE")
