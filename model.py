@@ -187,8 +187,8 @@ class ECAPA_TDNN(nn.Module):
                     x = self.specaug(x)
             else:
                 x = self.wav2vec2(x, self.learnable_weights) + 1e-6
-                x = x.log()
-                x = x - torch.mean(x, dim=-1, keepdim=True)
+                # x = x.log()
+                # x = x - torch.mean(x, dim=-1, keepdim=True)
 
         x = self.conv1(x)
         x = self.relu(x)

@@ -5,6 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, AutoModelForCTC, AutoTokenizer, AutoFeatureExtractor
+import torch.nn.functional as F
 
 
 class CustomWav2Vec2Model(nn.Module):
@@ -20,6 +21,7 @@ class CustomWav2Vec2Model(nn.Module):
             x = torch.tensor(x)
             x = x.to(self.model.device)
             output = self.model(x)
+            learnable_weights = F.softmax(self.feature_weight, dim=-1)
 
         hidden_states = list(output.hidden_states)
         result = torch.zeros_like(hidden_states[0])
