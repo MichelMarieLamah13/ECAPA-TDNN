@@ -24,8 +24,10 @@ class CustomWav2Vec2Model(nn.Module):
             learnable_weights = F.softmax(learnable_weights, dim=-1)
 
         hidden_states = list(output.hidden_states)
-        result = torch.zeros_like(hidden_states[0])
+        hidden0 = hidden_states[0].permute(0, 2, 1)
+        result = torch.zeros_like(hidden0)
         for i, hidden in enumerate(hidden_states):
+            hidden = hidden.permute(0, 2, 1)
             weights = learnable_weights[i]
             result += weights * hidden
 
