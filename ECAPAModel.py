@@ -194,8 +194,8 @@ class ECAPAModel(nn.Module):
                                                                    learnable_weights=self.learnable_weights)
                         embedding_2 = self.speaker_encoder.forward(data_2, aug=False,
                                                                    learnable_weights=self.learnable_weights)
-                embedding_1 = F.normalize(embedding_1, p=2, dim=1)
-                embedding_2 = F.normalize(embedding_2, p=2, dim=1)
+                    embedding_1 = F.normalize(embedding_1, p=2, dim=1)
+                    embedding_2 = F.normalize(embedding_2, p=2, dim=1)
                 embeddings[file] = [embedding_1, embedding_2]
             print(f"Batch [{idx}/{len(emb_loader)}] DONE")
             sys.stdout.flush()
