@@ -21,7 +21,7 @@ class CustomWav2Vec2Model(nn.Module):
             x = torch.tensor(x)
             x = x.to(self.model.device)
             output = self.model(x)
-            learnable_weights = F.softmax(self.feature_weight, dim=-1)
+            learnable_weights = F.softmax(learnable_weights, dim=-1)
 
         hidden_states = list(output.hidden_states)
         result = torch.zeros_like(hidden_states[0])
