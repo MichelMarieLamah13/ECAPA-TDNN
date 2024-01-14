@@ -18,10 +18,9 @@ class CustomWav2Vec2Model(nn.Module):
         with torch.no_grad():
             x = self.processor(x, return_tensor='pt', sampling_rate=16_000)
             x = x.input_values[0]
-            x = torch.tensor(x)
-            x = x.to(self.model.device)
+            x = torch.tensor(x).cuda()
             output = self.model(x)
-            learnable_weights = F.softmax(learnable_weights, dim=-1)
+            # learnable_weights = F.softmax(learnable_weights, dim=-1)
 
         hidden_states = list(output.hidden_states)
         result = torch.zeros_like(hidden_states[0])
