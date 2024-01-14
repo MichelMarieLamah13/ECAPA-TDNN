@@ -17,6 +17,17 @@ def collate_fn(batch):
     # Separate filenames, data_1, and data_2
     filenames, data_1, original_lengths_1, data_2, original_lengths_2 = zip(*batch)
 
+    print(f'data1: {data_1}')
+    sys.stdout.flush()
+
+    print(f'data2: {data_2}')
+    sys.stdout.flush()
+
+    print(f'lengths1: {original_lengths_1}')
+    sys.stdout.flush()
+
+    print(f'lengths2: {original_lengths_2}')
+    sys.stdout.flush()
     # Pad sequences to have the same length within a batch
     padded_data_1 = pad_sequence(data_1, batch_first=True, padding_value=0)
     padded_data_2 = pad_sequence(data_2, batch_first=True, padding_value=0)
