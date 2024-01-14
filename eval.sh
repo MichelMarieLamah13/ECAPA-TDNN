@@ -12,6 +12,7 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
+python3  trainECAPAModel.py --eval --initial_model exps/exp4/model/model_0001.model  --feat_type wav2vec2 --feat_dim 768
 # python3 -m pdb trainECAPAModel.py --eval --initial_model exps/exp4/model/model_0001.model  --feat_type wav2vec2 --feat_dim 768
 # python3 trainECAPAModel.py --eval --initial_model exps/pretrain.model --feat_type fbank --feat_dim 80
 
