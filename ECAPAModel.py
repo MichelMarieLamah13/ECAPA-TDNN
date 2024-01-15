@@ -151,35 +151,6 @@ class ECAPAModel(nn.Module):
 
         print("BEGIN embeddings")
         sys.stdout.flush()
-        # for idx, file in tqdm.tqdm(enumerate(setfiles), total=len(setfiles)):
-        #     audio, _ = soundfile.read(os.path.join(eval_path, file))
-        #     # Full utterance
-        #     data_1 = torch.FloatTensor(numpy.stack([audio], axis=0)).cuda()
-        #
-        #     # Spliited utterance matrix
-        #     max_audio = 300 * 160 + 240
-        #     if audio.shape[0] <= max_audio:
-        #         shortage = max_audio - audio.shape[0]
-        #         audio = numpy.pad(audio, (0, shortage), 'wrap')
-        #     feats = []
-        #     startframe = numpy.linspace(0, audio.shape[0] - max_audio, num=5)
-        #     for asf in startframe:
-        #         feats.append(audio[int(asf):int(asf) + max_audio])
-        #     feats = numpy.stack(feats, axis=0).astype(numpy.float64)
-        #     data_2 = torch.FloatTensor(feats).cuda()
-        #     # Speaker embeddings
-        #     with torch.no_grad():
-        #         if self.learnable_weights is None:
-        #             embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
-        #             embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
-        #         else:
-        #             embedding_1 = self.speaker_encoder.forward(data_1, aug=False,
-        #                                                        learnable_weights=self.learnable_weights)
-        #             embedding_2 = self.speaker_encoder.forward(data_2, aug=False,
-        #                                                        learnable_weights=self.learnable_weights)
-        #         embedding_1 = F.normalize(embedding_1, p=2, dim=1)
-        #         embedding_2 = F.normalize(embedding_2, p=2, dim=1)
-        #     embeddings[file] = [embedding_1, embedding_2]
 
         emb_dataset = EmbeddingsDataset(setfiles, eval_path)
         emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn)
@@ -223,27 +194,6 @@ class ECAPAModel(nn.Module):
             score = score.detach().cpu().numpy()
             scores.append(score)
             labels.append(int(part0))
-
-        # scores_dataset = ScoresDataset(lines, embeddings)
-        # scores_loader = DataLoader(scores_dataset, batch_size=50, num_workers=n_cpu)
-        # for idx, batch in tqdm.tqdm(enumerate(scores_loader, start=1), total=len(scores_loader)):
-        #     embeddings_11, embeddings_21, embeddings_12, embeddings_22, labels = batch
-        #     for i in range(len(labels)):
-        #         # Compute the scores
-        #         embedding_11 = embeddings_11[i]
-        #         embedding_21 = embeddings_21[i]
-        #         embedding_12 = embeddings_12[i]
-        #         embedding_22 = embeddings_22[i]
-        #
-        #         score_1 = torch.mean(torch.matmul(embedding_11, embedding_21.T))  # higher is positive
-        #         score_2 = torch.mean(torch.matmul(embedding_12, embedding_22.T))
-        #         score = (score_1 + score_2) / 2
-        #         score = score.detach().cpu().numpy()
-        #         label = labels[i]
-        #         scores.append(score)
-        #         labels.append(label)
-        #     print(f"Batch [{idx}/{len(scores_loader)}] DONE")
-        #     sys.stdout.flush()
 
         print("END scores")
         sys.stdout.flush()
