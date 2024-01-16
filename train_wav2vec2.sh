@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:nvidia_a100-sxm4-80gb:1
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=128GB
-#SBATCH --cpus-per-task=20
+#SBATCH --cpus-per-task=30
 #SBATCH --output=train_wav2vec2_output.log
 #SBATCH --error=train_wav2vec2_error.log
 
