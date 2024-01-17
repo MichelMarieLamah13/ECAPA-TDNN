@@ -1,6 +1,8 @@
 '''
 This part is used to train the speaker model and evaluate the performances
 '''
+import glob
+
 import numpy as np
 import torch, sys, os, tqdm, numpy, soundfile, time, pickle
 import torch.nn as nn
@@ -216,6 +218,10 @@ class ECAPAModel(nn.Module):
         return EER, minDCF
 
     def save_parameters(self, path):
+        folder = os.path.dirname(path)
+        old_files = glob.glob(f'{folder}/model_0*.model')
+        for file in old_files:
+            os.remove(file)
         torch.save(self.state_dict(), path)
 
     def load_parameters(self, path):
