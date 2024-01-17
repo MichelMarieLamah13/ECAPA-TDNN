@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH --job-name=train_ecapa
+#SBATCH --job-name=bf
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:nvidia_a100-sxm4-80gb:1
 # #SBATCH --gres=gpu:nvidia_a100-pcie-40gb:1
 # #SBATCH --gres=gpu:tesla_v100-sxm2-32gb:1
 #SBATCH --time=10-00:00:00
-#SBATCH --mem=40GB
+#SBATCH --mem=20GB
 #SBATCH --cpus-per-task=5
-#SBATCH --output=train_output.log
-#SBATCH --error=train_error.log
+#SBATCH --output=bf_output.log
+#SBATCH --error=bf_error.log
 
 
 source /etc/profile.d/conda.sh
