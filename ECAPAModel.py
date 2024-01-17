@@ -225,6 +225,8 @@ class ECAPAModel(nn.Module):
         torch.save(self.state_dict(), path)
 
     def load_parameters(self, path):
+        print(f"Path: {path}")
+        sys.stdout.flush()
         self_state = self.state_dict()
         loaded_state = torch.load(path)
         for name, param in loaded_state.items():
