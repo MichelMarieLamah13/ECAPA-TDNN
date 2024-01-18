@@ -14,7 +14,7 @@ class CustomWav2Vec2Model(nn.Module):
         self.model = Wav2Vec2ForCTC.from_pretrained(model_name, output_hidden_states=True)
         self.processor = Wav2Vec2Processor.from_pretrained(model_name)
 
-    def forward(self, x, learnable_weights):
+    def forward(self, x, learnable_weights, is_2d=False):
         with torch.no_grad():
             x = self.processor(x, return_tensor='pt', sampling_rate=16_000)
             x = x.input_values[0]
@@ -28,6 +28,9 @@ class CustomWav2Vec2Model(nn.Module):
         for i, hidden in enumerate(hidden_states):
             hidden = hidden.permute(0, 2, 1)
             weights = learnable_weights[i]
-            result += weights * hidden
+            if is_2d:
+                result += hidden * weights.unsqueeze(0).unsqueeze(-1)
+            else:
+                result += weights * hidden
 
         return result

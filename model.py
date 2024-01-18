@@ -175,7 +175,7 @@ class ECAPA_TDNN(nn.Module):
         self.fc6 = nn.Linear(3072, 192)
         self.bn6 = nn.BatchNorm1d(192)
 
-    def forward(self, x, aug, learnable_weights=None):
+    def forward(self, x, aug, learnable_weights=None, is_2d=False):
         with torch.no_grad():
             if learnable_weights is None:
                 x = self.torchfbank(x) + 1e-6
@@ -184,7 +184,7 @@ class ECAPA_TDNN(nn.Module):
                 if aug:
                     x = self.specaug(x)
             else:
-                x = self.wav2vec2(x, learnable_weights) + 1e-6
+                x = self.wav2vec2(x, learnable_weights, is_2d) + 1e-6
                 # x = x.log()
                 # x = x - torch.mean(x, dim=-1, keepdim=True)
 

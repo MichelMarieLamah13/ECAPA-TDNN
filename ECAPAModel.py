@@ -71,13 +71,16 @@ class ScoresDataset(Dataset):
 
 
 class ECAPAModel(nn.Module):
-    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, feat_type, feat_dim, **kwargs):
+    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, feat_type, feat_dim, is_2d=False):
         super(ECAPAModel, self).__init__()
 
         self.learnable_weights = None
+        self.is_2d = is_2d
         if feat_type == 'wav2vec2':
-            # self.learnable_weights = nn.Parameter(torch.zeros(13, 768))  # 13 couches: CNN + 12 transformers
-            self.learnable_weights = nn.Parameter(torch.ones(13))
+            if self.is_2d:
+                self.learnable_weights = nn.Parameter(torch.zeros(13, 768))  # 13 couches: CNN + 12 transformers
+            else:
+                self.learnable_weights = nn.Parameter(torch.ones(13))
 
         # ECAPA-TDNN
         self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim).cuda()
@@ -103,9 +106,10 @@ class ECAPAModel(nn.Module):
             # labels = torch.LongTensor(labels)
             if self.learnable_weights is not None:
                 speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True,
-                                                                 learnable_weights=self.learnable_weights)
+                                                                 learnable_weights=self.learnable_weights,
+                                                                 is_2d=self.is_2d)
             else:
-                speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
+                speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True, is_2d=self.is_2d)
 
             # speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
@@ -170,9 +174,11 @@ class ECAPAModel(nn.Module):
                         embedding_2 = self.speaker_encoder.forward(data_2, aug=False)
                     else:
                         embedding_1 = self.speaker_encoder.forward(data_1, aug=False,
-                                                                   learnable_weights=self.learnable_weights)
+                                                                   learnable_weights=self.learnable_weights,
+                                                                   is_2d=self.is_2d)
                         embedding_2 = self.speaker_encoder.forward(data_2, aug=False,
-                                                                   learnable_weights=self.learnable_weights)
+                                                                   learnable_weights=self.learnable_weights,
+                                                                   is_2d=self.is_2d)
                     embedding_1 = F.normalize(embedding_1, p=2, dim=1)
                     embedding_2 = F.normalize(embedding_2, p=2, dim=1)
                 embeddings[file] = [embedding_1, embedding_2]
