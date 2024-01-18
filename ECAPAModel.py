@@ -71,7 +71,7 @@ class ScoresDataset(Dataset):
 
 
 class ECAPAModel(nn.Module):
-    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, feat_type, feat_dim, is_2d=False):
+    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, feat_type, feat_dim, is_2d, **kwargs):
         super(ECAPAModel, self).__init__()
 
         self.learnable_weights = None
