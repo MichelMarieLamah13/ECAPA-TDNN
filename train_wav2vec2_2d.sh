@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=bw2d
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:nvidia_a100-sxm4-80gb:1
-# #SBATCH --gres=gpu:1
+# #SBATCH --gres=gpu:nvidia_a100-sxm4-80gb:1
+#SBATCH --gres=gpu:nvidia_a100-pcie-40gb:1
 #SBATCH --time=10-00:00:00
 #SBATCH --mem=20GB
 #SBATCH --cpus-per-task=5
