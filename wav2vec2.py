@@ -29,7 +29,9 @@ class CustomWav2Vec2Model(nn.Module):
             hidden = hidden.permute(0, 2, 1)
             weights = learnable_weights[i]
             if is_2d:
-                result += hidden * weights.unsqueeze(0).unsqueeze(-1)
+                weights = weights.unsqueeze(0).unsqueeze(-1)
+                weights = weights.cuda()
+                result += hidden * weights
             else:
                 result += weights * hidden
 
