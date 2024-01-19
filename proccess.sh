@@ -12,6 +12,9 @@ source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
 # rm -rf data
-du -sh /local_disk/helios/mmlamah/
+# du -sh /local_disk/helios/mmlamah/
+# du -sh /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db
+du -sh /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db
+du -sh /local_disk/helios/mmlamah/projects/dataset/db
 
 conda deactivate
