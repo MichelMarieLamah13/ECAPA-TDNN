@@ -14,6 +14,6 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 trainECAPAModel.py --save_path exps/exp1 --feat_type fbank --feat_dim 80 --n_cpu 5
+python3 trainECAPAModel.py --save_path exps/exp1 --feat_type fbank --feat_dim 80 --n_cpu 5 --batch_size 32
 
 conda deactivate
