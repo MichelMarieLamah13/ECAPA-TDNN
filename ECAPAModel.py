@@ -109,7 +109,7 @@ class ECAPAModel(nn.Module):
                                                                  learnable_weights=self.learnable_weights,
                                                                  is_2d=self.is_2d)
             else:
-                speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True, is_2d=self.is_2d)
+                speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
 
             # speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
