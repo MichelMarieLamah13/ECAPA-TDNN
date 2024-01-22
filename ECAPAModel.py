@@ -233,7 +233,7 @@ class ECAPAModel(nn.Module):
 
     def load_parameters(self, path):
         self_state = self.state_dict()
-        loaded_state = torch.load(path)
+        loaded_state = torch.load(path, map_location=self.device)
         for name, param in loaded_state.items():
             origname = name
             if name not in self_state:
