@@ -103,7 +103,7 @@ class ECAPAModel(nn.Module):
         lr = self.optim.param_groups[0]['lr']
         for num, (data, labels) in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
-            labels = torch.LongTensor(labels).cuda()
+            labels = torch.LongTensor(labels).to(self.device)
             # labels = torch.LongTensor(labels)
             if self.learnable_weights is not None:
                 speaker_embedding = self.speaker_encoder.forward(data.to(self.device), aug=True,
