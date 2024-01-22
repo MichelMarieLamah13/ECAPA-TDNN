@@ -83,10 +83,11 @@ class ECAPAModel(nn.Module):
                 self.learnable_weights = nn.Parameter(torch.ones(13))
 
         # ECAPA-TDNN
-        self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim).cuda()
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim).to(self.device)
         # self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim)
         # Classifier
-        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).cuda()
+        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
         # self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
@@ -105,11 +106,11 @@ class ECAPAModel(nn.Module):
             labels = torch.LongTensor(labels).cuda()
             # labels = torch.LongTensor(labels)
             if self.learnable_weights is not None:
-                speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True,
+                speaker_embedding = self.speaker_encoder.forward(data.to(self.device), aug=True,
                                                                  learnable_weights=self.learnable_weights,
                                                                  is_2d=self.is_2d)
             else:
-                speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
+                speaker_embedding = self.speaker_encoder.forward(data.to(self.device), aug=True)
 
             # speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
@@ -166,8 +167,8 @@ class ECAPAModel(nn.Module):
                 file = all_file[i]
                 length_1 = all_lengths_1[i]
                 data_1 = all_data_1[i][:, :length_1]
-                data_1 = data_1.cuda()
-                data_2 = all_data_2[i].cuda()
+                data_1 = data_1.to(self.device)
+                data_2 = all_data_2[i].to(self.device)
                 with torch.no_grad():
                     if self.learnable_weights is None:
                         embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
