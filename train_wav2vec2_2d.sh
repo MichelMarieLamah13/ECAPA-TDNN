@@ -15,6 +15,6 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 trainECAPAModel.py --save_path exps/exp3 --feat_type wav2vec2 --feat_dim 768 --n_cpu 10 --batch_size 256 --is_2d
+python3 trainECAPAModel.py --save_path exps/exp3 --feat_type wav2vec2 --feat_dim 768 --n_cpu 10 --batch_size 128 --is_2d
 
 conda deactivate
