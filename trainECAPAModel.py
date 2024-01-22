@@ -11,6 +11,21 @@ from tools import *
 from dataLoader import train_loader
 from ECAPAModel import ECAPAModel
 
+
+def init_eer(score_path):
+    errs = []
+    with open(score_path) as file:
+        lines = file.readlines()
+        for line in lines:
+            parteer = line.split(',')[-1]
+            parteer = parteer.split(' ')[-1]
+            parteer = parteer.replace('%', '')
+            parteer = float(parteer)
+            if parteer not in errs:
+                errs.append(parteer)
+    return errs
+
+
 if __name__ == "__main__":
     base_path = "./../dataset/db"
     parser = argparse.ArgumentParser(description="ECAPA_trainer")
@@ -89,6 +104,7 @@ if __name__ == "__main__":
         s = ECAPAModel(**vars(args))
         s.load_parameters(args.initial_model)
         epoch = 1
+        EERs = []
 
     # Otherwise, system will try to start from the saved model&epoch
     elif len(modelfiles) >= 1:
@@ -97,12 +113,13 @@ if __name__ == "__main__":
         epoch = int(os.path.splitext(os.path.basename(modelfiles[-1]))[0][6:]) + 1
         s = ECAPAModel(**vars(args))
         s.load_parameters(modelfiles[-1])
+        EERs = init_eer(args.score_save_path)
     # Otherwise, system will train from scratch
     else:
         epoch = 1
         s = ECAPAModel(**vars(args))
+        EERs = []
 
-    EERs = []
     score_file = open(args.score_save_path, "a+")
 
     while True:
