@@ -5,7 +5,7 @@
 # #SBATCH --gres=gpu:tesla_v100-sxm2-32gb:1
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_12GB
-#SBATCH --time=10-00:00:00
+#SBATCH --time=7-00:00:00
 #SBATCH --mem=16GB
 #SBATCH --cpus-per-task=8
 #SBATCH --output=bw_output.log
