@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=bf
 #SBATCH --partition=gpu
-# #SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:1
 # #SBATCH --gres=gpu:gtx_titan_x:1
 # #SBATCH --gres=gpu:rtx_3090:1
-#SBATCH --gres=gpu:tesla_v100-sxm2-32gb:1
+# #SBATCH --gres=gpu:tesla_v100-sxm2-32gb:1
 #SBATCH --exclude=apollon,helios,alpos
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=16GB
