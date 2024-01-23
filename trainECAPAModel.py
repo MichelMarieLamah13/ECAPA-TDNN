@@ -114,7 +114,6 @@ if __name__ == "__main__":
         s = ECAPAModel(**vars(args))
         s.load_parameters(modelfiles[-1])
         EERs = init_eer(args.score_save_path)
-        print(f"EER: {EERs}")
 
     # Otherwise, system will train from scratch
     else:
