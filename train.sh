@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=bf
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+# #SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:galactica:1
 #SBATCH --exclude=apollon,eris,alpos
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=16GB
