@@ -3,6 +3,9 @@ DataLoader for training
 '''
 
 import glob, numpy, os, random, soundfile, torch
+import sys
+
+import tqdm
 from scipy import signal
 
 
@@ -28,7 +31,9 @@ class train_loader(object):
         dictkeys = list(set([x.split()[0] for x in lines]))
         dictkeys.sort()
         dictkeys = {key: ii for ii, key in enumerate(dictkeys)}
-        for index, line in enumerate(lines):
+        print(f"Initializing data loader: ")
+        sys.stdout.flush()
+        for index, line in tqdm.tqdm(enumerate(lines), total=len(lines)):
             speaker_label = dictkeys[line.split()[0]]
             file_name = os.path.join(train_path, line.split()[1])
             if os.path.exists(file_name):
