@@ -1,9 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=bf
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:rtx_2080_ti:1
-# #SBATCH --exclude=alpos,idyie
-#SBATCH --nodelist=beroe,calypso,clytie,idyie,talos,galactica,orion,hemera
+#SBATCH --gres=gpu:1
+#SBATCH --exclude=apollon,alpos,helios,eris
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=16GB
 #SBATCH --cpus-per-task=10
