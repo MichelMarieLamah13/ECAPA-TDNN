@@ -7,10 +7,29 @@ import sys
 
 import tqdm
 from scipy import signal
+from torch.utils.data import Dataset, DataLoader
+
+
+class ListDataset(Dataset):
+    def __init__(self, lines, dictkeys, train_path):
+        self.lines = lines
+        self.dictkeys = dictkeys
+        self.train_path = train_path
+
+    def __len__(self):
+        return len(self.lines)
+
+    def __getitem__(self, idx):
+        line = self.lines[idx]
+        speaker_label = self.dictkeys[line.split()[0]]
+        file_name = os.path.join(self.train_path, line.split()[1])
+        if os.path.exists(file_name):
+            return speaker_label, file_name
+        return None, None
 
 
 class train_loader(object):
-    def __init__(self, train_list, train_path, musan_path, rir_path, num_frames, **kwargs):
+    def __init__(self, train_list, train_path, musan_path, rir_path, num_frames, n_cpu, **kwargs):
         self.train_path = train_path
         self.num_frames = num_frames
         # Load and configure augmentation files
@@ -33,12 +52,25 @@ class train_loader(object):
         dictkeys = {key: ii for ii, key in enumerate(dictkeys)}
         print(f"Initializing data loader: ")
         sys.stdout.flush()
-        for index, line in tqdm.tqdm(enumerate(lines), total=len(lines)):
-            speaker_label = dictkeys[line.split()[0]]
-            file_name = os.path.join(train_path, line.split()[1])
-            if os.path.exists(file_name):
-                self.data_label.append(speaker_label)
-                self.data_list.append(file_name)
+        dataset = ListDataset(lines, dictkeys, train_path)
+        loader = DataLoader(dataset, num_workers=n_cpu, batch_size=128)
+        for index, batch in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
+            speaker_labels, file_names = batch
+            for i in range(len(speaker_labels)):
+                speaker_label = speaker_labels[i]
+                file_name = file_names[i]
+                if speaker_label is not None:
+                    self.data_label.append(speaker_label)
+                    self.data_list.append(file_name)
+            print(f"Batch [{index}/{len(loader)}] done")
+            sys.stdout.flush()
+
+        # for index, line in tqdm.tqdm(enumerate(lines), total=len(lines)):
+        #     speaker_label = dictkeys[line.split()[0]]
+        #     file_name = os.path.join(train_path, line.split()[1])
+        #     if os.path.exists(file_name):
+        #         self.data_label.append(speaker_label)
+        #         self.data_list.append(file_name)
 
     def __getitem__(self, index):
         # Read the utterance and randomly select the segment
