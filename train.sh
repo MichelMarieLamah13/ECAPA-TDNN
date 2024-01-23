@@ -2,7 +2,8 @@
 #SBATCH --job-name=bf
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --exclude=apollon,alpos,helios,eris
+#SBATCH --constraint=GPURAM_Max_24GB
+#SBATCH --exclude=alpos
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=16GB
 #SBATCH --cpus-per-task=10
