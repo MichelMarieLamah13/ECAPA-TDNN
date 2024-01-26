@@ -16,8 +16,9 @@ conda activate ecapa_tdnn
 # du -sh /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db
 # du -sh /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db
 # du -sh /local_disk/helios/mmlamah/projects/dataset/db
-cp -r ./../dataset/db/musan_split ./../kiwano-project/recipes/resnet/db/
 
+cp -r ./../dataset/db/musan_split ./../kiwano-project/recipes/resnet/db/
 rm -rf ./../dataset/db
+du -sh /local_disk/helios/mmlamah/
 
 conda deactivate
