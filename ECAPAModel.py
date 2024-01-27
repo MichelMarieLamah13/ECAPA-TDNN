@@ -140,7 +140,7 @@ class ECAPAModel(nn.Module):
         print("BEGIN filter")
         sys.stdout.flush()
         filtered_lines = []
-        for line in lines:
+        for line in tqdm.tqdm(lines):
             _, part1, part2 = line.split()
             path1 = os.path.join(eval_path, part1)
             path2 = os.path.join(eval_path, part2)
