@@ -28,7 +28,7 @@ class ListDataset(Dataset):
         return None, None
 
 
-class train_loader(object):
+class train_loader(Dataset):
     def __init__(self, train_list, train_path, musan_path, rir_path, num_frames, n_cpu, **kwargs):
         self.train_path = train_path
         self.num_frames = num_frames
