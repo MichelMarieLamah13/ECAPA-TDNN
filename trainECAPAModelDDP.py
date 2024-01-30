@@ -13,6 +13,8 @@ from dataLoader import train_loader
 from ECAPAModel import ECAPAModel, ECAPAModelDDP
 import torch.multiprocessing as mp
 
+torch.multiprocessing.set_sharing_strategy('file_system')
+
 
 def init_eer(score_path):
     errs = []
@@ -175,7 +177,6 @@ def main_ddp(
 
 
 if __name__ == "__main__":
-    torch.multiprocessing.set_sharing_strategy('file_system')
     world_size = torch.cuda.device_count()
     mp.spawn(
         main_ddp,
