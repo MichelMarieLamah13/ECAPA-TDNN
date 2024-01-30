@@ -94,7 +94,7 @@ def main_ddp(
     # Initialization
     warnings.simplefilter("ignore")
     # torch.multiprocessing.set_start_method('spawn', force=True)
-    torch.multiprocessing.set_sharing_strategy('file_system')
+    # torch.multiprocessing.set_sharing_strategy('file_system')
     args = parser.parse_args()
     args = init_args(args)
     args.gpu_id = rank
@@ -175,6 +175,7 @@ def main_ddp(
 
 
 if __name__ == "__main__":
+    torch.multiprocessing.set_sharing_strategy('file_system')
     world_size = torch.cuda.device_count()
     mp.spawn(
         main_ddp,
