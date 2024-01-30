@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=bw_1_ddp
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:2
 #SBATCH --constraint=GPURAM_Max_16GB
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=32GB
