@@ -280,7 +280,7 @@ class ECAPAModelDDP(nn.Module):
 
         # ECAPA-TDNN
         self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim, model_name=model_name).to(
-            self.device)
+            self.gpu_id)
         self.speaker_encoder = DDP(self.speaker_encoder, device_ids=[self.gpu_id])
         # self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim)
         # Classifier
@@ -363,8 +363,8 @@ class ECAPAModelDDP(nn.Module):
                 file = all_file[i]
                 length_1 = all_lengths_1[i]
                 data_1 = all_data_1[i][:, :length_1]
-                data_1 = data_1.to(self.device)
-                data_2 = all_data_2[i].to(self.device)
+                data_1 = data_1.to(self.gpu_id)
+                data_2 = all_data_2[i].to(self.gpu_id)
                 with torch.no_grad():
                     if self.learnable_weights is None:
                         embedding_1 = self.speaker_encoder(data_1, aug=False)
@@ -423,7 +423,7 @@ class ECAPAModelDDP(nn.Module):
 
     def load_parameters(self, path):
         self_state = self.state_dict()
-        loaded_state = torch.load(path, map_location=self.device)
+        loaded_state = torch.load(path, map_location=self.gpu_id)
         for name, param in loaded_state.items():
             origname = name
             if name not in self_state:
