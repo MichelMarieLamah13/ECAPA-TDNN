@@ -279,7 +279,7 @@ class ECAPAModelDDP(nn.Module):
                 self.learnable_weights = nn.Parameter(torch.ones(n_layers))
 
         # ECAPA-TDNN
-        self.device = torch.device(f"cuda:{self.gpu_id}")
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim, model_name=model_name).to(
             self.gpu_id)
         self.speaker_encoder = DDP(self.speaker_encoder, device_ids=[self.gpu_id])
