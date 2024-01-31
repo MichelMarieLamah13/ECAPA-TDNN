@@ -152,7 +152,8 @@ def main_ddp(
         s = ECAPAModelDDP(**vars(args))
         EERs = []
 
-    score_file = open(args.score_save_path, "a+")
+    if rank == 0:
+        score_file = open(args.score_save_path, "a+")
 
     while True:
         # Training for one epoch
