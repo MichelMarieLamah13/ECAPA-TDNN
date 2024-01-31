@@ -5,7 +5,7 @@ This is the main code of the ECAPATDNN project, to define the parameters and bui
 import argparse, glob, os, torch, warnings, time
 import sys
 
-from torch.distributed import init_process_group
+from torch.distributed import init_process_group, destroy_process_group
 from torch.utils.data import DataLoader, DistributedSampler
 
 from tools import *
@@ -172,6 +172,7 @@ def main_ddp(
                     s.save_parameters(args.model_save_path + "/best.model")
 
             if epoch >= args.max_epoch:
+                destroy_process_group()  # clean up
                 quit()
 
         epoch += 1

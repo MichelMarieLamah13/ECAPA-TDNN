@@ -363,7 +363,7 @@ class ECAPAModelDDP(nn.Module):
         self.print_info("BEGIN embeddings")
 
         emb_dataset = EmbeddingsDataset(setfiles, eval_path)
-        emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn)
+        emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn, shuffle=False)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader), disable=self.disable_tqdm):
             all_file, all_data_1, all_lengths_1, all_data_2 = batch
             for i in range(len(all_file)):
