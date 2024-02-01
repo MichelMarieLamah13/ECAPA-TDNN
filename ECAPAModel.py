@@ -16,6 +16,7 @@ import random
 from torch.nn.parallel import DistributedDataParallel as DDP
 
 from wav2vec2 import CustomWav2Vec2Model
+from wavlm import CustomWavLMModel
 
 
 def collate_fn(batch):
@@ -87,6 +88,10 @@ class ECAPAModel(nn.Module):
                     torch.zeros(n_layers, feat_dim))  # 13 couches: CNN + 12 transformers
             else:
                 self.learnable_weights = nn.Parameter(torch.ones(n_layers))
+        elif feat_type == 'wavlm':
+            wavlm = CustomWavLMModel(model_name=model_name)
+            n_layers, _ = wavlm.get_output_dim()
+            self.learnable_weights = nn.Parameter(torch.ones(n_layers))
 
         # ECAPA-TDNN
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

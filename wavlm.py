@@ -1,17 +1,19 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
+from transformers import WavLMForCTC, AutoProcessor
 
 
-class CustomWav2Vec2Model(nn.Module):
-    def __init__(self, model_name="facebook/wav2vec2-base-960h"):
+class CustomWavLMModel(nn.Module):
+    # base: microsoft/wavlm-base, microsoft/wavlm-base-plus, microsoft/wavlm-base-plus-sv, microsoft/wavlm-base-sv
+    # large: microsoft/wavlm-large
+    def __init__(self, model_name="microsoft/wavlm-base"):
         super().__init__()
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model = Wav2Vec2ForCTC.from_pretrained(model_name, output_hidden_states=True).to(self.device)
-        self.processor = Wav2Vec2Processor.from_pretrained(model_name)
+        self.model = WavLMForCTC.from_pretrained(model_name, output_hidden_states=True).to(self.device)
+        self.processor = AutoProcessor.from_pretrained(model_name)
 
-    def forward(self, x, learnable_weights, is_2d=False):
+    def forward(self, x, learnable_weights):
         with torch.no_grad():
             x = self.processor(x, return_tensor='pt', sampling_rate=16_000)
             x = x.input_values[0]
@@ -25,9 +27,6 @@ class CustomWav2Vec2Model(nn.Module):
         for i, hidden in enumerate(hidden_states):
             hidden = hidden.permute(0, 2, 1)
             weights = learnable_weights[i]
-            if is_2d:
-                weights = weights.unsqueeze(0).unsqueeze(-1)
-                weights = weights.to(self.device)
             result += hidden * weights
 
         return result
