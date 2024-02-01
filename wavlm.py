@@ -16,7 +16,6 @@ class CustomWavLMModel(nn.Module):
         self.processor = AutoFeatureExtractor.from_pretrained(model_name)
 
     def forward(self, x, learnable_weights):
-        pdb.set_trace()
         with torch.no_grad():
             x = self.processor(x, return_tensor='pt', sampling_rate=16_000)
             x = x.input_values[0]
