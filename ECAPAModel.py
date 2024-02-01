@@ -90,7 +90,7 @@ class ECAPAModel(nn.Module):
                 self.learnable_weights = nn.Parameter(torch.ones(n_layers))
         elif feat_type == 'wavlm':
             wavlm = CustomWavLMModel(model_name=model_name)
-            n_layers, _ = wavlm.get_output_dim()
+            n_layers, feat_dim = wavlm.get_output_dim()
             self.learnable_weights = nn.Parameter(torch.ones(n_layers))
 
         # ECAPA-TDNN
