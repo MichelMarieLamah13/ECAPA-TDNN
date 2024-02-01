@@ -15,16 +15,16 @@ source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
 
-# python3 trainECAPAModel.py --save_path exps/exp_wavlm_large_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-large
+# python3 trainECAPAModelDDP.py --save_path exps/exp_wavlm_large_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-large
 
-# python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_plus_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-plus-sv
+# python3 trainECAPAModelDDP.py --save_path exps/exp_wavlm_base_plus_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-plus-sv
 
-# python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_plus_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-plus
+# python3 trainECAPAModelDDP.py --save_path exps/exp_wavlm_base_plus_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-plus
 
-# python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_plus_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-sv
+# python3 trainECAPAModelDDP.py --save_path exps/exp_wavlm_base_plus_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-sv
 
-python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base
+python3 trainECAPAModelDDP.py --save_path exps/exp_wavlm_base_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base
 
-# python3 -m pdb trainECAPAModel.py --save_path exps/exp_wavlm_base_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base
+# python3 -m pdb trainECAPAModelDDP.py --save_path exps/exp_wavlm_base_ddp --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base
 
 conda deactivate
