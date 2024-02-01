@@ -17,11 +17,11 @@ conda activate ecapa_tdnn
 
 # python3 trainECAPAModel.py --save_path exps/exp_wavlm_large --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-large
 
-# python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_plus --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-plus-sv
+# python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_plus_sv --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-plus-sv
 
 # python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_plus --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-plus
 
-# python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_plus --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-sv
+# python3 trainECAPAModel.py --save_path exps/exp_wavlm_base_sv --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base-sv
 
 python3 trainECAPAModel.py --save_path exps/exp_wavlm_base --feat_type wavlm --n_cpu 10 --batch_size 128 --model_name microsoft/wavlm-base
 
