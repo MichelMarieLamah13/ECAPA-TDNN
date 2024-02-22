@@ -2,8 +2,7 @@
 #SBATCH --job-name=bf_ddp
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:2
-#SBATCH --constraint=GPURAM_Max_24GB
-#SBATCH --exclude=beroe,calypso
+#SBATCH --constraint=GPURAM_Min_24GB
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=64GB
 #SBATCH --cpus-per-task=10
