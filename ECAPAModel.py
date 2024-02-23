@@ -247,7 +247,6 @@ class ECAPAModel(nn.Module):
     def load_parameters(self, path):
         self_state = self.state_dict()
         loaded_state = torch.load(path, map_location=self.device)
-        # self.load_state_dict(loaded_state)
         for name, param in loaded_state.items():
             origname = name
             if name not in self_state:
@@ -436,12 +435,10 @@ class ECAPAModelDDP(nn.Module):
     def load_parameters(self, path):
         self_state = self.state_dict()
         loaded_state = torch.load(path, map_location="cpu")
-        # self.load_state_dict(loaded_state)
         for name, param in loaded_state.items():
             origname = name
-            print(name, flush=True)
             if name not in self_state:
-                name = name.replace("module.", "")
+                name = name.replace('speaker_encoder.', 'speaker_encoder.module.')
                 if name not in self_state:
                     self.print_info("%s is not in the model." % origname)
                     continue
