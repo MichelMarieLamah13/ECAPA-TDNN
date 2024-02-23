@@ -1,0 +1,123 @@
+# Training Settings
+base_path: &base_path
+  value: "/local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/"
+  help: "The base path used for specifying other paths in the configuration."
+
+num_frames:
+  value: 200
+  help: "Duration of the input segments, eg: 200 for 2 second"
+
+max_epoch:
+  value: 80
+  help: "Maximum number of epochs"
+
+batch_size:
+  value: 400
+  help: "Batch size"
+
+n_cpu:
+  value: 20
+  help: "Number of loader threads"
+
+test_step:
+  value: 1
+  help: "Test and save every [test_step] epochs"
+
+lr:
+  value: 0.001
+  help: "Learning rate"
+
+lr_decay:
+  value: 0.97
+  help: "Learning rate decay every [test_step] epochs"
+
+
+# Training and evaluation path/lists, save path
+
+train_list:
+  help: "All paths to training list"
+  value: |
+    "${base_path.value}/db/voxceleb2/train_list.txt"
+    "${base_path.value}/db/vietnam_celeb/train_list.txt"
+    "${base_path.value}/db/cn_celeb/train_list.txt"
+    
+eval_list:
+  help: "All paths to evaluation list"
+  value: |
+    "${base_path.value}/db/voxceleb1/veri_test2.txt"
+    "${base_path.value}/db/vietnam_celeb/eval_list.txt"
+    "${base_path.value}/db/cn_celeb/eval_list.txt"
+
+eval_path:
+  help: "All paths to evaluation data"
+  value: |
+    "${base_path.value}/db/voxceleb1/wav"
+    "${base_path.value}/db/vietnam_celeb/wav"
+    "${base_path.value}/db/cn_celeb/wav" 
+
+musan_path:
+  value: "${base_path.value}/db/musan_split"
+  help: 'The path to the MUSAN set, eg:"data/musan_split" in my case'
+
+rir_path:
+  value: "${base_path.value}/db/rirs_noises/RIRS_NOISES/simulated_rirs"
+  help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
+
+save_path:
+  value: "exps/exp1"
+  help: "Path to save the score.txt and models"
+
+initial_model:
+  value: ""
+  help: "Path of the initial_model"
+
+# Model and Loss settings
+C:
+  value: 1024
+  help: "Channel size for the speaker encoder"
+
+m:
+  value: 0.2
+  help: "Loss margin in AAM softmax"
+
+s:
+  value: 30
+  help: "Loss scale in AAM softmax"
+
+n_class:
+  help: "Number of speakers"
+  value: |
+    5994
+    1000
+    1996
+    
+  
+
+model_name:
+  value: "facebook/wav2vec2-base-960h"
+  help: |
+    The model name to use for training or evaluation.
+    Available options:
+    - For Wav2Vec2
+    - facebook/wav2vec2-base-960h
+    - facebook/wav2vec2-large-960h
+    - facebook/wav2vec2-large-robust-ft-libri-960h
+    - facebook/wav2vec2-large-960h-lv60-self
+    - For WavLM
+    - microsoft/wavlm-base
+    - microsoft/wavlm-base-plus
+    - microsoft/wavlm-base-plus-sv
+    - microsoft/wavlm-base-sv
+    - microsoft/wavlm-large
+    
+    
+
+# Command
+eval:
+  enabled: false
+  help: "Only do evaluation"
+
+train:
+  enabled: true
+  help: "Only do evaluation"
+
