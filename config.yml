@@ -56,7 +56,7 @@ eval_path:
     db/cn_celeb/wav 
 
 musan_path:
-  value: "*base_path/db/musan_split"
+  value: "db/musan_split"
   help: 'The path to the MUSAN set, eg:"data/musan_split" in my case'
 
 rir_path:
