@@ -90,8 +90,20 @@ n_class:
     5994
     1000
     1996
+
+feat_dim:
+  value: 80
+  help: |
+    Dim of features
+    Original fbank (80)
+    Kiwano fbank (81)
+    For SSL it'll be determined automatically
     
-  
+
+is_2d:
+  value: false
+  help: "For 2d learnable weights"
+
 
 model_name:
   value: "facebook/wav2vec2-base-960h"
@@ -114,10 +126,6 @@ model_name:
 
 # Command
 eval:
-  enabled: false
-  help: "Only do evaluation"
-
-train:
-  enabled: true
+  value: false
   help: "Only do evaluation"
 
