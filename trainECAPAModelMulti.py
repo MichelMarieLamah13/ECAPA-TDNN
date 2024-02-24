@@ -31,7 +31,7 @@ def read_config(args):
     with open(args.config, 'r') as stream:
         config = yaml.safe_load(stream)
         for key, value in config.items():
-            args[key] = value
+            setattr(args, key, value)
 
     return args
 
