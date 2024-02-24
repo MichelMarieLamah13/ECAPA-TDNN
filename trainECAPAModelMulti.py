@@ -30,8 +30,8 @@ def init_eer(score_path):
 def read_config(args):
     with open(args.config, 'r') as stream:
         config = yaml.safe_load(stream)
-        for key, value in config.items():
-            setattr(args, key, value)
+        for key, item in config.items():
+            setattr(args, key, item['value'])
 
     return args
 
