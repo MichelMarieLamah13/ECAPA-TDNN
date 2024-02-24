@@ -1,5 +1,7 @@
 # Training Settings
-base_path: &base_path "/local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/"
+base_path:
+  value: "/local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/"
+  help: "base directory of your data"
 
 num_frames:
   value: 200
@@ -35,30 +37,30 @@ lr_decay:
 train_list:
   help: "All paths to training list"
   value: |
-    *base_path/db/voxceleb2/train_list.txt
-    *base_path/db/vietnam_celeb/train_list.txt
-    *base_path/db/cn_celeb/train_list.txt
+    db/voxceleb2/train_list.txt
+    db/vietnam_celeb/train_list.txt
+    db/cn_celeb/train_list.txt
     
 eval_list:
   help: "All paths to evaluation list"
   value: |
-    *base_path/db/voxceleb1/veri_test2.txt
-    *base_path/db/vietnam_celeb/eval_list.txt
-    *base_path/db/cn_celeb/eval_list.txt
+    db/voxceleb1/veri_test2.txt
+    db/vietnam_celeb/eval_list.txt
+    db/cn_celeb/eval_list.txt
 
 eval_path:
   help: "All paths to evaluation data"
   value: |
-    *base_path/db/voxceleb1/wav
-    *base_path/db/vietnam_celeb/wav
-    *base_path/db/cn_celeb/wav 
+    db/voxceleb1/wav
+    db/vietnam_celeb/wav
+    db/cn_celeb/wav 
 
 musan_path:
   value: "*base_path/db/musan_split"
   help: 'The path to the MUSAN set, eg:"data/musan_split" in my case'
 
 rir_path:
-  value: "*base_path/db/rirs_noises/RIRS_NOISES/simulated_rirs"
+  value: "db/rirs_noises/RIRS_NOISES/simulated_rirs"
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
