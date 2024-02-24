@@ -1,7 +1,5 @@
 # Training Settings
-base_path: &base_path
-  value: "/local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/"
-  help: "The base path used for specifying other paths in the configuration."
+base_path: &base_path "/local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/"
 
 num_frames:
   value: 200
@@ -56,11 +54,11 @@ eval_path:
     *base_path/db/cn_celeb/wav 
 
 musan_path:
-  value: "${base_path.value}/db/musan_split"
+  value: "*base_path/db/musan_split"
   help: 'The path to the MUSAN set, eg:"data/musan_split" in my case'
 
 rir_path:
-  value: "${base_path.value}/db/rirs_noises/RIRS_NOISES/simulated_rirs"
+  value: "*base_path/db/rirs_noises/RIRS_NOISES/simulated_rirs"
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
