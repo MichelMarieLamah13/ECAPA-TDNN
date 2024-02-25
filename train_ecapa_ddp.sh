@@ -13,6 +13,6 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 trainECAPAModelDDP.py --save_path exps/exp1_ddp --feat_type fbank --feat_dim 80 --n_cpu 8 --batch_size 64 --master_port 54323
+python3 trainECAPAModelDDP.py --save_path exps/exp1_ddp --feat_type fbank --feat_dim 80 --n_cpu 8 --batch_size 128 --max_epoch 99 --master_port 54323
 
 conda deactivate
