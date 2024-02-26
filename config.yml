@@ -38,22 +38,29 @@ train_list:
   help: "All paths to training list"
   value: |
     db/voxceleb2/train_list.txt
-    db/vietnam_celeb/train_list.txt
-    db/cn_celeb/train_list.txt
+    db/vietnam_celeb/vietnam-celeb-t.txt.edited 
+    db/cn_celeb/CN-Celeb2_flac/liste.edited
+
+train_path:
+  help: "Directory to training data where speaker audio are stored"
+  value: |
+    db/voxceleb2/wav
+    db/vietnam_celeb/data
+    db/cn_celeb/CN-Celeb2_flac/wav
     
 eval_list:
   help: "All paths to evaluation list"
   value: |
     db/voxceleb1/veri_test2.txt
-    db/vietnam_celeb/eval_list.txt
-    db/cn_celeb/eval_list.txt
+    db/vietnam_celeb/vietnam-celeb-e.txt.edited
+    db/cn_celeb/CN-Celeb_flac/eval/lists/trials.lst.edited
 
 eval_path:
   help: "All paths to evaluation data"
   value: |
     db/voxceleb1/wav
-    db/vietnam_celeb/wav
-    db/cn_celeb/wav 
+    db/vietnam_celeb/data
+    db/cn_celeb/CN-Celeb_flac/eval/wav/
 
 musan_path:
   value: "db/musan_split"
@@ -88,7 +95,7 @@ n_class:
   help: "Number of speakers"
   value: |
     5994
-    1000
+    880
     1996
 
 feat_dim:
