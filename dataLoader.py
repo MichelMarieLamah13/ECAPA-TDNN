@@ -169,18 +169,15 @@ class TrainDatasetMulti(Dataset):
 
         max_length = max(len(lst) for lst in self.data_list.values())
         for i in self.data_list:
-            j = 0
             while True:
                 size = len(self.data_list[i])
                 if size == max_length:
                     break
-                data = self.data_list[i][j]
+                data = random.choice(self.data_list[i])
                 self.data_list[i].append(data)
 
-                label = self.data_label[i][j]
+                label = random.choice(self.data_label[i])
                 self.data_label[i].append(label)
-
-                j += 1
 
     def __getitem__(self, index):
         # Read the utterance and randomly select the segment
