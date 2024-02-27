@@ -55,11 +55,11 @@ eval_path:
 
 
 musan_path:
-  value: "db/musan_split"
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/musan_split
   help: 'The path to the MUSAN set, eg:"data/musan_split" in my case'
 
 rir_path:
-  value: "db/rirs_noises/RIRS_NOISES/simulated_rirs"
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/rirs_noises/RIRS_NOISES/simulated_rirs
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
