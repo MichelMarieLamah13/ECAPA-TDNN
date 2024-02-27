@@ -67,7 +67,7 @@ save_path:
   help: "Path to save the score.txt and models"
 
 initial_model:
-  value: "model_0053.model"
+  value: "exps/exp_resnet1/model/model_0053.model"
   help: "Path of the initial_model"
 
 # Model and Loss settings
