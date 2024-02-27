@@ -105,6 +105,14 @@ feat_dim:
     Original fbank (80)
     Kiwano fbank (81)
     For SSL it'll be determined automatically
+
+feat_type:
+  value: fbank
+  help: |
+    Type of the extractor
+    - fbank: for filterbank
+    - wavlm: for wavlm
+    - wav2vec2: for wav2vec2
     
 
 is_2d:
