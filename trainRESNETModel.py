@@ -66,7 +66,7 @@ if __name__ == "__main__":
         s = RESNETModel(**vars(args))
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
         s.load_parameters(args.initial_model)
-        EER, minDCF = s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path)
+        EER, minDCF = s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)
         print(f"EER {EER: 2.2f}%, minDCF {minDCF:.4f}%", flush=True)
         quit()
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         # Evaluation every [test_step] epochs
         if epoch % args.test_step == 0:
             s.save_parameters(args.model_save_path + "/model_%04d.model" % epoch, delete=True)
-            EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path)[0])
+            EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)[0])
             print(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {epoch} epoch, ACC {acc: 2.2f}%, "
                   f"EER {EERs[-1]:2.2f}%, bestEER {min(EERs):2.2f}%", flush=True)
             score_file.write(
