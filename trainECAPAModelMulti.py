@@ -14,16 +14,27 @@ from ECAPAModel import ECAPAModel, ECAPAModelMulti
 
 
 def init_eer(score_path):
-    errs = []
+    errs = {}
     with open(score_path) as file:
         lines = file.readlines()
         for line in lines:
+            line = line.strip()
             parteer = line.split(',')[-1]
             parteer = parteer.split(' ')[-1]
             parteer = parteer.replace('%', '')
             parteer = float(parteer)
-            if parteer not in errs:
-                errs.append(parteer)
+            if 'File' not in line:
+                if 'mean' not in errs:
+                    errs['mean'] = [parteer]
+                else:
+                    errs['mean'].append(parteer)
+            else:
+                fname = line.split(',')[0]
+                fname = fname.split()[-1].strip()
+                if fname not in errs:
+                    errs[fname] = [parteer]
+                else:
+                    errs[fname].append(parteer)
     return errs
 
 
@@ -61,29 +72,35 @@ if __name__ == "__main__":
     modelfiles = glob.glob('%s/model_0*.model' % args.model_save_path)
     modelfiles.sort()
 
+    # Get all eval_list
+    eval_list = args.eval_list.strip().split('\n')
+    eval_path = args.eval_path.strip().split('\n')
     # Only do evaluation, the initial_model is necessary
     if args.eval:
         s = ECAPAModelMulti(**vars(args))
         print("Model %s loaded from previous state!" % args.initial_model)
         sys.stdout.flush()
         s.load_parameters(args.initial_model)
-        EER, minDCF = s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)
-        print("EER %2.2f%%, minDCF %.4f%%" % (EER, minDCF))
-        sys.stdout.flush()
+        for i, eval_list_ in enumerate(eval_list):
+            eval_list_ = eval_list_.strip()
+            eval_path_ = eval_path[i].strip()
+            fname = eval_list_.split('/')[-1]
+            EER, minDCF = s.eval_network(eval_list=eval_list_, eval_path=eval_path_, n_cpu=args.n_cpu)
+            print(f"File {fname}, EER {EER:2.2f}%, minDCF {minDCF:.4f}%", flush=True)
         quit()
 
     # If initial_model is exist, system will train from the initial_model
     if args.initial_model != "":
-        print("Model %s loaded from previous state!" % args.initial_model)
+        print(f"Model {args.initial_model} loaded from previous state!")
         sys.stdout.flush()
         s = ECAPAModelMulti(**vars(args))
         s.load_parameters(args.initial_model)
         epoch = 1
-        EERs = []
+        EERs = {}
 
     # Otherwise, system will try to start from the saved model&epoch
     elif len(modelfiles) >= 1:
-        print("Model %s loaded from previous state!" % modelfiles[-1])
+        print(f"Model {modelfiles[-1]} loaded from previous state!")
         sys.stdout.flush()
         epoch = int(os.path.splitext(os.path.basename(modelfiles[-1]))[0][6:]) + 1
         s = ECAPAModelMulti(**vars(args))
@@ -94,7 +111,7 @@ if __name__ == "__main__":
     else:
         epoch = 1
         s = ECAPAModelMulti(**vars(args))
-        EERs = []
+        EERs = {}
 
     score_file = open(args.score_save_path, "a+")
 
@@ -105,18 +122,35 @@ if __name__ == "__main__":
         # Evaluation every [test_step] epochs
         if epoch % args.test_step == 0:
             s.save_parameters(args.model_save_path + "/model_%04d.model" % epoch, delete=True)
-            EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)[0])
-            print(time.strftime("%Y-%m-%d %H:%M:%S"),
-                  "%d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (epoch, acc, EERs[-1], min(EERs)))
-            score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
-                epoch, lr, loss, acc, EERs[-1], min(EERs)))
-            score_file.flush()
-            if EERs[-1] <= min(EERs):
+            sum_eer = 0
+            sum_mindcf = 0
+            for i, eval_list_ in enumerate(eval_list):
+                eval_list_ = eval_list_.strip()
+                eval_path_ = eval_path[i].strip()
+                fname = eval_list_.split('/')[-1].strip()
+                eer, mindcf = s.eval_network(eval_list=eval_list_, eval_path=eval_path_, n_cpu=args.n_cpu)
+                EERs[fname].append(eer)
+                sum_mindcf += mindcf
+                sum_eer += eer
+                print(
+                    f"{time.strftime('%Y-%m-%d %H:%M:%S')} File {fname}, {epoch} epoch, ACC {acc:2.2f}%, "
+                    f"EER {eer:2.2f}%, bestEER {min(EERs[fname]):2.2f}%",
+                    flush=True)
+                score_file.write(
+                    f"File {fname}, {epoch} epoch, LR {lr}, LOSS {loss}, ACC {acc:2.2f}%, EER {eer:2.2f}%, "
+                    f"bestEER {min(EERs[fname]):2.2f}%\n")
+                score_file.flush()
+
+            mean_eer = sum_eer / len(eval_path)
+            mean_dcf = sum_mindcf / len(eval_path)
+            EERs['mean'].append(mean_eer)
+            score_file.write(
+                f"{epoch} epoch, LR {lr}, LOSS {loss}, ACC {acc:2.2f}%, EER {mean_eer:2.2f}%, "
+                f"bestEER {min(EERs['mean']):2.2f}%\n")
+            if mean_eer <= min(EERs['mean']):
                 s.save_parameters(args.model_save_path + "/best.model")
 
         if epoch >= args.max_epoch:
             quit()
 
         epoch += 1
-
-
