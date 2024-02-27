@@ -9,7 +9,7 @@ import yaml
 from torch.utils.data import DataLoader
 
 from tools import *
-from dataLoader import train_loader
+from dataLoader import train_loader, TrainDatasetMulti
 from ECAPAModel import ECAPAModel, ECAPAModelMulti
 
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     args = init_args(args)
 
     # Define the data loader
-    trainloader = train_loader(**vars(args))
+    trainloader = TrainDatasetMulti(**vars(args))
     trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True, num_workers=args.n_cpu,
                              drop_last=True, pin_memory=True)
 
