@@ -25,6 +25,7 @@ class ListDataset(Dataset):
         file_name = os.path.join(self.train_path, line.split()[1])
         if os.path.exists(file_name):
             return speaker_label, file_name
+        print(file_name, flush=True)
         return None, None
 
 
