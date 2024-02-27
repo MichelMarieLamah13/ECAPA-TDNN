@@ -1,6 +1,7 @@
 '''
 This part is used to train the speaker model and evaluate the performances
 '''
+import glob
 
 import torch, sys, os, tqdm, numpy, soundfile, time, pickle
 import torch.nn as nn
@@ -14,9 +15,10 @@ class RESNETModel(nn.Module):
     def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, **kwargs):
         super(RESNETModel, self).__init__()
         # ResNet
-        self.speaker_encoder = ResNet(BasicBlock).cuda()
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.speaker_encoder = ResNet(BasicBlock).to(self.device)
         # Classifier
-        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).cuda()
+        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
@@ -31,8 +33,8 @@ class RESNETModel(nn.Module):
         lr = self.optim.param_groups[0]['lr']
         for num, (data, labels) in enumerate(loader, start=1):
             self.zero_grad()
-            labels = torch.LongTensor(labels).cuda()
-            speaker_embedding = self.speaker_encoder.forward(data.cuda(), aug=True)
+            labels = torch.LongTensor(labels).to(self.device)
+            speaker_embedding = self.speaker_encoder.forward(data.to(self.device), aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
             nloss.backward()
             self.optim.step()
@@ -60,7 +62,7 @@ class RESNETModel(nn.Module):
         for idx, file in tqdm.tqdm(enumerate(setfiles), total=len(setfiles)):
             audio, _ = soundfile.read(os.path.join(eval_path, file))
             # Full utterance
-            data_1 = torch.FloatTensor(numpy.stack([audio], axis=0)).cuda()
+            data_1 = torch.FloatTensor(numpy.stack([audio], axis=0)).to(self.device)
 
             # Spliited utterance matrix
             max_audio = 300 * 160 + 240
@@ -72,7 +74,7 @@ class RESNETModel(nn.Module):
             for asf in startframe:
                 feats.append(audio[int(asf):int(asf) + max_audio])
             feats = numpy.stack(feats, axis=0).astype(numpy.float)
-            data_2 = torch.FloatTensor(feats).cuda()
+            data_2 = torch.FloatTensor(feats).to(self.device)
             # Speaker embeddings
             with torch.no_grad():
                 embedding_1 = self.speaker_encoder.forward(data_1, aug=False)
@@ -101,12 +103,17 @@ class RESNETModel(nn.Module):
 
         return EER, minDCF
 
-    def save_parameters(self, path):
+    def save_parameters(self, path, delete=False):
+        if delete:
+            folder = os.path.dirname(path)
+            old_files = glob.glob(f'{folder}/model_0*.model')
+            for file in old_files:
+                os.remove(file)
         torch.save(self.state_dict(), path)
 
     def load_parameters(self, path):
         self_state = self.state_dict()
-        loaded_state = torch.load(path)
+        loaded_state = torch.load(path, map_location=self.device)
         for name, param in loaded_state.items():
             origname = name
             if name not in self_state:

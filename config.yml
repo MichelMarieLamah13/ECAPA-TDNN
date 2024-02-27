@@ -60,7 +60,7 @@ eval_path:
   value: |
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/wav/
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/wav
 
 musan_path:
   value: "db/musan_split"
