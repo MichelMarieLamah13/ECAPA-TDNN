@@ -71,7 +71,7 @@ class RESNETModel(nn.Module):
         self.scheduler.step(epoch - 1)
         index, top1, loss = 0, 0, 0
         lr = self.optim.param_groups[0]['lr']
-        for num, (data, labels) in enumerate(loader, start=1):
+        for num, (data, labels) in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
             labels = torch.LongTensor(labels).to(self.device)
             speaker_embedding = self.speaker_encoder.forward(data.to(self.device), aug=True)
