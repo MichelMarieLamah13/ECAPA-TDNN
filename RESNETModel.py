@@ -81,10 +81,9 @@ class RESNETModel(nn.Module):
             index += len(labels)
             top1 += prec
             loss += nloss.detach().cpu().numpy()
-            sys.stderr.write(time.strftime("%m-%d %H:%M:%S") + \
-                             " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
-                             " Loss: %.5f, ACC: %2.2f%% \r" % (loss / (num), top1 / index * len(labels)))
-            sys.stderr.flush()
+            print(f"{time.strftime('%m-%d %H:%M:%S')} [{epoch:2d}] Lr: {lr:.5f}, "
+                  f"Training: {100 * (num / loader.__len__()):.2f}%, "
+                  f"Loss: {loss / num:.5f}, ACC: {top1 / index * len(labels):2.2f}%\r", flush=True)
         sys.stdout.write("\n")
         return loss / num, lr, top1 / index * len(labels)
 
