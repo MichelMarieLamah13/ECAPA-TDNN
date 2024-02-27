@@ -16,7 +16,7 @@ batch_size:
   help: "Batch size"
 
 n_cpu:
-  value: 4
+  value: 8
   help: "Number of loader threads"
 
 test_step:
@@ -63,11 +63,11 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: "exps/exp_fbank_multi"
+  value: "exps/exp_resnet1"
   help: "Path to save the score.txt and models"
 
 initial_model:
-  value: ""
+  value: "model_0053.model"
   help: "Path of the initial_model"
 
 # Model and Loss settings
