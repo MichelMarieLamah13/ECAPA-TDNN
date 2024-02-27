@@ -164,7 +164,6 @@ class RESNETModel(nn.Module):
     def load_parameters(self, path):
         self_state = self.state_dict()
         loaded_state = torch.load(path, map_location=self.device)
-        print(self_state)
         for name, param in loaded_state.items():
             origname = name
             if name not in self_state:
