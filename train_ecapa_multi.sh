@@ -12,6 +12,7 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 -m pdb trainECAPAModelMulti.py
+python3 trainECAPAModelMulti.py
+# python3 -m pdb trainECAPAModelMulti.py
 
 conda deactivate
