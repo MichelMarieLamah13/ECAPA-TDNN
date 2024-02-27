@@ -78,7 +78,7 @@ if __name__ == "__main__":
     # Only do evaluation, the initial_model is necessary
     if args.eval:
         s = ECAPAModelMulti(**vars(args))
-        print("Model %s loaded from previous state!" % args.initial_model)
+        print(f"Model {args.initial_model} loaded from previous state!", flush=True)
         sys.stdout.flush()
         s.load_parameters(args.initial_model)
         for i, eval_list_ in enumerate(eval_list):
@@ -91,8 +91,7 @@ if __name__ == "__main__":
 
     # If initial_model is exist, system will train from the initial_model
     if args.initial_model != "":
-        print(f"Model {args.initial_model} loaded from previous state!")
-        sys.stdout.flush()
+        print(f"Model {args.initial_model} loaded from previous state!", flush=True)
         s = ECAPAModelMulti(**vars(args))
         s.load_parameters(args.initial_model)
         epoch = 1
@@ -100,8 +99,7 @@ if __name__ == "__main__":
 
     # Otherwise, system will try to start from the saved model&epoch
     elif len(modelfiles) >= 1:
-        print(f"Model {modelfiles[-1]} loaded from previous state!")
-        sys.stdout.flush()
+        print(f"Model {modelfiles[-1]} loaded from previous state!", flush=True)
         epoch = int(os.path.splitext(os.path.basename(modelfiles[-1]))[0][6:]) + 1
         s = ECAPAModelMulti(**vars(args))
         s.load_parameters(modelfiles[-1])

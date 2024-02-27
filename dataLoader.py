@@ -23,10 +23,7 @@ class ListDataset(Dataset):
         line = self.lines[idx]
         speaker_label = self.dictkeys[line.split()[0]]
         file_name = os.path.join(self.train_path, line.split()[1])
-        if os.path.exists(file_name):
-            return speaker_label, file_name
-        print(file_name, flush=True)
-        return None, None
+        return speaker_label, file_name
 
 
 class train_loader(Dataset):

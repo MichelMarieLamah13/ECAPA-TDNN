@@ -536,33 +536,16 @@ class ECAPAModelMulti(nn.Module):
         files = []
         embeddings = {}
         lines = open(eval_list).read().splitlines()
-        print("BEGIN filter")
-        sys.stdout.flush()
-        filtered_lines = []
-        for line in tqdm.tqdm(lines):
-            _, part1, part2 = line.split()
-            path1 = os.path.join(eval_path, part1)
-            path2 = os.path.join(eval_path, part2)
-            if os.path.exists(path1) and os.path.exists(path2):
-                filtered_lines.append(line)
-
-        lines = filtered_lines
-        print("END filter")
-        sys.stdout.flush()
-
-        print("BEGIN split")
-        sys.stdout.flush()
+        print("BEGIN split", flush=True)
         for line in tqdm.tqdm(lines):
             _, part1, part2 = line.split()
             files.append(part1)
             files.append(part2)
         setfiles = list(set(files))
         setfiles.sort()
-        print("END split")
-        sys.stdout.flush()
+        print("END split", flush=True)
 
-        print("BEGIN embeddings")
-        sys.stdout.flush()
+        print("BEGIN embeddings", flush=True)
 
         emb_dataset = EmbeddingsDataset(setfiles, eval_path)
         emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn)
@@ -588,14 +571,12 @@ class ECAPAModelMulti(nn.Module):
                     embedding_1 = F.normalize(embedding_1, p=2, dim=1)
                     embedding_2 = F.normalize(embedding_2, p=2, dim=1)
                 embeddings[file] = [embedding_1, embedding_2]
-            print(f"Batch [{idx}/{len(emb_loader)}] DONE")
-            sys.stdout.flush()
+            print(f"Batch [{idx}/{len(emb_loader)}] DONE", flush=True)
 
         scores, labels = [], []
-        print("END embeddings")
-        sys.stdout.flush()
+        print("END embeddings", flush=True)
 
-        print("BEGIN scores")
+        print("BEGIN scores", flush=True)
         sys.stdout.flush()
         for line in tqdm.tqdm(lines):
             part0, part1, part2 = line.split()
@@ -609,11 +590,9 @@ class ECAPAModelMulti(nn.Module):
             scores.append(score)
             labels.append(int(part0))
 
-        print("END scores")
-        sys.stdout.flush()
+        print("END scores", flush=True)
 
-        print("BEGIN final score")
-        sys.stdout.flush()
+        print("BEGIN final score", flush=True)
         # Coumpute EER and minDCF
         EER, minDCF = 0, 0
         if len(scores) > 0 and len(labels) > 0:
@@ -621,11 +600,9 @@ class ECAPAModelMulti(nn.Module):
             fnrs, fprs, thresholds = ComputeErrorRates(scores, labels)
             minDCF, _ = ComputeMinDcf(fnrs, fprs, thresholds, 0.05, 1, 1)
         else:
-            print(f"Pas de ligne correcte")
-            sys.stdout.flush()
+            print(f"Pas de ligne correcte", flush=True)
 
-        print("END final score")
-        sys.stdout.flush()
+        print("END final score", flush=True)
 
         return EER, minDCF
 
