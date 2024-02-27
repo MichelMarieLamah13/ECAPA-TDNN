@@ -13,6 +13,7 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 trainRESNETModel.py --config config_resnet.yml
+# python3 trainRESNETModel.py --config config_resnet.yml
+python3 -m pdb trainRESNETModel.py --config config_resnet.yml
 
 conda deactivate
