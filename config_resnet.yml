@@ -67,7 +67,7 @@ save_path:
   help: "Path to save the score.txt and models"
 
 initial_model:
-  value: "exps/exp_resnet5/model/pretrain.model"
+  value: "exps/exp_resnet5/model/model_0079.model"
   help: "Path of the initial_model"
 
 # Model and Loss settings
@@ -96,6 +96,6 @@ feat_dim:
 
 # Command
 eval:
-  value: true
+  value: false
   help: "Only do evaluation"
 
