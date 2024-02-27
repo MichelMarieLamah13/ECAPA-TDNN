@@ -169,10 +169,10 @@ class RESNETModel(nn.Module):
             if name not in self_state:
                 name = name.replace("module.", "")
                 if name not in self_state:
-                    print("%s is not in the model." % origname)
+                    print(f"{origname} is not in the model.", flush=True)
                     continue
             if self_state[name].size() != loaded_state[origname].size():
-                print("Wrong parameter length: %s, model: %s, loaded: %s" % (
-                    origname, self_state[name].size(), loaded_state[origname].size()))
+                print(f"Wrong parameter length: {origname}, model: {self_state[name].size()}, loaded: "
+                      f"{loaded_state[origname].size()}", flush=True)
                 continue
             self_state[name].copy_(param)

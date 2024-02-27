@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     # Otherwise, system will try to start from the saved model&epoch
     elif len(modelfiles) >= 1:
-        print(f"Model {modelfiles[-1]}loaded from previous state!", flush=True)
+        print(f"Model {modelfiles[-1]} loaded from previous state!", flush=True)
         epoch = int(os.path.splitext(os.path.basename(modelfiles[-1]))[0][6:]) + 1
         s = RESNETModel(**vars(args))
         s.load_parameters(modelfiles[-1])
