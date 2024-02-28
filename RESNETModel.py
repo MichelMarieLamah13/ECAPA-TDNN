@@ -202,7 +202,7 @@ class RESNETModelMulti(nn.Module):
         self.scheduler.step(epoch - 1)
         index, top1, loss = 0, 0, 0
         lr = self.optim.param_groups[0]['lr']
-        total_nloss = torch.tensor(0)
+        total_nloss = torch.tensor(0).to(self.device)
         n = 1
         num = 1
         for num, batch in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
