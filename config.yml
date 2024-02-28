@@ -12,7 +12,7 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 64
+  value: 128
   help: "Batch size"
 
 n_cpu:
@@ -63,20 +63,22 @@ eval_path:
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/wav
 
 musan_path:
-  value: "db/musan_split"
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/musan_split
   help: 'The path to the MUSAN set, eg:"data/musan_split" in my case'
 
 rir_path:
-  value: "db/rirs_noises/RIRS_NOISES/simulated_rirs"
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/rirs_noises/RIRS_NOISES/simulated_rirs
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: "exps/exp_fbank_multi"
+  value: exps/exp_fbank_multi
   help: "Path to save the score.txt and models"
 
 initial_model:
   value: ""
-  help: "Path of the initial_model"
+  help: |
+    Path of the initial_model
+    exps/exp_resnet5/model/model_0079.model
 
 # Model and Loss settings
 C:

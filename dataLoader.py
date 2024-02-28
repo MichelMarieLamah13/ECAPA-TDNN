@@ -166,16 +166,13 @@ class TrainDatasetMulti(Dataset):
                 print(f"Batch [{index}/{len(loader)}] done", flush=True)
 
         max_length = max(len(lst) for lst in self.data_list.values())
-        for i in self.data_list:
-            while True:
-                size = len(self.data_list[i])
-                if size == max_length:
-                    break
-                data = random.choice(self.data_list[i])
-                self.data_list[i].append(data)
-
-                label = random.choice(self.data_label[i])
-                self.data_label[i].append(label)
+        for key in self.data_list:
+            value = self.data_list[key].copy()
+            value_ = value * (max_length // len(value)) + value[:max_length % len(value)]
+            self.data_list[key] = value_
+            label = self.data_label[key].copy()
+            label_ = label * (max_length // len(label)) + label[:max_length % len(label)]
+            self.data_label[key] = label_
 
     def __getitem__(self, index):
         # Read the utterance and randomly select the segment

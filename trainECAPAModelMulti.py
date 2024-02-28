@@ -74,7 +74,9 @@ if __name__ == "__main__":
 
     # Get all eval_list
     eval_list = args.eval_list.strip().split('\n')
+    eval_list = [el.strip() for el in eval_list if len(el.strip()) > 0]
     eval_path = args.eval_path.strip().split('\n')
+    eval_path = [ep.strip() for ep in eval_path if len(ep.strip()) > 0]
     # Only do evaluation, the initial_model is necessary
     if args.eval:
         s = ECAPAModelMulti(**vars(args))
@@ -82,8 +84,7 @@ if __name__ == "__main__":
         sys.stdout.flush()
         s.load_parameters(args.initial_model)
         for i, eval_list_ in enumerate(eval_list):
-            eval_list_ = eval_list_.strip()
-            eval_path_ = eval_path[i].strip()
+            eval_path_ = eval_path[i]
             fname = eval_list_.split('/')[-1]
             EER, minDCF = s.eval_network(eval_list=eval_list_, eval_path=eval_path_, n_cpu=args.n_cpu)
             print(f"File {fname}, EER {EER:2.2f}%, minDCF {minDCF:.4f}%", flush=True)

@@ -70,7 +70,7 @@ initial_model:
   value: ""
   help: |
     Path of the initial_model
-    exps/exp_resnet5/model/model_0079.model:
+    exps/exp_resnet5/model/model_0079.model
 
 # Model and Loss settings
 C:
