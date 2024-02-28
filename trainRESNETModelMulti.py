@@ -141,26 +141,24 @@ if __name__ == "__main__":
                 result.append((fname, eer, mindcf, min(EERs[fname])))
                 sum_mindcf += mindcf
                 sum_eer += eer
-                score_file.write(
-                    f"File {fname}, {epoch} epoch, LR {lr}, LOSS {loss}, ACC {acc:2.2f}%, EER {eer:2.2f}%, "
-                    f"bestEER {min(EERs[fname]):2.2f}%\n")
+                score_file.write("File %s, %d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
+                    fname, epoch, lr, loss, acc, eer, min(EERs[fname])))
                 score_file.flush()
 
             for fname, eer, mindcf, besteer in result:
-                print(
-                    f"{time.strftime('%Y-%m-%d %H:%M:%S')} File {fname}, {epoch} epoch, ACC {acc:2.2f}%, "
-                    f"EER {eer:2.2f}%, bestEER {besteer:2.2f}%",
-                    flush=True)
+                print(time.strftime("%Y-%m-%d %H:%M:%S"),
+                      "File %s, %d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (
+                          fname, epoch, acc, eer, besteer),
+                      flush=True)
             mean_eer = sum_eer / len(eval_path)
             mean_dcf = sum_mindcf / len(eval_path)
             EERs['mean'].append(mean_eer)
-            print(
-                f"{time.strftime('%Y-%m-%d %H:%M:%S')}  Mean, {epoch} epoch, ACC {acc:2.2f}%, "
-                f"EER {mean_eer:2.2f}%, bestEER {min(EERs['mean']):2.2f}%",
-                flush=True)
-            score_file.write(
-                f"{epoch} epoch, LR {lr}, LOSS {loss}, ACC {acc:2.2f}%, EER {mean_eer:2.2f}%, "
-                f"bestEER {min(EERs['mean']):2.2f}%\n")
+            print(time.strftime("%Y-%m-%d %H:%M:%S"),
+                  "Mean, %d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (
+                      epoch, acc, mean_eer, min(EERs['mean'])),
+                  flush=True)
+            score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
+                epoch, lr, loss, acc, mean_eer, min(EERs['mean'])))
             score_file.flush()
             if mean_eer <= min(EERs['mean']):
                 s.save_parameters(args.model_save_path + "/best.model")

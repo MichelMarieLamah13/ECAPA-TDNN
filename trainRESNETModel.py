@@ -101,11 +101,10 @@ if __name__ == "__main__":
         if epoch % args.test_step == 0:
             s.save_parameters(args.model_save_path + "/model_%04d.model" % epoch, delete=True)
             EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)[0])
-            print(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {epoch} epoch, ACC {acc: 2.2f}%, "
-                  f"EER {EERs[-1]:2.2f}%, bestEER {min(EERs):2.2f}%", flush=True)
-            score_file.write(
-                f"{epoch} epoch, LR {lr}, LOSS {loss}, ACC %{acc: 2.2f}%%, EER %{EERs[-1]: 2.2f}%,"
-                f" bestEER {min(EERs):2.2f}%\n")
+            print(time.strftime("%Y-%m-%d %H:%M:%S"),
+                  "%d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (epoch, acc, EERs[-1], min(EERs)), flush=True)
+            score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
+                epoch, lr, loss, acc, EERs[-1], min(EERs)))
             score_file.flush()
             if EERs[-1] <= min(EERs):
                 s.save_parameters(args.model_save_path + "/best.model")
