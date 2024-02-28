@@ -302,7 +302,6 @@ class TrainDatasetMulti2(Dataset):
             lines.extend(append_suffix_to_list(lines_, idx_file))
 
         dictkeys = list(set([x.split()[0].strip() for x in lines]))
-        dictkeys.extend(dictkeys)
         dictkeys.sort()
         dictkeys = {key: ii for ii, key in enumerate(dictkeys)}
         dataset = ListDataset2(lines, dictkeys, train_path)
@@ -316,6 +315,8 @@ class TrainDatasetMulti2(Dataset):
                     self.data_label.append(speaker_label)
                     self.data_list.append(file_name)
             print(f"Batch [{index}/{len(loader)}] done", flush=True)
+
+        print("Data loaded", flush=True)
 
     def __getitem__(self, index):
         # Read the utterance and randomly select the segment
