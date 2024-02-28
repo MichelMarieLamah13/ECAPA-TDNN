@@ -207,7 +207,7 @@ class RESNETModelMulti(nn.Module):
         for num, batch in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
             i = 0
-            total_nloss = torch.tensor(0.0).to(self.device)
+            total_nloss = torch.tensor(0.0, device=self.device, requires_grad=True)
             for idx_loss, speaker_loss_ in enumerate(self.speaker_loss.values()):
                 data = batch[i]
                 j = i + 1
@@ -215,14 +215,8 @@ class RESNETModelMulti(nn.Module):
                 labels = torch.LongTensor(labels).to(self.device)
                 # labels = torch.LongTensor(labels)
                 speaker_embedding = self.speaker_encoder(data.to(self.device), aug=True)
-
                 nloss, prec = speaker_loss_(speaker_embedding, labels)
-                print(f"Type Loss: {type(nloss)}", flush=True)
-                print(nloss)
-                if idx_loss == 0:
-                    total_nloss = nloss
-                else:
-                    total_nloss += nloss
+                total_nloss += nloss
                 n = len(labels)
                 index += n
                 top1 += prec
