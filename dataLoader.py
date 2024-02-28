@@ -38,7 +38,7 @@ class ListDataset2(Dataset):
     def __getitem__(self, idx):
         line = self.lines[idx]
         id_speaker, path = line.split()
-        _, idfile = id_speaker.split("_")
+        idfile, _ = id_speaker.split("_")
         idfile = int(idfile)
         speaker_label = self.dictkeys[id_speaker]
         base_path = self.train_path[idfile]
@@ -265,7 +265,7 @@ def append_suffix_to_list(lines, suffix):
     result = []
     for line in lines:
         id_speaker, path = line.split()
-        id_speaker = f"{id_speaker.strip()}_{suffix}"
+        id_speaker = f"{suffix}_{id_speaker.strip()}"
         path = path.strip()
         result.append(f"{id_speaker} {path}")
     return result
