@@ -305,7 +305,7 @@ class TrainDatasetMulti2(Dataset):
         dictkeys.extend(dictkeys)
         dictkeys.sort()
         dictkeys = {key: ii for ii, key in enumerate(dictkeys)}
-        dataset = ListDataset(lines, dictkeys, train_path)
+        dataset = ListDataset2(lines, dictkeys, train_path)
         loader = DataLoader(dataset, num_workers=n_cpu, batch_size=128)
         for index, batch in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             speaker_labels, file_names = batch

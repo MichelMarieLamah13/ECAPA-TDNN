@@ -103,6 +103,6 @@ n_class:
 
 # Command
 eval:
-  value: true
+  value: false
   help: "Only do evaluation"
 
