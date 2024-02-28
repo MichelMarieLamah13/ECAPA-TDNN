@@ -9,6 +9,7 @@ import numpy as np
 import yaml
 from torch.utils.data import DataLoader
 
+from RESNETModel import RESNETModelMulti
 from tools import *
 from dataLoader import train_loader, TrainDatasetMulti
 from ECAPAModel import ECAPAModel, ECAPAModelMulti
@@ -49,10 +50,10 @@ def read_config(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="ECAPA_trainer Multi corpus")
+    parser = argparse.ArgumentParser(description="RESNET_trainer Multi corpus")
     parser.add_argument('--config',
                         type=str,
-                        default="config.yml",
+                        default="config_resnet_multi.yml",
                         help='Configuration file')
 
     # Initialization
@@ -81,7 +82,7 @@ if __name__ == "__main__":
     # Only do evaluation, the initial_model is necessary
     result = []
     if args.eval:
-        s = ECAPAModelMulti(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
         s.load_parameters(args.initial_model)
         for i, eval_list_ in enumerate(eval_list):
@@ -95,13 +96,13 @@ if __name__ == "__main__":
 
         eers = [eer for _, eer, _ in result]
         mindcfs = [mindcf for _, _, mindcf in result]
-        print(f"Mean: EER  {np.mean(eers):2.2f}%, minDCF: {np.mean(mindcfs):.4f}%", flush=True)
+        print(f"Mean: EER  {np.mean(eers):2.2f}%, minDCF {np.mean(mindcfs):.4f}%", flush=True)
         quit()
 
     # If initial_model is exist, system will train from the initial_model
     if args.initial_model != "":
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
-        s = ECAPAModelMulti(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         s.load_parameters(args.initial_model)
         epoch = 1
         EERs = {}
@@ -110,14 +111,14 @@ if __name__ == "__main__":
     elif len(modelfiles) >= 1:
         print(f"Model {modelfiles[-1]} loaded from previous state!", flush=True)
         epoch = int(os.path.splitext(os.path.basename(modelfiles[-1]))[0][6:]) + 1
-        s = ECAPAModelMulti(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         s.load_parameters(modelfiles[-1])
         EERs = init_eer(args.score_save_path)
 
     # Otherwise, system will train from scratch
     else:
         epoch = 1
-        s = ECAPAModelMulti(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         EERs = {}
 
     score_file = open(args.score_save_path, "a+")

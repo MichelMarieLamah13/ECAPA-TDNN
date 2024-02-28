@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # Training Settings
     parser.add_argument('--config',
                         type=str,
-                        default="config.yml",
+                        default="config_resnet.yml",
                         help='Configuration file')
 
     # Initialization

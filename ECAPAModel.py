@@ -450,7 +450,7 @@ class ECAPAModelMulti(nn.Module):
         # self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim)
         # Classifier
         n_class = n_class.strip().split('\n')
-        n_class = [nc.strip() for nc in n_class if len(nc.strip())>0]
+        n_class = [nc.strip() for nc in n_class if len(nc.strip()) > 0]
         self.speaker_loss = {}
         for i, n_class_ in enumerate(n_class):
             n_class_ = int(n_class_.strip())
@@ -502,8 +502,7 @@ class ECAPAModelMulti(nn.Module):
             self.optim.step()
             print(time.strftime("%m-%d %H:%M:%S") + \
                   " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
-                  " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * n))
-            sys.stdout.flush()
+                  " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * n), flush=True)
         sys.stdout.write("\n")
         return loss / num, lr, top1 / index * n
 
