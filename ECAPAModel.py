@@ -450,6 +450,7 @@ class ECAPAModelMulti(nn.Module):
         # self.speaker_encoder = ECAPA_TDNN(C=C, feat_type=feat_type, feat_dim=feat_dim)
         # Classifier
         n_class = n_class.strip().split('\n')
+        n_class = [nc.strip() for nc in n_class if len(nc.strip())>0]
         self.speaker_loss = {}
         for i, n_class_ in enumerate(n_class):
             n_class_ = int(n_class_.strip())

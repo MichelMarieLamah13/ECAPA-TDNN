@@ -81,7 +81,6 @@ if __name__ == "__main__":
     if args.eval:
         s = ECAPAModelMulti(**vars(args))
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
-        sys.stdout.flush()
         s.load_parameters(args.initial_model)
         for i, eval_list_ in enumerate(eval_list):
             eval_path_ = eval_path[i]
