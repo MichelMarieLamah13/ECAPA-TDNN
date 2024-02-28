@@ -102,7 +102,7 @@ class RESNETModel(nn.Module):
 
         print("BEGIN embeddings", flush=True)
         emb_dataset = EmbeddingsDataset(setfiles, eval_path)
-        emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn)
+        emb_loader = DataLoader(emb_dataset, batch_size=64, num_workers=n_cpu, collate_fn=collate_fn)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
             all_file, all_data_1, all_lengths_1, all_data_2 = batch
             for i in range(len(all_file)):
@@ -248,7 +248,7 @@ class RESNETModelMulti(nn.Module):
 
         print("BEGIN embeddings", flush=True)
         emb_dataset = EmbeddingsDataset(setfiles, eval_path)
-        emb_loader = DataLoader(emb_dataset, batch_size=100, num_workers=n_cpu, collate_fn=collate_fn)
+        emb_loader = DataLoader(emb_dataset, batch_size=64, num_workers=n_cpu, collate_fn=collate_fn)
         for idx, batch in tqdm.tqdm(enumerate(emb_loader, start=1), total=len(emb_loader)):
             all_file, all_data_1, all_lengths_1, all_data_2 = batch
             for i in range(len(all_file)):
