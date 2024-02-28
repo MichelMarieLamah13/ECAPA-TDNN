@@ -198,42 +198,39 @@ class RESNETModelMulti(nn.Module):
 
     def train_network(self, epoch, loader):
         self.train()
-        # Update the learning rate based on the current epcoh
+        # Update the learning rate based on the current epoch
         self.scheduler.step(epoch - 1)
         index, top1, loss = 0, 0, 0
         lr = self.optim.param_groups[0]['lr']
-        n = 1
         num = 1
         for num, batch in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
-            self.zero_grad()
-            i = 0
-            total_nloss = torch.tensor(0.0).to(self.device)
+            self.optim.zero_grad()
+            total_loss = torch.tensor(0.0).to(self.device)  # Initialize total loss tensor
+            total_prec = 0  # Initialize total precision
+            total_index = 0  # Initialize total index
+
             for idx_loss, speaker_loss_ in enumerate(self.speaker_loss.values()):
-                data = batch[i]
-                j = i + 1
-                labels = batch[j]
-                labels = torch.LongTensor(labels).to(self.device)
-                # labels = torch.LongTensor(labels)
+                data = batch[idx_loss * 2]  # Adjust indexing to access data and labels correctly
+                labels = torch.LongTensor(batch[idx_loss * 2 + 1]).to(self.device)
+
                 speaker_embedding = self.speaker_encoder(data.to(self.device), aug=True)
-
                 nloss, prec = speaker_loss_(speaker_embedding, labels)
-                if idx_loss == 0:
-                    total_nloss = nloss
-                else:
-                    total_nloss += nloss
-                n = len(labels)
-                index += n
-                top1 += prec
-                loss += nloss.detach().cpu().numpy()
+                total_loss += nloss  # Accumulate loss
+                total_prec += prec  # Accumulate precision
+                total_index += len(labels)  # Accumulate index for averaging precision
 
-                i = j + 1
-
-            total_nloss.backward()
+            total_loss.backward()  # Backpropagate on the total loss
             self.optim.step()
+
+            loss += total_loss.item()  # Accumulate total loss for logging
+            top1 += total_prec  # Accumulate total precision for logging
+            index += total_index  # Accumulate total index for logging
+
             print(time.strftime("%m-%d %H:%M:%S") + \
                   " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
-                  " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * n), flush=True)
-        return loss / num, lr, top1 / index * n
+                  " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * len(labels)), flush=True)
+
+        return loss / num, lr, top1 / index * len(labels)
 
     def eval_network(self, eval_list, eval_path, n_cpu=5):
         self.eval()
