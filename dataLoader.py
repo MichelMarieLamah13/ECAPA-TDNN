@@ -137,8 +137,10 @@ class TrainDatasetMulti(Dataset):
             self.noiselist[file.split('/')[-4]].append(file)
         self.rir_files = glob.glob(os.path.join(rir_path, '*/*/*.wav'))
         # Load data & labels
-        train_list = train_list.split('\n')
-        train_path = train_path.split('\n')
+        train_list = train_list.strip().split('\n')
+        train_list = [tl.strip() for tl in train_list if len(tl.strip()) > 0]
+        train_path = train_path.strip().split('\n')
+        train_path = [tp.strip() for tp in train_path if len(tp.strip()) > 0]
 
         self.data_list = {}
         self.data_label = {}
