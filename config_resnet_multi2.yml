@@ -16,7 +16,7 @@ batch_size:
   help: "Batch size"
 
 n_cpu:
-  value: 4
+  value: 8
   help: "Number of loader threads"
 
 test_step:
@@ -75,7 +75,7 @@ save_path:
   help: "Path to save the score.txt and models"
 
 initial_model:
-  value: exps/exp_resnet5/model/best.model
+  value: ""
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0079.model
@@ -103,6 +103,6 @@ n_class:
 
 # Command
 eval:
-  value: true
+  value: false
   help: "Only do evaluation"
 
