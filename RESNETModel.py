@@ -217,8 +217,6 @@ class RESNETModelMulti(nn.Module):
                 speaker_embedding = self.speaker_encoder(data.to(self.device), aug=True)
 
                 nloss, prec = speaker_loss_(speaker_embedding, labels)
-                print(f"Type Loss: {type(nloss)}", flush=True)
-                print(nloss)
                 if idx_loss == 0:
                     total_nloss = nloss
                 else:
