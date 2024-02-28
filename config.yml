@@ -79,6 +79,7 @@ initial_model:
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0079.model
+    exps/exp1_ddp/model/best.model
 
 # Model and Loss settings
 C:

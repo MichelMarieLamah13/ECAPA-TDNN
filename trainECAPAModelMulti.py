@@ -5,6 +5,7 @@ This is the main code of the ECAPATDNN project, to define the parameters and bui
 import argparse, glob, os, torch, warnings, time
 import sys
 
+import numpy as np
 import yaml
 from torch.utils.data import DataLoader
 
@@ -78,6 +79,7 @@ if __name__ == "__main__":
     eval_path = args.eval_path.strip().split('\n')
     eval_path = [ep.strip() for ep in eval_path if len(ep.strip()) > 0]
     # Only do evaluation, the initial_model is necessary
+    result = []
     if args.eval:
         s = ECAPAModelMulti(**vars(args))
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
@@ -86,7 +88,14 @@ if __name__ == "__main__":
             eval_path_ = eval_path[i]
             fname = eval_list_.split('/')[-1]
             EER, minDCF = s.eval_network(eval_list=eval_list_, eval_path=eval_path_, n_cpu=args.n_cpu)
-            print(f"File {fname}, EER {EER:2.2f}%, minDCF {minDCF:.4f}%", flush=True)
+            result.append((fname, EER, minDCF))
+
+        for fname, eer, mindcf in result:
+            print(f"File {fname}, EER {eer:2.2f}%, minDCF {mindcf:.4f}%", flush=True)
+
+        eers = [eer for _, eer, _ in result]
+        mindcfs = [mindcf for _, _, mindcf in result]
+        print(f"Mean: EER  {np.mean(eers):2.2f}%, minDCF: {np.mean(mindcfs):.4f}", flush=True)
         quit()
 
     # If initial_model is exist, system will train from the initial_model
