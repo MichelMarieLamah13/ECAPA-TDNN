@@ -26,18 +26,21 @@ def init_eer(score_path):
             parteer = parteer.replace('%', '')
             parteer = float(parteer)
             if 'File' not in line:
-                if 'mean' not in errs:
-                    errs['mean'] = [parteer]
-                else:
-                    errs['mean'].append(parteer)
+                key = 'mean'
             else:
-                fname = line.split(',')[0]
-                fname = fname.split()[-1].strip()
-                if fname not in errs:
-                    errs[fname] = [parteer]
-                else:
-                    errs[fname].append(parteer)
+                key = line.split(',')[0]
+                key = key.split()[-1].strip()
+            errs = add_to_errs(errs, key, parteer)
     return errs
+
+
+def add_to_errs(values, key, value):
+    if key in values:
+        values[key].add(value)
+    else:
+        values[key] = [value]
+
+    return values
 
 
 def read_config(args):
@@ -137,7 +140,7 @@ if __name__ == "__main__":
                 eval_path_ = eval_path[i].strip()
                 fname = eval_list_.split('/')[-1].strip()
                 eer, mindcf = s.eval_network(eval_list=eval_list_, eval_path=eval_path_, n_cpu=args.n_cpu)
-                EERs[fname].append(eer)
+                EERs = add_to_errs(EERs, fname, eer)
                 result.append((fname, eer, mindcf, min(EERs[fname])))
                 sum_mindcf += mindcf
                 sum_eer += eer
@@ -152,7 +155,7 @@ if __name__ == "__main__":
                       flush=True)
             mean_eer = sum_eer / len(eval_path)
             mean_dcf = sum_mindcf / len(eval_path)
-            EERs['mean'].append(mean_eer)
+            EERs = add_to_errs(EERs, 'mean', mean_eer)
             print(time.strftime("%Y-%m-%d %H:%M:%S"),
                   "Mean, %d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (
                       epoch, acc, mean_eer, min(EERs['mean'])),
