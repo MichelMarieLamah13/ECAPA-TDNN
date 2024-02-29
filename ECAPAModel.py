@@ -469,17 +469,14 @@ class ECAPAModelMulti(nn.Module):
         index, top1, loss = 0, 0, 0
         lr = self.optim.param_groups[0]['lr']
         total_nloss = torch.tensor(0)
-        n = 1
-        num = 1
         for num, batch in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
-            i = 0
-            for speaker_loss_ in self.speaker_loss.values():
-                data = batch[i]
-                j = i + 1
-                labels = batch[j]
-                labels = torch.LongTensor(labels).to(self.device)
-                # labels = torch.LongTensor(labels)
+            total_loss = torch.tensor(0.0).to(self.device)  # Initialize total loss tensor
+            total_prec = 0  # Initialize total precision
+            total_index = 0  # Initialize total index
+            for idx_loss, speaker_loss_ in enumerate(self.speaker_loss.values()):
+                data = batch[idx_loss * 2]
+                labels = torch.LongTensor(batch[idx_loss * 2 + 1]).to(self.device)
                 if self.learnable_weights is not None:
                     speaker_embedding = self.speaker_encoder(data.to(self.device), aug=True,
                                                              learnable_weights=self.learnable_weights,
@@ -487,24 +484,22 @@ class ECAPAModelMulti(nn.Module):
                 else:
                     speaker_embedding = self.speaker_encoder(data.to(self.device), aug=True)
 
-                # speaker_embedding = self.speaker_encoder.forward(data, aug=True)
-
                 nloss, prec = speaker_loss_(speaker_embedding, labels)
-                total_nloss += nloss
-                n = len(labels)
-                index += n
-                top1 += prec
-                loss += nloss.detach().cpu().numpy()
-
-                i = j + 1
+                total_loss += nloss
+                total_index += len(labels)
+                total_prec += prec
 
             total_nloss.backward()
             self.optim.step()
+
+            loss += total_loss.item()
+            top1 += total_prec
+            index += total_index
+
             print(time.strftime("%m-%d %H:%M:%S") + \
                   " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
-                  " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * n), flush=True)
-        sys.stdout.write("\n")
-        return loss / num, lr, top1 / index * n
+                  " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * len(labels)), flush=True)
+        return loss / num, lr, top1 / index * len(labels)
 
     def eval_network(self, eval_list, eval_path, n_cpu=5):
         self.eval()
