@@ -41,9 +41,9 @@ train_list:
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-t.txt.edited 
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb2_flac/liste.edited
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-train2004/nist_sre_train2004_MASTER.edited
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-train2005/nist_sre_train2004_MASTER.edited
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-train2006/nist_sre_train2004_MASTER.edited
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-train2008/nist_sre_train2004_MASTER.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-train2005/nist_sre_train2005_MASTER.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-train2006/nist_sre_train2006_MASTER.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-train2008/nist_sre_train2008_MASTER.edited
 
 train_path:
   help: "Directory to training data where speaker audio are stored"
@@ -63,9 +63,9 @@ eval_list:
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-e.txt.edited
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/lists/trials.lst.edited
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-test2004/nist_sre_test2004_MASTER.edited
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-test2005/nist_sre_test2004_MASTER.edited
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-test2006/nist_sre_test2004_MASTER.edited
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-test2008/nist_sre_test2004_MASTER.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-test2005/nist_sre_test2005_MASTER.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-test2006/nist_sre_test2006_MASTER.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist/nist-sre-test2008/nist_sre_test2008_MASTER.edited
 
 eval_path:
   help: "All paths to evaluation data"
