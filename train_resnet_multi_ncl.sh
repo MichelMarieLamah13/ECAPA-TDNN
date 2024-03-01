@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=resnet_multi_nc
+#SBATCH --job-name=resnet_multi_ncl
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --time=7-00:00:00
