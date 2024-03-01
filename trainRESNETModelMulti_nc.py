@@ -9,9 +9,9 @@ import numpy as np
 import yaml
 from torch.utils.data import DataLoader
 
-from RESNETModel import RESNETModelMulti, RESNETModelMulti2
+from RESNETModel import RESNETModelMulti
 from tools import *
-from dataLoader import train_loader, TrainDatasetMulti, TrainDatasetMulti2
+from dataLoader import train_loader, TrainDatasetMulti
 from ECAPAModel import ECAPAModel, ECAPAModelMulti
 
 
@@ -30,6 +30,7 @@ def init_eer(score_path):
             else:
                 key = line.split(',')[-1]
                 key = key.split()[-1].strip()
+
             errs = add_to_errs(errs, key, parteer)
     return errs
 
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RESNET_trainer Multi corpus")
     parser.add_argument('--config',
                         type=str,
-                        default="config_resnet_multi2.yml",
+                        default="config_resnet_multi_ncl.yml",
                         help='Configuration file')
 
     # Initialization
@@ -69,7 +70,7 @@ if __name__ == "__main__":
     args = init_args(args)
 
     # Define the data loader
-    trainloader = TrainDatasetMulti2(**vars(args))
+    trainloader = TrainDatasetMulti(**vars(args))
     trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True, num_workers=args.n_cpu,
                              drop_last=True, pin_memory=True)
 
@@ -85,7 +86,7 @@ if __name__ == "__main__":
     # Only do evaluation, the initial_model is necessary
     result = []
     if args.eval:
-        s = RESNETModelMulti2(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
         s.load_parameters(args.initial_model)
         for i, eval_list_ in enumerate(eval_list):
@@ -105,7 +106,7 @@ if __name__ == "__main__":
     # If initial_model is exist, system will train from the initial_model
     if args.initial_model != "":
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
-        s = RESNETModelMulti2(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         s.load_parameters(args.initial_model)
         epoch = 1
         EERs = {}
@@ -114,14 +115,14 @@ if __name__ == "__main__":
     elif len(modelfiles) >= 1:
         print(f"Model {modelfiles[-1]} loaded from previous state!", flush=True)
         epoch = int(os.path.splitext(os.path.basename(modelfiles[-1]))[0][6:]) + 1
-        s = RESNETModelMulti2(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         s.load_parameters(modelfiles[-1])
         EERs = init_eer(args.score_save_path)
 
     # Otherwise, system will train from scratch
     else:
         epoch = 1
-        s = RESNETModelMulti2(**vars(args))
+        s = RESNETModelMulti(**vars(args))
         EERs = {}
 
     score_file = open(args.score_save_path, "a+")
