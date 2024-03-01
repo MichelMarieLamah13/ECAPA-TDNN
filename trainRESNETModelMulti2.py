@@ -95,11 +95,11 @@ if __name__ == "__main__":
             result.append((fname, EER, minDCF))
 
         for fname, eer, mindcf in result:
-            print(f"File {fname}, EER {eer:2.2f}%, minDCF {mindcf:.4f}%", flush=True)
+            print(f"EER {eer:2.2f}%, minDCF {mindcf:.4f}%, File {fname}", flush=True)
 
         eers = [eer for _, eer, _ in result]
         mindcfs = [mindcf for _, _, mindcf in result]
-        print(f"Mean: EER  {np.mean(eers):2.2f}%, minDCF {np.mean(mindcfs):.4f}%", flush=True)
+        print(f"EER  {np.mean(eers):2.2f}%, minDCF {np.mean(mindcfs):.4f}%, Mean", flush=True)
         quit()
 
     # If initial_model is exist, system will train from the initial_model
@@ -144,23 +144,23 @@ if __name__ == "__main__":
                 result.append((fname, eer, mindcf, min(EERs[fname])))
                 sum_mindcf += mindcf
                 sum_eer += eer
-                score_file.write("File %s, %d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
-                    fname, epoch, lr, loss, acc, eer, min(EERs[fname])))
+                score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%, File %s\n" % (
+                    epoch, lr, loss, acc, eer, min(EERs[fname]), fname))
                 score_file.flush()
 
             for fname, eer, mindcf, besteer in result:
                 print(time.strftime("%Y-%m-%d %H:%M:%S"),
-                      "File %s, %d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (
-                          fname, epoch, acc, eer, besteer),
+                      "%d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%, File %s" % (
+                          epoch, acc, eer, besteer, fname),
                       flush=True)
             mean_eer = sum_eer / len(eval_path)
             mean_dcf = sum_mindcf / len(eval_path)
             EERs = add_to_errs(EERs, 'mean', mean_eer)
             print(time.strftime("%Y-%m-%d %H:%M:%S"),
-                  "Mean, %d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (
+                  "%d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%, Mean" % (
                       epoch, acc, mean_eer, min(EERs['mean'])),
                   flush=True)
-            score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
+            score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%, Mean\n" % (
                 epoch, lr, loss, acc, mean_eer, min(EERs['mean'])))
             score_file.flush()
             if mean_eer <= min(EERs['mean']):
