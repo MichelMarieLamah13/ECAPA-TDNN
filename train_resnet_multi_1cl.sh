@@ -4,7 +4,8 @@
 #SBATCH --gres=gpu:1
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=32GB
-#SBATCH --nodelist=eris
+#SBATCH --constraint=GPURAM_Min_16GB
+##SBATCH --nodelist=eris
 #SBATCH --cpus-per-task=8
 #SBATCH --output=%x_output.log
 #SBATCH --error=%x_error.log
