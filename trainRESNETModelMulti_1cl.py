@@ -21,16 +21,18 @@ def init_eer(score_path):
         lines = file.readlines()
         for line in lines:
             line = line.strip()
-            parteer = line.split(',')[-2]
-            parteer = parteer.split(' ')[-1]
-            parteer = parteer.replace('%', '')
-            parteer = float(parteer)
-            if 'File' not in line:
-                key = 'mean'
-            else:
-                key = line.split(',')[-1]
-                key = key.split()[-1].strip()
-            errs = add_to_errs(errs, key, parteer)
+            parts = line.split(",")
+            if len(parts) == 7:
+                parteer = parts[-2].strip()
+                parteer = parteer.split(' ')[-1]
+                parteer = parteer.replace('%', '')
+                parteer = float(parteer)
+                if 'File' not in line:
+                    key = 'mean'
+                else:
+                    key = parts[-1]
+                    key = key.split()[-1].strip()
+                errs = add_to_errs(errs, key, parteer)
     return errs
 
 
