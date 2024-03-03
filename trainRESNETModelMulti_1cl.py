@@ -36,7 +36,7 @@ def init_eer(score_path):
 
 def add_to_errs(values, key, value):
     if key in values:
-        values[key].add(value)
+        values[key].append(value)
     else:
         values[key] = [value]
 
