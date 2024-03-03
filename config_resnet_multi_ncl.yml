@@ -75,11 +75,10 @@ save_path:
   help: "Path to save the score.txt and models"
 
 initial_model:
-  value: "exps/exp_resnet_multi_ncl/model/model_0001.model"
+  value: ""
   help: |
     Path of the initial_model
-    exps/exp_resnet5/model/model_0079.model
-    exps/exp1_ddp/model/best.model
+    exps/exp_resnet_multi_ncl/model/model_0001.model
 
 # Model and Loss settings
 C:
@@ -103,6 +102,6 @@ n_class:
 
 # Command
 eval:
-  value: true
+  value: false
   help: "Only do evaluation"
 
