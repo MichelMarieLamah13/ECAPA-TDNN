@@ -186,14 +186,12 @@ class RESNETModelMulti(nn.Module):
         n_class = n_class.strip().split('\n')
         n_class = [nc.strip() for nc in n_class if len(nc.strip()) > 0]
 
-        self.speaker_loss = nn.ModuleDict({
-            str(i): AAMsoftmax(n_class=n_class_, m=m, s=s).to(self.device)
-            for i, n_class_ in enumerate(n_class)
-        })
-        # self.speaker_loss = {}
-        # for i, n_class_ in enumerate(n_class):
-        #     n_class_ = int(n_class_.strip())
-        #     self.speaker_loss[i] = AAMsoftmax(n_class=n_class_, m=m, s=s).to(self.device)
+        self.speaker_loss = {}
+        for i, n_class_ in enumerate(n_class):
+            n_class_ = int(n_class_.strip())
+            self.speaker_loss[str(i)] = AAMsoftmax(n_class=n_class_, m=m, s=s).to(self.device)
+
+        self.speaker_loss = nn.ModuleDict(self.speaker_loss)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
