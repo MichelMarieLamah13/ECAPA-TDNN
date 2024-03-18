@@ -37,30 +37,30 @@ lr_decay:
 train_list:
   help: "All paths to training list"
   value: |
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/train_list.txt.edited
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-t.txt.edited 
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb2_flac/liste.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/train_list.txt.edited
 
 train_path:
   help: "Directory to training data where speaker audio are stored"
   value: |
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/wav
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb2_flac/wav
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/wav
     
 eval_list:
   help: "All paths to evaluation list"
   value: |
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/veri_test2.txt.edited
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-e.txt.edited
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/lists/trials.lst.edited
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/veri_test2.txt.edited
 
 eval_path:
   help: "All paths to evaluation data"
   value: |
-    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/wav
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
 
 musan_path:
   value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/musan_split
