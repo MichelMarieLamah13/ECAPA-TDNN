@@ -1,5 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=resnet_multi_ncl
+# resnet_multi_ncl (original), tmp_1(voxceleb)
+#SBATCH --job-name=tmp_1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --time=7-00:00:00
