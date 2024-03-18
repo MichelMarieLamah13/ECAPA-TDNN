@@ -186,10 +186,14 @@ class RESNETModelMulti(nn.Module):
         n_class = n_class.strip().split('\n')
         n_class = [nc.strip() for nc in n_class if len(nc.strip()) > 0]
 
-        self.speaker_loss = {}
-        for i, n_class_ in enumerate(n_class):
-            n_class_ = int(n_class_.strip())
-            self.speaker_loss[i] = AAMsoftmax(n_class=n_class_, m=m, s=s).to(self.device)
+        self.speaker_loss = nn.ModuleDict({
+            str(i): AAMsoftmax(n_class=n_class_, m=m, s=s).to(self.device)
+            for i, n_class_ in enumerate(n_class)
+        })
+        # self.speaker_loss = {}
+        # for i, n_class_ in enumerate(n_class):
+        #     n_class_ = int(n_class_.strip())
+        #     self.speaker_loss[i] = AAMsoftmax(n_class=n_class_, m=m, s=s).to(self.device)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
@@ -216,7 +220,7 @@ class RESNETModelMulti(nn.Module):
                 speaker_embedding = self.speaker_encoder(data.to(self.device), aug=True)
                 nloss, prec = speaker_loss_(speaker_embedding, labels)
 
-                to_consider = [1, 2]
+                to_consider = [0, 2]
                 if idx_loss in to_consider:
                     total_loss += nloss / len(to_consider)  # Accumulate loss
                     total_prec += prec  # Accumulate precision
