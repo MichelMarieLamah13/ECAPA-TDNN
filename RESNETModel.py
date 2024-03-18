@@ -211,7 +211,7 @@ class RESNETModelMulti(nn.Module):
             total_prec = 0  # Initialize total precision
             total_index = 0  # Initialize total index
 
-            for idx_loss, speaker_loss_ in enumerate(self.speaker_loss.values()):
+            for idx_loss, speaker_loss_ in self.speaker_loss.items():
                 idx_loss = int(idx_loss)
                 data = batch[idx_loss * 2]  # Adjust indexing to access data and labels correctly
                 labels = torch.LongTensor(batch[idx_loss * 2 + 1]).to(self.device)
