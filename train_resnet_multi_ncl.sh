@@ -1,5 +1,7 @@
 #!/bin/bash
-# resnet_multi_ncl (original), tmp_1(voxceleb), tmp_2(voxceleb + cn_celeb), tmp_3(voxceleb + vietnam_celeb)
+# resnet_multi_ncl (original), tmp_1(voxceleb),
+# tmp_2(voxceleb + cn_celeb), tmp_2_1 Moyenne(voxceleb + cn_celeb)
+# tmp_3(voxceleb + vietnam_celeb)
 #SBATCH --job-name=tmp_2
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
