@@ -71,7 +71,7 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/tmp
+  value: exps/tmp_1
   help: |
     Path to save the score.txt and models
     Original: exps/exp_resnet_multi_ncl

@@ -219,7 +219,7 @@ class RESNETModelMulti(nn.Module):
                 speaker_embedding = self.speaker_encoder(data.to(self.device), aug=True)
                 nloss, prec = speaker_loss_(speaker_embedding, labels)
 
-                to_consider = [0, 2]
+                to_consider = [2]
                 if idx_loss in to_consider:
                     total_loss += nloss / len(to_consider)  # Accumulate loss
                     total_prec += prec  # Accumulate precision
