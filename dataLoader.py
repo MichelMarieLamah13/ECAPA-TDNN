@@ -185,7 +185,7 @@ class TrainDatasetMulti(Dataset):
                     if speaker_label is not None:
                         self.data_label[idx_file].append(speaker_label)
                         self.data_list[idx_file].append(file_name)
-                print(f"Batch [{index}/{len(loader)}] done", flush=True)
+                # print(f"Batch [{index}/{len(loader)}] done", flush=True)
 
         max_length = max(len(lst) for lst in self.data_list.values())
         for key in self.data_list:
@@ -314,9 +314,9 @@ class TrainDatasetMulti2(Dataset):
                 if speaker_label is not None:
                     self.data_label.append(speaker_label)
                     self.data_list.append(file_name)
-            print(f"Batch [{index}/{len(loader)}] done", flush=True)
+            # print(f"Batch [{index}/{len(loader)}] done", flush=True)
 
-        print("Data loaded", flush=True)
+        # print("Data loaded", flush=True)
 
     def __getitem__(self, index):
         # Read the utterance and randomly select the segment

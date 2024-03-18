@@ -96,9 +96,9 @@ s:
 n_class:
   help: "Number of speakers"
   value: |
-    5994
     880
     1996
+    5994
 
 # Command
 eval:
