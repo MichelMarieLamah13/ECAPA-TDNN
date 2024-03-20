@@ -57,7 +57,7 @@ class DENSENETModel(nn.Module):
         super(DENSENETModel, self).__init__()
         # ResNet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.speaker_encoder = DenseNet(num_classes=n_class).to(self.device)
+        self.speaker_encoder = DenseNet().to(self.device)
         # Classifier
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
@@ -181,7 +181,7 @@ class DENSENETModelMulti(nn.Module):
         super(DENSENETModelMulti, self).__init__()
         # DenseNET
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.speaker_encoder = DenseNet(num_classes=n_class).to(self.device)
+        self.speaker_encoder = DenseNet().to(self.device)
         # Classifier
         n_class = n_class.strip().split('\n')
         n_class = [nc.strip() for nc in n_class if len(nc.strip()) > 0]
@@ -330,7 +330,7 @@ class DENSENETModelMulti2(nn.Module):
         super(DENSENETModelMulti2, self).__init__()
         # ResNet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.speaker_encoder = DenseNet(num_classes=n_class).to(self.device)
+        self.speaker_encoder = DenseNet().to(self.device)
         # Classifier
         n_class = n_class.strip().split('\n')
         n_class = sum([int(nc.strip()) for nc in n_class if len(nc.strip()) > 0])
