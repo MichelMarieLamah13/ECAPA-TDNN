@@ -215,7 +215,7 @@ class ResNet(nn.Module):
             x = self.torchfbank(x) + 1e-6
             x = x.log()
             x = (x - torch.mean(x, dim=-1, keepdim=True))
-            if aug == True:
+            if aug:
                 x = self.specaug(x)
         # x = self.conv1(x.to(self.fc._parameters['weight'].device))
         x = x.unsqueeze(1)
