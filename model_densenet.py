@@ -208,7 +208,6 @@ class DenseNet(nn.Module):
         x = x.unsqueeze(1)
         x = x.transpose(2, 3)
         features = self.features(x)
-        print(features, flush=True)
         out = F.relu(features, inplace=True)
         out = F.adaptive_avg_pool2d(out, (1, 1))
         out = torch.flatten(out, 1)
