@@ -68,7 +68,7 @@ class train_loader(Dataset):
         dictkeys = list(set([x.split()[0] for x in lines]))
         dictkeys.sort()
         dictkeys = {key: ii for ii, key in enumerate(dictkeys)}
-        print(f"Initializing data loader: ")
+        print(f"BEGIN Initializing data loader: ", flush=True)
         sys.stdout.flush()
         dataset = ListDataset(lines, dictkeys, train_path)
         loader = DataLoader(dataset, num_workers=n_cpu, batch_size=128)
@@ -80,8 +80,8 @@ class train_loader(Dataset):
                 if speaker_label is not None:
                     self.data_label.append(speaker_label)
                     self.data_list.append(file_name)
-            print(f"Batch [{index}/{len(loader)}] done")
             sys.stdout.flush()
+        print(f"END Initializing data loader: ", flush=True)
 
     def __getitem__(self, index):
         # Read the utterance and randomly select the segment
@@ -173,7 +173,7 @@ class TrainDatasetMulti(Dataset):
             dictkeys = list(set([x.split()[0] for x in lines]))
             dictkeys.sort()
             dictkeys = {key: ii for ii, key in enumerate(dictkeys)}
-            print(f"Initializing data loader: {train_list_}", flush=True)
+            print(f"BEGIN Initializing data loader: {train_list_}", flush=True)
             train_path_ = train_path[idx_file].strip()
             dataset = ListDataset(lines, dictkeys, train_path_)
             loader = DataLoader(dataset, num_workers=n_cpu, batch_size=128)
@@ -185,7 +185,7 @@ class TrainDatasetMulti(Dataset):
                     if speaker_label is not None:
                         self.data_label[idx_file].append(speaker_label)
                         self.data_list[idx_file].append(file_name)
-                # print(f"Batch [{index}/{len(loader)}] done", flush=True)
+            print(f"END Initializing data loader: {train_list_}", flush=True)
 
         max_length = max(len(lst) for lst in self.data_list.values())
         for key in self.data_list:
@@ -306,6 +306,7 @@ class TrainDatasetMulti2(Dataset):
         dictkeys = {key: ii for ii, key in enumerate(dictkeys)}
         dataset = ListDataset2(lines, dictkeys, train_path)
         loader = DataLoader(dataset, num_workers=n_cpu, batch_size=128)
+        print(f"BEGIN Initializing data loader: ", flush=True)
         for index, batch in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             speaker_labels, file_names = batch
             for i in range(len(speaker_labels)):
@@ -314,9 +315,8 @@ class TrainDatasetMulti2(Dataset):
                 if speaker_label is not None:
                     self.data_label.append(speaker_label)
                     self.data_list.append(file_name)
-            # print(f"Batch [{index}/{len(loader)}] done", flush=True)
 
-        # print("Data loaded", flush=True)
+        print(f"END Initializing data loader: ", flush=True)
 
     def __getitem__(self, index):
         # Read the utterance and randomly select the segment
