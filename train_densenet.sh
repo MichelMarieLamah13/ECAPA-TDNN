@@ -1,6 +1,5 @@
 #!/bin/bash
-# densenet, debug
-#SBATCH --job-name=debug
+#SBATCH --job-name=densenet
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 # #SBATCH --constraint=GPURAM_16GB
@@ -14,7 +13,7 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-#python3 trainDENSENETModel.py
-python3 -m pdb trainDENSENETModel.py
+python3 trainDENSENETModel.py
+#python3 -m pdb trainDENSENETModel.py
 
 conda deactivate
