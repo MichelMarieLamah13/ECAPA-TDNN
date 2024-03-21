@@ -57,7 +57,7 @@ class DENSENETModel(nn.Module):
         super(DENSENETModel, self).__init__()
         # ResNet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.speaker_encoder = DenseNet(num_classes=n_class).to(self.device)
+        self.speaker_encoder = DenseNet().to(self.device)
         # Classifier
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
