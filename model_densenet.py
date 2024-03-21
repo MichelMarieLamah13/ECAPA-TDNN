@@ -137,13 +137,13 @@ class DenseNet(nn.Module):
         bn_size (int) - multiplicative factor for number of bottle neck layers
           (i.e. bn_size * k features in the bottleneck layer)
         drop_rate (float) - dropout rate after each dense layer
-        num_classes (int) - number of classification classes
+        emb_size (int) - embedding size
         memory_efficient (bool) - If True, uses checkpointing. Much more memory efficient,
           but slower. Default: *False*. See `"paper" <https://arxiv.org/pdf/1707.06990.pdf>`_
     """
 
     def __init__(self, growth_rate=32, block_config=(6, 12, 24, 16),
-                 num_init_features=64, bn_size=4, drop_rate=0, num_classes=1000, memory_efficient=False):
+                 num_init_features=64, bn_size=4, drop_rate=0, emb_size=192, memory_efficient=False):
 
         super(DenseNet, self).__init__()
 
@@ -186,7 +186,7 @@ class DenseNet(nn.Module):
         self.features.add_module('norm5', nn.BatchNorm2d(num_features))
 
         # Linear layer
-        # self.classifier = nn.Linear(num_features, num_classes)
+        self.classifier = nn.Linear(num_features, emb_size)
 
         # Official init from torch repo.
         for m in self.modules():
@@ -212,7 +212,7 @@ class DenseNet(nn.Module):
         out = F.relu(features, inplace=True)
         out = F.adaptive_avg_pool2d(out, (1, 1))
         out = torch.flatten(out, 1)
-        # out = self.classifier(out)
+        out = self.classifier(out)
         return out
 
 
