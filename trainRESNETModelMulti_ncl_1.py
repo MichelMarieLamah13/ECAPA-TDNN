@@ -58,7 +58,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RESNET_trainer Multi corpus")
     parser.add_argument('--config',
                         type=str,
-                        default="config_resnet_multi_ncl.yml",
+                        default="config_resnet_multi_ncl_1.yml",
                         help='Configuration file')
 
     # Initialization
