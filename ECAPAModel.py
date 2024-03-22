@@ -177,7 +177,6 @@ class ECAPAModel(nn.Module):
                     embedding_1 = F.normalize(embedding_1, p=2, dim=1)
                     embedding_2 = F.normalize(embedding_2, p=2, dim=1)
                 embeddings[file] = [embedding_1, embedding_2]
-            print(f"Batch [{idx}/{len(emb_loader)}] DONE", flush=True)
 
         scores, labels = [], []
         print("END embeddings", flush=True)
@@ -541,7 +540,6 @@ class ECAPAModelMulti(nn.Module):
                     embedding_1 = F.normalize(embedding_1, p=2, dim=1)
                     embedding_2 = F.normalize(embedding_2, p=2, dim=1)
                 embeddings[file] = [embedding_1, embedding_2]
-            print(f"Batch [{idx}/{len(emb_loader)}] DONE", flush=True)
 
         scores, labels = [], []
         print("END embeddings", flush=True)
