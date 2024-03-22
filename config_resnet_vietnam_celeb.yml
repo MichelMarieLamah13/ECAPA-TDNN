@@ -88,7 +88,7 @@ s:
 
 n_class:
   help: "Number of speakers"
-  value: 5994
+  value: 880
     
     
 

@@ -36,22 +36,22 @@ lr_decay:
 
 train_list:
   help: "All paths to training list"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb2_flac/liste.edited
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/train_list.txt.edited
 
 
 train_path:
   help: "Directory to training data where speaker audio are stored"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb2_flac/wav
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/wav
 
     
 eval_list:
   help: "All paths to evaluation list"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/lists/trials.lst.edited
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/veri_test2.txt.edited
 
 
 eval_path:
   help: "All paths to evaluation data"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/wav
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
 
 
 musan_path:
@@ -63,7 +63,7 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_resnet_cn_celeb
+  value: exps/exp1_ddp
   help: "Path to save the score.txt and models"
 
 initial_model:
@@ -88,7 +88,7 @@ s:
 
 n_class:
   help: "Number of speakers"
-  value: 1996
+  value: 5994
     
     
 
