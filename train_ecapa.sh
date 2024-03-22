@@ -1,5 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=ecapa
+# Job names: ecapa(voxceleb) ecapa_cc(cn-celeb) ecapa-vc(vietnam-celeb)
+#SBATCH --job-name=ecapa_cc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Max_16GB
@@ -13,6 +14,8 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 trainECAPAModel.py --config config_ecapa.yml
+# python3 trainECAPAModel.py --config config_ecapa.yml
+python3 trainECAPAModel.py --config config_ecapa_cn_celeb.yml
+# python3 trainECAPAModel.py --config config_ecapa_vietnam_celeb.yml
 
 conda deactivate
