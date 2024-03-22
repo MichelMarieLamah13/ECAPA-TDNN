@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=b_fbank
+#SBATCH --job-name=ecapa
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Max_16GB
