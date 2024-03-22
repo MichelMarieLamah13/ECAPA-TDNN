@@ -1,5 +1,5 @@
 #!/bin/bash
-# Job names: ecapa(voxceleb) ecapa_cc(cn-celeb) ecapa-vc(vietnam-celeb)
+# Job names: ecapa(voxceleb) ecapa_cc(cn-celeb) ecapa_vc(vietnam-celeb)
 #SBATCH --job-name=ecapa_cc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
