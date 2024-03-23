@@ -63,8 +63,10 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_resnet5
-  help: "Path to save the score.txt and models"
+  value: exps/exp_resnet_voxceleb
+  help: |
+    Path to save the score.txt and models
+    Ce que le prof m'a donné: exps/exp_resnet5
 
 initial_model:
   value: ""
