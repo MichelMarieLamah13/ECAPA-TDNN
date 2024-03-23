@@ -8,7 +8,7 @@ num_frames:
   help: "Duration of the input segments, eg: 200 for 2 second"
 
 max_epoch:
-  value: 100
+  value: 200
   help: "Maximum number of epochs"
 
 batch_size:
