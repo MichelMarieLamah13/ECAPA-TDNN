@@ -364,7 +364,6 @@ class ECAPAModelDDP(nn.Module):
                     embedding_1 = F.normalize(embedding_1, p=2, dim=1)
                     embedding_2 = F.normalize(embedding_2, p=2, dim=1)
                 embeddings[file] = [embedding_1, embedding_2]
-            self.print_info(f"Batch [{idx}/{len(emb_loader)}] DONE")
 
         scores, labels = [], []
         self.print_info("END embeddings")
