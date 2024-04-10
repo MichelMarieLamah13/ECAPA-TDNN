@@ -1,6 +1,7 @@
 #!/bin/bash
 # Job names: resnet(voxceleb) resnet_vc(vietnam-celeb), resnet_cc(cn-celeb)
-#SBATCH --job-name=resnet_cc
+# Job names: resnet_f_vc (finetuner vietnam-celeb), resnet_f_cc (finetuner cn-celeb)
+#SBATCH --job-name=resnet_f_vc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_12GB
@@ -15,8 +16,10 @@ source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
 # python3 trainRESNETModel.py
-python3 trainRESNETModel.py --config config_resnet_cn_celeb.yml
+# python3 trainRESNETModel.py --config config_resnet_cn_celeb.yml
 # python3 trainRESNETModel.py --config config_resnet_vietnam_celeb.yml
+python3 trainRESNETModel.py --config config_resnet_finetuner_vietnam_celeb.yml
+# python3 trainRESNETModel.py --config config_resnet_finetuner_cn_celeb.yml
 # python3 -m pdb trainRESNETModel.py
 
 conda deactivate
