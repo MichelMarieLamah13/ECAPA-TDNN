@@ -3,7 +3,7 @@
 #SBATCH --job-name=densenet_vc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-# #SBATCH --constraint=GPURAM_16GB
+#SBATCH --constraint=GPURAM_Min_12GB
 #SBATCH --time=7-00:00:00
 #SBATCH --mem=32GB
 #SBATCH --cpus-per-task=8
