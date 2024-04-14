@@ -1,6 +1,6 @@
 #!/bin/bash
 # JobNames: densenet(voxceleb), densenet_cc (cn-celeb), densenet_vc (vietnam-celeb)
-#SBATCH --job-name=densenet_cc
+#SBATCH --job-name=densenet
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_12GB
@@ -15,8 +15,8 @@ source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
 # python3 trainDENSENETModel.py --config config_densenet_vietnam_celeb.yml
-python3 trainDENSENETModel.py --config config_densenet_cn_celeb.yml
-# python3 trainDENSENETModel.py
+# python3 trainDENSENETModel.py --config config_densenet_cn_celeb.yml
+python3 trainDENSENETModel.py
 #python3 -m pdb trainDENSENETModel.py
 
 conda deactivate
