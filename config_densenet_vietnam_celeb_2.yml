@@ -90,20 +90,6 @@ n_class:
   help: "Number of speakers"
   value: 880
     
-feat_type:
-  value: fbank
-  help: |
-    Type of the features
-    - fbank
-    - wavlm
-    - wav2vec2
-
-feat_dim:
-  value: 80
-  help: |
-    A spécifier lorsque feat_type = fbank
-    Pour les autres ça sera determiner automatiquement
-    
 
 stride:
   value: 1
