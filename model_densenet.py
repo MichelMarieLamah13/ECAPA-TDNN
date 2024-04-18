@@ -40,9 +40,11 @@ class _DenseLayer(nn.Module):
 
     def bn_function(self, inputs):
         # type: (List[Tensor]) -> Tensor
-        concated_features = torch.cat(inputs, 1)
-        bottleneck_output = self.conv1(self.relu1(self.norm1(concated_features)))  # noqa: T484
-        return bottleneck_output
+        out = torch.cat(inputs, 1)
+        out = self.norm1(out)
+        out = self.relu1(out)
+        out = self.conv1(out)
+        return out
 
     # todo: rewrite when torchscript supports any
     def any_requires_grad(self, input):
@@ -86,11 +88,12 @@ class _DenseLayer(nn.Module):
         else:
             bottleneck_output = self.bn_function(prev_features)
 
-        new_features = self.conv2(self.relu2(self.norm2(bottleneck_output)))
+        out = self.norm2(bottleneck_output)
+        out = self.relu2(out)
+        out = self.conv2(out)
         if self.drop_rate > 0:
-            new_features = F.dropout(new_features, p=self.drop_rate,
-                                     training=self.training)
-        return new_features
+            out = F.dropout(out, p=self.drop_rate, training=self.training)
+        return out
 
 
 class _DenseBlock(nn.ModuleDict):
@@ -113,7 +116,8 @@ class _DenseBlock(nn.ModuleDict):
         for name, layer in self.items():
             new_features = layer(features)
             features.append(new_features)
-        return torch.cat(features, 1)
+        out = torch.cat(features, 1)
+        return out
 
 
 class _Transition(nn.Sequential):
