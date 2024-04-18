@@ -140,10 +140,11 @@ class DenseNet(nn.Module):
         emb_size (int) - embedding size
         memory_efficient (bool) - If True, uses checkpointing. Much more memory efficient,
           but slower. Default: *False*. See `"paper" <https://arxiv.org/pdf/1707.06990.pdf>`_
+        stride (int) - stride for first convolution
     """
 
     def __init__(self, growth_rate=32, block_config=(6, 12, 24, 16),
-                 num_init_features=64, bn_size=4, drop_rate=0, emb_size=192, memory_efficient=False):
+                 num_init_features=64, bn_size=4, drop_rate=0, emb_size=192, stride=2, memory_efficient=False):
 
         super(DenseNet, self).__init__()
 
@@ -156,11 +157,11 @@ class DenseNet(nn.Module):
 
         # First convolution
         self.features = nn.Sequential(OrderedDict([
-            ('conv0', nn.Conv2d(1, num_init_features, kernel_size=7, stride=2,
+            ('conv0', nn.Conv2d(1, num_init_features, kernel_size=7, stride=stride,
                                 padding=3, bias=False)),
             ('norm0', nn.BatchNorm2d(num_init_features)),
             ('relu0', nn.ReLU(inplace=True)),
-            ('pool0', nn.MaxPool2d(kernel_size=3, stride=2, padding=1)),
+            ('pool0', nn.MaxPool2d(kernel_size=3, stride=stride, padding=1)),
         ]))
 
         # Each denseblock

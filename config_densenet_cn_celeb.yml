@@ -89,42 +89,14 @@ s:
 n_class:
   help: "Number of speakers"
   value: 1996
-    
-feat_type:
-  value: fbank
+
+stride:
+  value: 2
   help: |
-    Type of the features
-    - fbank
-    - wavlm
-    - wav2vec2
+    Stride for first convolution
+    First version: 2 but too much division
+    Second version: 1
 
-feat_dim:
-  value: 80
-  help: |
-    A spécifier lorsque feat_type = fbank
-    Pour les autres ça sera determiner automatiquement
-
-is_2d:
-  value: false
-  help: "For 2d learnable weights"
-
-
-model_name:
-  value: "facebook/wav2vec2-base-960h"
-  help: |
-    The model name to use for training or evaluation.
-    Available options:
-    - For Wav2Vec2
-    - facebook/wav2vec2-base-960h
-    - facebook/wav2vec2-large-960h
-    - facebook/wav2vec2-large-robust-ft-libri-960h
-    - facebook/wav2vec2-large-960h-lv60-self
-    - For WavLM
-    - microsoft/wavlm-base
-    - microsoft/wavlm-base-plus
-    - microsoft/wavlm-base-plus-sv
-    - microsoft/wavlm-base-sv
-    - microsoft/wavlm-large
   
 
 # Command

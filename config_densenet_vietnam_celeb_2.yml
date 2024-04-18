@@ -8,7 +8,7 @@ num_frames:
   help: "Duration of the input segments, eg: 200 for 2 second"
 
 max_epoch:
-  value: 100
+  value: 200
   help: "Maximum number of epochs"
 
 batch_size:
@@ -36,22 +36,22 @@ lr_decay:
 
 train_list:
   help: "All paths to training list"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/train_list.txt.edited
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-t.txt.edited
 
 
 train_path:
   help: "Directory to training data where speaker audio are stored"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/wav
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
 
     
 eval_list:
   help: "All paths to evaluation list"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/veri_test2.txt.edited
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-e.txt.edited
 
 
 eval_path:
   help: "All paths to evaluation data"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
 
 
 musan_path:
@@ -63,15 +63,15 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_densenet_voxceleb
+  value: exps/exp_densenet_vietnam_celeb_2
   help: "Path to save the score.txt and models"
 
 initial_model:
   value: ""
   help: |
     Path of the initial_model
-    exps/exp_densenet/model/model_0001.model
-    exps/exp_densenet/model/best.model
+    exps/exp_resnet5/model/model_0080.model
+    exps/exp_resnet5/model/best.model
 
 # Model and Loss settings
 C:
@@ -88,16 +88,30 @@ s:
 
 n_class:
   help: "Number of speakers"
-  value: 5994
+  value: 880
+    
+feat_type:
+  value: fbank
+  help: |
+    Type of the features
+    - fbank
+    - wavlm
+    - wav2vec2
+
+feat_dim:
+  value: 80
+  help: |
+    A spécifier lorsque feat_type = fbank
+    Pour les autres ça sera determiner automatiquement
+    
 
 stride:
-  value: 2
+  value: 1
   help: |
     Stride for first convolution
     First version: 2 but too much division
     Second version: 1
-    
-    
+  
 
 # Command
 eval:
