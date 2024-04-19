@@ -10,3 +10,7 @@ soundfile
 wget
 ffmpeg
 transformers
+pandas
+matplotlib
+yaml
+pyyaml
