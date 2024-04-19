@@ -53,11 +53,11 @@ class EmbeddingsDataset(Dataset):
 
 
 class DENSENETModel(nn.Module):
-    def __init__(self, lr, lr_decay, C, n_class, m, s, stride, test_step, **kwargs):
+    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, **kwargs):
         super(DENSENETModel, self).__init__()
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.speaker_encoder = DenseNet(stride=stride).to(self.device)
+        self.speaker_encoder = DenseNet().to(self.device)
         # Classifier
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
