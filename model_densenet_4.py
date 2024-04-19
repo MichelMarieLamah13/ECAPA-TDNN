@@ -1,3 +1,4 @@
+import math
 import re
 import torch
 import torch.nn as nn
@@ -6,6 +7,7 @@ import torch.utils.checkpoint as cp
 from collections import OrderedDict
 
 import torchaudio
+from scipy.stats import skew, kurtosis
 from torch.hub import load_state_dict_from_url
 from torch import Tensor
 from torch.jit.annotations import List
@@ -20,6 +22,78 @@ model_urls = {
     'densenet201': 'https://download.pytorch.org/models/densenet201-c1103571.pth',
     'densenet161': 'https://download.pytorch.org/models/densenet161-8d451a50.pth',
 }
+
+
+def adaptive_x_pool2d(input, type, output_size):
+    # Calculate the size of the pooling window for each dimension
+    H_out, W_out = output_size
+    H_in, W_in = input.size()[2:]
+
+    # Calculate the strides for each dimension
+    stride_H = H_in // H_out
+    stride_W = W_in // W_out
+
+    # List to store the results
+    pooled = []
+
+    # Iterate over each example in the batch
+    for i in range(input.size(0)):
+        # Iterate over each channel
+        for j in range(input.size(1)):
+            # Iterate over each pooling window
+            for h in range(H_out):
+                for w in range(W_out):
+                    # Select the pooling window
+                    input_patch = input[i, j, h * stride_H:(h + 1) * stride_H, w * stride_W:(w + 1) * stride_W]
+                    # Calculate the type value of the pooling window
+                    if type == "min":
+                        value = torch.min(input_patch)
+                    elif type == "skew":
+                        value = skew(input_patch.flatten().cpu().numpy())
+                    elif type == "kurtosis":
+                        value = kurtosis(input_patch.flatten().cpu().numpy(), fisher=False)
+                    else:
+                        value = torch.std(input_patch)
+
+                    # Append the result to the list
+                    pooled.append(value)
+
+    # Convert the list to a tensor
+    pooled = torch.stack(pooled)
+    # Reshape the tensor to get the final shape
+    pooled = pooled.view(input.size(0), input.size(1), H_out, W_out)
+
+    return pooled
+
+
+def pooling(x, output_size, mode='statistical'):
+    """
+        function that implement different kind of pooling
+    """
+    if mode == 'min':
+        x = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+    elif mode == 'max':
+        x = F.adaptive_max_pool2d(x, output_size)
+    elif mode == 'mean':
+        x = F.adaptive_avg_pool2d(x, output_size)
+    elif mode == 'std':
+        x = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+    elif mode == 'statistical':
+        means = F.adaptive_avg_pool2d(x, output_size)
+        stds = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        x = torch.cat([means, stds], dim=1)
+    elif mode == 'std_kurtosis':
+        stds = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        kurtoses = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        x = torch.cat([stds, kurtoses], dim=1)
+    elif mode == 'std_skew':
+        stds = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        skews = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        x = torch.cat([stds, skews], dim=1)
+    else:
+        raise ValueError('Unexpected pooling mode.')
+
+    return x
 
 
 class _DenseLayer(nn.Module):
@@ -121,13 +195,13 @@ class _DenseBlock(nn.ModuleDict):
 
 
 class _Transition(nn.Sequential):
-    def __init__(self, num_input_features, num_output_features):
+    def __init__(self, num_input_features, num_output_features, stride=2):
         super(_Transition, self).__init__()
         self.add_module('norm', nn.BatchNorm2d(num_input_features))
         self.add_module('relu', nn.ReLU(inplace=True))
         self.add_module('conv', nn.Conv2d(num_input_features, num_output_features,
                                           kernel_size=1, stride=1, bias=False))
-        self.add_module('pool', nn.AvgPool2d(kernel_size=2, stride=2))
+        self.add_module('pool', nn.AvgPool2d(kernel_size=2, stride=stride))
 
 
 class DenseNet(nn.Module):
@@ -148,7 +222,8 @@ class DenseNet(nn.Module):
     """
 
     def __init__(self, growth_rate=32, block_config=(6, 12, 24, 16),
-                 num_init_features=64, bn_size=4, drop_rate=0, emb_size=192, stride=2, memory_efficient=False):
+                 num_init_features=64, bn_size=4, drop_rate=0, emb_size=192, pooling_mode='std',
+                 memory_efficient=False):
 
         super(DenseNet, self).__init__()
 
@@ -161,13 +236,12 @@ class DenseNet(nn.Module):
 
         # First convolution
         self.features = nn.Sequential(OrderedDict([
-            ('conv0', nn.Conv2d(1, num_init_features, kernel_size=7, stride=stride,
+            ('conv0', nn.Conv2d(1, num_init_features, kernel_size=7, stride=2,
                                 padding=3, bias=False)),
             ('norm0', nn.BatchNorm2d(num_init_features)),
             ('relu0', nn.ReLU(inplace=True)),
-            ('pool0', nn.MaxPool2d(kernel_size=3, stride=stride, padding=1)),
+            ('pool0', nn.MaxPool2d(kernel_size=3, stride=2, padding=1)),
         ]))
-
         # Each denseblock
         num_features = num_init_features
         for i, num_layers in enumerate(block_config):
@@ -191,7 +265,9 @@ class DenseNet(nn.Module):
         self.features.add_module('norm5', nn.BatchNorm2d(num_features))
 
         # Linear layer
-        self.classifier = nn.Linear(num_features, emb_size)
+        self.pooling_mode = pooling_mode
+        pooling_size = 2 if self.pooling_mode in ['statistical', 'std_skew', 'std_kurtosis'] else 1
+        self.classifier = nn.Linear(num_features * pooling_size, emb_size)
 
         # Official init from torch repo.
         for m in self.modules():
@@ -212,12 +288,15 @@ class DenseNet(nn.Module):
                 x = self.specaug(x)
         x = x.unsqueeze(1)
         x = x.transpose(2, 3)
+
         x = self.features(x)
+
         x = F.relu(x, inplace=True)
 
-        x = F.adaptive_avg_pool2d(x, (1, 1))
+        x = pooling(x, output_size=(1, 1), mode=self.pooling_mode)
         x = torch.flatten(x, 1)
         x = self.classifier(x)
+
         return x
 
 
