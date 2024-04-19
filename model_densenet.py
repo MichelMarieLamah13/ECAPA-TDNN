@@ -212,12 +212,12 @@ class DenseNet(nn.Module):
                 x = self.specaug(x)
         x = x.unsqueeze(1)
         x = x.transpose(2, 3)
-        features = self.features(x)
-        out = F.relu(features, inplace=True)
-        out = F.adaptive_avg_pool2d(out, (1, 1))
-        out = torch.flatten(out, 1)
-        out = self.classifier(out)
-        return out
+        x = self.features(x)
+        x = F.relu(x, inplace=True)
+        x = F.adaptive_avg_pool2d(x, (1, 1))
+        x = torch.flatten(x, 1)
+        x = self.classifier(x)
+        return x
 
 
 def _load_state_dict(model, model_url, progress):
