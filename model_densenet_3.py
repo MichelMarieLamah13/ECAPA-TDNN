@@ -227,12 +227,7 @@ class DenseNet(nn.Module):
         self.features.add_module('norm5', nn.BatchNorm2d(num_features))
 
         # Linear layer
-        self.pooling_mode = pooling_mode
-
-        pooling_size = 2 if self.pooling_mode in ['statistical', 'std_skew', 'std_kurtosis'] else 1
-        self.fc = nn.Linear(
-            block_config[3] * math.ceil(features_per_frame * (0.5 ** (len(block_config) - 1))) * pooling_size,
-            emb_size)
+        self.fc = nn.Linear(num_features, emb_size)
         self.bn2 = nn.BatchNorm1d(emb_size)
         # Official init from torch repo.
         for m in self.modules():
