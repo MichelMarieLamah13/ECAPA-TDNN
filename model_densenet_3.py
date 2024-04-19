@@ -232,7 +232,6 @@ class DenseNet(nn.Module):
         self.fc = nn.Linear(
             num_features * math.floor(features_per_frame * (0.5 ** ((len(block_config) - 1) + 2))) * pooling_size,
             emb_size)
-        self.bn2 = nn.BatchNorm1d(emb_size)
         # Official init from torch repo.
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -260,7 +259,6 @@ class DenseNet(nn.Module):
         x = pooling(x, self.pooling_mode)
 
         x = self.fc(x)
-        x = self.bn2(x)
         return x
 
 
