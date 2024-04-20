@@ -3,9 +3,10 @@
 #SBATCH --job-name=densenet_vc_2
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --constraint=GPURAM_Min_12GB
+##SBATCH --constraint=GPURAM_Min_12GB
 #SBATCH --time=7-00:00:00
-#SBATCH --exclude=helios,apollon
+#SBATCH --nodelist=eris
+##SBATCH --exclude=helios,apollon
 #SBATCH --mem=32GB
 #SBATCH --cpus-per-task=8
 #SBATCH --output=%x_output.log
