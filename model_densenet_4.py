@@ -71,24 +71,24 @@ def pooling(x, output_size, mode='statistical'):
         function that implement different kind of pooling
     """
     if mode == 'min':
-        x = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        x = adaptive_x_pool2d(x, output_size=output_size, type='min')
     elif mode == 'max':
         x = F.adaptive_max_pool2d(x, output_size)
     elif mode == 'mean':
         x = F.adaptive_avg_pool2d(x, output_size)
     elif mode == 'std':
-        x = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        x = adaptive_x_pool2d(x, output_size=output_size, type='std')
     elif mode == 'statistical':
         means = F.adaptive_avg_pool2d(x, output_size)
-        stds = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        stds = adaptive_x_pool2d(x, output_size=output_size, type='std')
         x = torch.cat([means, stds], dim=1)
     elif mode == 'std_kurtosis':
-        stds = adaptive_x_pool2d(x, output_size=output_size, type=mode)
-        kurtoses = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        stds = adaptive_x_pool2d(x, output_size=output_size, type='std')
+        kurtoses = adaptive_x_pool2d(x, output_size=output_size, type='kurtosis')
         x = torch.cat([stds, kurtoses], dim=1)
     elif mode == 'std_skew':
-        stds = adaptive_x_pool2d(x, output_size=output_size, type=mode)
-        skews = adaptive_x_pool2d(x, output_size=output_size, type=mode)
+        stds = adaptive_x_pool2d(x, output_size=output_size, type='std')
+        skews = adaptive_x_pool2d(x, output_size=output_size, type='skew')
         x = torch.cat([stds, skews], dim=1)
     else:
         raise ValueError('Unexpected pooling mode.')
