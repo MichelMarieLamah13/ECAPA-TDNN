@@ -64,7 +64,9 @@ rir_path:
 
 save_path:
   value: exps/exp_densenet_vietnam_celeb_3_std_2
-  help: "Path to save the score.txt and models (without relu after features)"
+  help: |
+    exps/exp_densenet_vietnam_celeb_3_std_2 (without relu after features)
+    exps/exp_densenet_vietnam_celeb_3_std_2_relu (with relu after features)
 
 initial_model:
   value: ""

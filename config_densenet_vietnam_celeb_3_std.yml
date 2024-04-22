@@ -63,10 +63,10 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_densenet_vietnam_celeb_4_std
+  value: exps/exp_densenet_vietnam_celeb_3_std_relu
   help: |
     exps/exp_densenet_vietnam_celeb_3_std (without relu after features)
-    exps/exp_densenet_vietnam_celeb_3_std_4 (with relu after features)
+    exps/exp_densenet_vietnam_celeb_3_std_relu (with relu after features)
 
 initial_model:
   value: ""
