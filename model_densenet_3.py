@@ -254,6 +254,8 @@ class DenseNet(nn.Module):
 
         x = self.features(x)
 
+        x = F.relu(x, inplace=True)
+
         x = x.transpose(2, 3)
         x = x.flatten(1, 2)
         x = pooling(x, self.pooling_mode)

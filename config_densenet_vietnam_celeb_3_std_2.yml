@@ -13,7 +13,7 @@ max_epoch:
 
 batch_size:
   value: 16
-  help: "Batch size"
+  help: "Batch size (16 in other mode) (8 in debug mode)"
 
 n_cpu:
   value: 8
@@ -64,7 +64,7 @@ rir_path:
 
 save_path:
   value: exps/exp_densenet_vietnam_celeb_3_std_2
-  help: "Path to save the score.txt and models"
+  help: "Path to save the score.txt and models (without relu after features)"
 
 initial_model:
   value: ""

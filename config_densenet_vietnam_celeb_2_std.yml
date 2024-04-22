@@ -13,7 +13,7 @@ max_epoch:
 
 batch_size:
   value: 16
-  help: "Batch size"
+  help: "Batch size (16 in other mode) (8 in debug mode)"
 
 n_cpu:
   value: 8
@@ -99,7 +99,7 @@ stride:
     Second version: 1
 
 pooling_mode:
-  value: "std"
+  value: "mean"
   help: "Pooling_mode"
   
 
