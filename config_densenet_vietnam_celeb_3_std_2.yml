@@ -12,7 +12,7 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 16
+  value: 32
   help: "Batch size"
 
 n_cpu:
