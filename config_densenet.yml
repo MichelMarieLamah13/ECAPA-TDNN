@@ -97,7 +97,9 @@ stride:
     First version: 2 but too much division
     Second version: 1
     
-    
+pooling_mode:
+  value: "mean"
+  help: "Pooling_mode"
 
 # Command
 eval:

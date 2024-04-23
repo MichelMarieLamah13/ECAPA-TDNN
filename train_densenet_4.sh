@@ -8,7 +8,7 @@
 #SBATCH --time=7-00:00:00
 ##SBATCH --nodelist=eris
 #SBATCH --exclude=helios,apollon,eris
-#SBATCH --mem=32GB
+#SBATCH --mem=16GB
 #SBATCH --cpus-per-task=8
 #SBATCH --output=%x_output.log
 #SBATCH --error=%x_error.log

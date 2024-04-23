@@ -184,7 +184,7 @@ class DenseNet(nn.Module):
     """
 
     def __init__(self, growth_rate=32, block_config=(6, 12, 24, 16),
-                 num_init_features=64, bn_size=4, drop_rate=0, emb_size=192, pooling_mode='std',
+                 num_init_features=64, bn_size=4, drop_rate=0, emb_size=192, stride=2, pooling_mode='std',
                  features_per_frame=80, memory_efficient=False):
 
         super(DenseNet, self).__init__()
@@ -198,11 +198,11 @@ class DenseNet(nn.Module):
 
         # First convolution
         self.features = nn.Sequential(OrderedDict([
-            ('conv0', nn.Conv2d(1, num_init_features, kernel_size=7, stride=2,
+            ('conv0', nn.Conv2d(1, num_init_features, kernel_size=7, stride=stride,
                                 padding=3, bias=False)),
             ('norm0', nn.BatchNorm2d(num_init_features)),
             ('relu0', nn.ReLU(inplace=True)),
-            ('pool0', nn.MaxPool2d(kernel_size=3, stride=2, padding=1)),
+            ('pool0', nn.MaxPool2d(kernel_size=3, stride=stride, padding=1)),
         ]))
         # Each denseblock
         num_features = num_init_features
@@ -253,6 +253,8 @@ class DenseNet(nn.Module):
         x = x.transpose(2, 3)
 
         x = self.features(x)
+
+        x = F.relu(x, inplace=True)
 
         x = x.transpose(2, 3)
         x = x.flatten(1, 2)

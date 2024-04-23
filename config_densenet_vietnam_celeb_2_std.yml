@@ -12,11 +12,11 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 64
-  help: "Batch size"
+  value: 8
+  help: "Batch size (16 in other mode) (8 in debug mode)"
 
 n_cpu:
-  value: 8
+  value: 4
   help: "Number of loader threads"
 
 test_step:
@@ -63,7 +63,7 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_densenet_vietnam_celeb_3
+  value: exps/exp_densenet_vietnam_celeb_2_std
   help: "Path to save the score.txt and models"
 
 initial_model:
@@ -89,7 +89,19 @@ s:
 n_class:
   help: "Number of speakers"
   value: 880
+    
 
+stride:
+  value: 1
+  help: |
+    Stride for first convolution
+    First version: 2 but too much division
+    Second version: 1
+
+pooling_mode:
+  value: "mean"
+  help: "Pooling_mode"
+  
 
 # Command
 eval:
