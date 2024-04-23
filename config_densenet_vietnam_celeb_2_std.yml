@@ -12,11 +12,11 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 16
+  value: 8
   help: "Batch size (16 in other mode) (8 in debug mode)"
 
 n_cpu:
-  value: 8
+  value: 4
   help: "Number of loader threads"
 
 test_step:
