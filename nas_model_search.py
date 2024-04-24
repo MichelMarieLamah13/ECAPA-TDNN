@@ -124,9 +124,16 @@ class NASSEARCH(nn.Module):
             x.data.copy_(y.data)
         return model_new
 
-    def forward(self, input, discrete=False):
-        input = input.unsqueeze(1)
-        s0 = s1 = self.stem(input)
+    def forward(self, x, aug, discrete=False):
+        with torch.no_grad():
+            x = self.torchfbank(x) + 1e-6
+            x = x.log()
+            x = (x - torch.mean(x, dim=-1, keepdim=True))
+            if aug:
+                x = self.specaug(x)
+        x = x.unsqueeze(1)
+        x = x.transpose(2, 3)
+        x_ = x = self.stem(x)
         for i, cell in enumerate(self.cells):
             if cell.reduction:
                 if discrete:
@@ -138,19 +145,19 @@ class NASSEARCH(nn.Module):
                     weights = self.alphas_normal
                 else:
                     weights = gumbel_softmax(F.log_softmax(self.alphas_normal, dim=-1))
-            s0, s1 = s1, cell(s0, s1, weights, self.drop_path_prob)
-        v = self.global_pooling(s1)
-        v = v.view(v.size(0), -1)
+            x_, x = x, cell(x_, x, weights, self.drop_path_prob)
+        x = self.global_pooling(x)
+        x = x.view(x.size(0), -1)
         if not self.training:
-            return v
+            return x
 
-        y = self.classifier(v)
+        x = self.classifier(x)
 
-        return y
+        return x
 
-    def forward_classifier(self, v):
-        y = self.classifier(v)
-        return y
+    def forward_classifier(self, x):
+        x = self.classifier(x)
+        return x
 
     def _initialize_alphas(self):
         k = sum(1 for i in range(self._steps) for n in range(2 + i))
