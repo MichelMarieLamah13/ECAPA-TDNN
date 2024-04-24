@@ -17,9 +17,8 @@ conda activate ecapa_tdnn
 
 # python3 trainNASSEARCHModel.py --config config_nas_search.yml
 # python3 trainNASSEARCHModel.py --config config_nas_search_cn_celeb.yml
-# python3 trainNASSEARCHModel.py --config config_nas_search_vietnam_celeb.yml
+python3 trainNASSEARCHModel.py --config config_nas_search_vietnam_celeb.yml
 # python3 trainNASSEARCHModel.py --config config_nas_search_finetuner_vietnam_celeb.yml
-python3 trainNASSEARCHModel.py --config config_resnet_finetuner_cn_celeb.yml
 # python3 -m pdb trainNASSEARCHModel.py
 
 conda deactivate
