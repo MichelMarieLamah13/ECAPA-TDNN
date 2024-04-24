@@ -74,7 +74,7 @@ if __name__ == "__main__":
     # If initial_model is exist, system will train from the initial_model
     if args.initial_model != "":
         print(f"Model {args.initial_model} loaded from previous state!", flush=True)
-        s = RESNETModel(**vars(args))
+        s = NASSEARCHModel(**vars(args))
         s.load_parameters(args.initial_model)
         epoch = 1
         EERs = []
