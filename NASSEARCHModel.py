@@ -9,6 +9,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
 from model_densenet import DenseNet
+from nas_model_search import NASSEARCH
+from nas_spaces import primitives_2
 from tools import *
 from loss import AAMsoftmax
 from model_resnet import ResNet
@@ -52,12 +54,18 @@ class EmbeddingsDataset(Dataset):
         return file, data_1, data_1.shape[1], data_2
 
 
-class DENSENETModel(nn.Module):
-    def __init__(self, lr, lr_decay, C, n_class, m, s, stride, pooling_mode, test_step, **kwargs):
-        super(DENSENETModel, self).__init__()
+class NASSEARCHModel(nn.Module):
+    def __init__(self, lr, lr_decay, C, n_class, m, s, n_layers, test_step, drop_proba, **kwargs):
+        super(NASSEARCHModel, self).__init__()
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.speaker_encoder = DenseNet(stride=stride, pooling_mode=pooling_mode).to(self.device)
+        self.speaker_encoder = NASSEARCH(
+            C=C,
+            num_classes=192,
+            layers=n_layers,
+            primitives=primitives_2,
+            drop_path_prob=drop_proba
+        ).to(self.device)
         # Classifier
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
@@ -86,6 +94,12 @@ class DENSENETModel(nn.Module):
                   " [%2d] Lr: %5f, Training: %.2f%%, " % (epoch, lr, 100 * (num / loader.__len__())) + \
                   " Loss: %.5f, ACC: %2.2f%%" % (loss / num, top1 / index * len(labels)), flush=True)
         return loss / num, lr, top1 / index * len(labels)
+
+    def set_drop_proba(self, drop_proba):
+        self.speaker_encoder.drop_path_prob = drop_proba
+
+    def genotype(self):
+        return self.speaker_encoder.genotype()
 
     def eval_network(self, eval_list, eval_path, n_cpu=5):
         self.eval()
@@ -158,6 +172,17 @@ class DENSENETModel(nn.Module):
             for file in old_files:
                 os.remove(file)
         torch.save(self.state_dict(), path)
+
+    def save_genotype(self, path, delete=False):
+        genotype = self.genotype()
+        if delete:
+            folder = os.path.dirname(path)
+            old_files = glob.glob(f'{folder}/model_0*.genotype')
+            for file in old_files:
+                os.remove(file)
+
+        with open(path, 'w') as f:
+            f.write(f"{genotype}\n")
 
     def load_parameters(self, path):
         self_state = self.state_dict()
