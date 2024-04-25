@@ -12,7 +12,7 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 4
+  value: 8
   help: "Batch size"
 
 n_cpu:
@@ -75,8 +75,8 @@ initial_model:
 
 # Model and Loss settings
 C:
-  value: 1024
-  help: "Channel size for the speaker encoder"
+  value: 16
+  help: "Init channel size"
 
 m:
   value: 0.2
@@ -91,7 +91,7 @@ n_class:
   value: 880
 
 n_layers:
-  value: 4
+  value: 8
   help: "Number of layers for cell"
 
 drop_proba:
