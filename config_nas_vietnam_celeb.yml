@@ -95,7 +95,7 @@ n_layers:
   help: "Number of layers for cell"
     
 genotype_path:
-  value: "exps/exp_nas_vietnam_celeb/model/best.genotype"
+  value: "exps/exp_nas_search_vietnam_celeb/model/best.genotype"
   help: The path for the genotype
 
 # Command
