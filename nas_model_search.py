@@ -210,8 +210,6 @@ class NASSEARCH(nn.Module):
             x_, x = x, cell(x_, x, weights, self.drop_path_prob)
         x = self.global_pooling(x)
         x = x.view(x.size(0), -1)
-        if not self.training:
-            return x
 
         x = self.classifier(x)
 

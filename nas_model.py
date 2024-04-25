@@ -1,12 +1,72 @@
+import torchaudio
+
 from nas_operations import *
 from nas_utils import drop_path
+import torch.nn.functional as F
+
+
+class PreEmphasis(torch.nn.Module):
+
+    def __init__(self, coef: float = 0.97):
+        super().__init__()
+        self.coef = coef
+        self.register_buffer(
+            'flipped_filter', torch.FloatTensor([-self.coef, 1.]).unsqueeze(0).unsqueeze(0)
+        )
+
+    def forward(self, input: torch.tensor) -> torch.tensor:
+        input = input.unsqueeze(1)
+        input = F.pad(input, (1, 0), 'reflect')
+        return F.conv1d(input, self.flipped_filter).squeeze(1)
+
+
+class FbankAug(nn.Module):
+
+    def __init__(self, freq_mask_width=(0, 8), time_mask_width=(0, 10)):
+        self.time_mask_width = time_mask_width
+        self.freq_mask_width = freq_mask_width
+        super().__init__()
+
+    def mask_along_axis(self, x, dim):
+        original_size = x.shape
+        batch, fea, time = x.shape
+        if dim == 1:
+            D = fea
+            width_range = self.freq_mask_width
+        else:
+            D = time
+            width_range = self.time_mask_width
+
+        mask_len = torch.randint(width_range[0], width_range[1], (batch, 1), device=x.device).unsqueeze(2)
+        mask_pos = torch.randint(0, max(1, D - mask_len.max()), (batch, 1), device=x.device).unsqueeze(2)
+        arange = torch.arange(D, device=x.device).view(1, 1, -1)
+        mask = (mask_pos <= arange) * (arange < (mask_pos + mask_len))
+        mask = mask.any(dim=1)
+
+        if dim == 1:
+            mask = mask.unsqueeze(2)
+        else:
+            mask = mask.unsqueeze(1)
+
+        x = x.masked_fill_(mask, 0.0)
+        return x.view(*original_size)
+
+    def forward(self, x):
+        x = self.mask_along_axis(x, dim=2)
+        x = self.mask_along_axis(x, dim=1)
+        return x
 
 
 class Cell(nn.Module):
 
     def __init__(self, genotype, C_prev_prev, C_prev, C, reduction, reduction_prev):
         super(Cell, self).__init__()
-        print(C_prev_prev, C_prev, C)
+        self.torchfbank = torch.nn.Sequential(
+            PreEmphasis(),
+            torchaudio.transforms.MelSpectrogram(sample_rate=16000, n_fft=512, win_length=400, hop_length=160, \
+                                                 f_min=20, f_max=7600, window_fn=torch.hamming_window, n_mels=80),
+        )
+        self.specaug = FbankAug()
 
         if reduction_prev:
             self.preprocess0 = FactorizedReduce(C_prev_prev, C)
@@ -111,15 +171,13 @@ class NAS(nn.Module):
         s1 = self.stem1(s0)
         for i, cell in enumerate(self.cells):
             s0, s1 = s1, cell(s0, s1, self.drop_path_prob)
-        v = self.global_pooling(s1)
-        v = v.view(v.size(0), -1)
-        if not self.training:
-            return v
+        x = self.global_pooling(s1)
+        x = x.view(x.size(0), -1)
 
-        y = self.classifier(v)
+        x = self.classifier(x)
 
-        return y
+        return x
 
-    def forward_classifier(self, v):
-        y = self.classifier(v)
-        return y
+    def forward_classifier(self, x):
+        x = self.classifier(x)
+        return x
