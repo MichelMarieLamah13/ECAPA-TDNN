@@ -58,8 +58,7 @@ class NASSEARCHModel(nn.Module):
     def __init__(self, lr, lr_decay, C, n_class, m, s, n_layers, test_step, drop_proba, **kwargs):
         super(NASSEARCHModel, self).__init__()
         # Densenet
-        # self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.device = "cpu"
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.speaker_encoder = NASSEARCH(
             C=C,
             num_classes=192,
