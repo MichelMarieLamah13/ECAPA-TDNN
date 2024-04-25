@@ -61,13 +61,6 @@ class Cell(nn.Module):
 
     def __init__(self, genotype, C_prev_prev, C_prev, C, reduction, reduction_prev):
         super(Cell, self).__init__()
-        self.torchfbank = torch.nn.Sequential(
-            PreEmphasis(),
-            torchaudio.transforms.MelSpectrogram(sample_rate=16000, n_fft=512, win_length=400, hop_length=160, \
-                                                 f_min=20, f_max=7600, window_fn=torch.hamming_window, n_mels=80),
-        )
-        self.specaug = FbankAug()
-
         if reduction_prev:
             self.preprocess0 = FactorizedReduce(C_prev_prev, C)
         else:
@@ -121,6 +114,14 @@ class NAS(nn.Module):
 
     def __init__(self, C, num_classes, layers, genotype):
         super(NAS, self).__init__()
+
+        self.torchfbank = torch.nn.Sequential(
+            PreEmphasis(),
+            torchaudio.transforms.MelSpectrogram(sample_rate=16000, n_fft=512, win_length=400, hop_length=160, \
+                                                 f_min=20, f_max=7600, window_fn=torch.hamming_window, n_mels=80),
+        )
+        self.specaug = FbankAug()
+
         self._C = C
         self._num_classes = num_classes
         self._layers = layers
