@@ -98,6 +98,10 @@ genotype_path:
   value: "exps/exp_nas_search_vietnam_celeb/model/best.genotype"
   help: The path for the genotype
 
+drop_proba:
+  value: 0.0
+  help: "Proba dropping layer"
+
 # Command
 eval:
   value: false

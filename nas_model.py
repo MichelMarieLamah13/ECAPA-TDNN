@@ -112,7 +112,7 @@ class Cell(nn.Module):
 
 class NAS(nn.Module):
 
-    def __init__(self, C, num_classes, layers, genotype):
+    def __init__(self, C, num_classes, layers, drop_proba, genotype):
         super(NAS, self).__init__()
 
         self.torchfbank = torch.nn.Sequential(
@@ -122,6 +122,7 @@ class NAS(nn.Module):
         )
         self.specaug = FbankAug()
 
+        self.drop_path_prob = drop_proba
         self._C = C
         self._num_classes = num_classes
         self._layers = layers

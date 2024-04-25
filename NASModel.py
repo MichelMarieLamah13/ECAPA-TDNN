@@ -57,7 +57,7 @@ class EmbeddingsDataset(Dataset):
 
 
 class NASModel(nn.Module):
-    def __init__(self, lr, lr_decay, C, n_class, m, s, n_layers, test_step, genotype_path, **kwargs):
+    def __init__(self, lr, lr_decay, C, n_class, m, s, n_layers, test_step, drop_proba, genotype_path, **kwargs):
         super(NASModel, self).__init__()
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -66,6 +66,7 @@ class NASModel(nn.Module):
             C=C,
             num_classes=192,
             layers=n_layers,
+            drop_proba=drop_proba,
             genotype=self.genotype
         ).to(self.device)
         # Classifier
