@@ -97,9 +97,17 @@ class NAS(nn.Module):
         self.global_pooling = nn.AdaptiveAvgPool2d((1, 1))
         self.classifier = nn.Linear(C_prev, num_classes)
 
-    def forward(self, input):
-        input = input.unsqueeze(1)
-        s0 = self.stem0(input)
+    def forward(self, x, aug):
+        with torch.no_grad():
+            x = self.torchfbank(x) + 1e-6
+            x = x.log()
+            x = (x - torch.mean(x, dim=-1, keepdim=True))
+            if aug:
+                x = self.specaug(x)
+        x = x.unsqueeze(1)
+        x = x.transpose(2, 3)
+
+        s0 = self.stem0(x)
         s1 = self.stem1(s0)
         for i, cell in enumerate(self.cells):
             s0, s1 = s1, cell(s0, s1, self.drop_path_prob)
