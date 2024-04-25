@@ -12,6 +12,7 @@ from model_densenet import DenseNet
 from nas_model import NAS
 from nas_model_search import NASSEARCH
 from nas_spaces import primitives_2
+from nas_utils import Genotype
 from tools import *
 from loss import AAMsoftmax
 from model_resnet import ResNet
@@ -170,7 +171,7 @@ class NASModel(nn.Module):
 
     def load_genotype(self, path):
         with open(path) as f:
-            return f.readline()
+            return eval(f.readline())
 
     def load_parameters(self, path):
         self_state = self.state_dict()

@@ -12,7 +12,7 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 8
+  value: 32
   help: "Batch size"
 
 n_cpu:
@@ -94,6 +94,9 @@ n_layers:
   value: 8
   help: "Number of layers for cell"
     
+genotype_path:
+  value: "exps/exp_nas_vietnam_celeb/model/best.genotype"
+  help: The path for the genotype
 
 # Command
 eval:
