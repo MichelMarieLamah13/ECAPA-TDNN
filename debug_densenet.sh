@@ -17,6 +17,9 @@ conda activate ecapa_tdnn
 # python3 -m pdb trainDENSENETModel.py --config config_densenet_vietnam_celeb.yml
 # python3 -m pdb trainDENSENETModel.py --config config_densenet_vietnam_celeb_2.yml
 
-python3 -m pdb trainDENSENETModel_3.py --config config_densenet_vietnam_celeb_3_std.yml
+# python3 -m pdb trainDENSENETModel_3.py --config config_densenet_vietnam_celeb_3_std.yml
+
+python3 -m pdb trainDENSENETModel.py --config config_densenet_vietnam_celeb_2_2.yml
+
 
 conda deactivate
