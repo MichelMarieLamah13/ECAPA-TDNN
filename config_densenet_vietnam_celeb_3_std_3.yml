@@ -63,8 +63,10 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_densenet_vietnam_celeb_2
-  help: "Path to save the score.txt and models"
+  value: exps/exp_densenet_vietnam_celeb_3_std_2_relu
+  help: |
+    exps/exp_densenet_vietnam_celeb_3_std_2 (without relu after features)
+    exps/exp_densenet_vietnam_celeb_3_std_2_relu (with relu after features)
 
 initial_model:
   value: ""
@@ -89,7 +91,6 @@ s:
 n_class:
   help: "Number of speakers"
   value: 880
-    
 
 stride:
   value: 1
@@ -97,6 +98,10 @@ stride:
     Stride for first convolution
     First version: 2 but too much division
     Second version: 1
+
+pooling_mode:
+  value: "std"
+  help: "Pooling_mode"
 
 growth_rate:
   value: 8
@@ -106,9 +111,6 @@ num_init_features:
   value: 8
   help: "Number of channel init"
 
-pooling_mode:
-  value: "mean"
-  help: "Pooling_mode"
 
 # Command
 eval:

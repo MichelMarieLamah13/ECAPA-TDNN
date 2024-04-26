@@ -101,6 +101,14 @@ pooling_mode:
   value: "mean"
   help: "Pooling_mode"
 
+growth_rate:
+  value: 32
+  help: "Growth rate"
+
+num_init_features:
+  value: 64
+  help: "Number of channel init"
+
 # Command
 eval:
   value: false

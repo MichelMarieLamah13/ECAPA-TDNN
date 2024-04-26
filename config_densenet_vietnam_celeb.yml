@@ -103,11 +103,11 @@ pooling_mode:
   help: "Pooling_mode"
 
 growth_rate:
-  value: 8
+  value: 32
   help: "Growth rate"
 
 num_init_features:
-  value: 8
+  value: 64
   help: "Number of channel init"
 
 # Command
