@@ -195,7 +195,7 @@ class NASSEARCH(nn.Module):
                 x = self.specaug(x)
         x = x.unsqueeze(1)
         x = x.transpose(2, 3)
-        x_ = x = self.stem(x)
+        s0 = s1 = self.stem(x)
         for i, cell in enumerate(self.cells):
             if cell.reduction:
                 if discrete:
@@ -207,14 +207,15 @@ class NASSEARCH(nn.Module):
                     weights = self.alphas_normal
                 else:
                     weights = gumbel_softmax(F.log_softmax(self.alphas_normal, dim=-1))
-            x_, x = x, cell(x_, x, weights, self.drop_path_prob)
-        x = self.global_pooling(x)
+            s0, s1 = s1, cell(s0, s1, weights, self.drop_path_prob)
+        v = self.global_pooling(s1)
+        v = v.view(v.size(0), -1)
+        # if not self.training:
+        #     return v
 
-        x = x.view(x.size(0), -1)
+        y = self.classifier(v)
 
-        x = self.classifier(x)
-
-        return x
+        return y
 
     def forward_classifier(self, x):
         x = self.classifier(x)
