@@ -133,7 +133,7 @@ class Cell(nn.Module):
 
 class NASSEARCH(nn.Module):
 
-    def __init__(self, C, num_classes, layers, primitives,
+    def __init__(self, C, emb_size, layers, primitives,
                  steps=4, multiplier=4, stem_multiplier=3, drop_path_prob=0.0):
         super(NASSEARCH, self).__init__()
 
@@ -145,7 +145,7 @@ class NASSEARCH(nn.Module):
         self.specaug = FbankAug()
 
         self._C = C
-        self._num_classes = num_classes
+        self._emb_size = emb_size
         self._layers = layers
         self._steps = steps
         self._multiplier = multiplier
@@ -175,7 +175,7 @@ class NASSEARCH(nn.Module):
             C_prev_prev, C_prev = C_prev, multiplier * C_curr
 
         self.global_pooling = nn.AdaptiveAvgPool2d((1, 1))
-        self.classifier = nn.Linear(C_prev, self._num_classes)
+        self.classifier = nn.Linear(C_prev, self._emb_size)
 
         self._initialize_alphas()
 
@@ -209,6 +209,7 @@ class NASSEARCH(nn.Module):
                     weights = gumbel_softmax(F.log_softmax(self.alphas_normal, dim=-1))
             x_, x = x, cell(x_, x, weights, self.drop_path_prob)
         x = self.global_pooling(x)
+
         x = x.view(x.size(0), -1)
 
         x = self.classifier(x)

@@ -61,7 +61,7 @@ class NASSEARCHModel(nn.Module):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.speaker_encoder = NASSEARCH(
             C=C,
-            num_classes=192,
+            emb_size=192,
             layers=n_layers,
             primitives=primitives_2,
             drop_path_prob=drop_proba
