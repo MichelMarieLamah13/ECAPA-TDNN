@@ -173,12 +173,13 @@ class NAS(nn.Module):
         s1 = self.stem1(s0)
         for i, cell in enumerate(self.cells):
             s0, s1 = s1, cell(s0, s1, self.drop_path_prob)
-        x = self.global_pooling(s1)
-        x = x.view(x.size(0), -1)
+        v = F.relu(s1, inplace=True)
+        v = self.global_pooling(v)
+        v = torch.flatten(v, 1)
 
-        x = self.classifier(x)
+        y = self.classifier(v)
 
-        return x
+        return y
 
     def forward_classifier(self, x):
         x = self.classifier(x)
