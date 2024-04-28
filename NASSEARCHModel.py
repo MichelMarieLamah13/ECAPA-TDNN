@@ -9,12 +9,16 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
 from model_densenet import DenseNet
+from nas_architect import Architect
 from nas_model_search import NASSEARCH
 from nas_spaces import primitives_2
+from nas_utils import AverageMeter
 from tools import *
 from loss import AAMsoftmax
 from model_resnet import ResNet
 from model_resnet import BasicBlock
+
+from nas_default import _C as cfg
 
 
 def collate_fn(batch):
@@ -70,20 +74,34 @@ class NASSEARCHModel(nn.Module):
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
+        self.architect = Architect(self.speaker_encoder, cfg)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
         print(time.strftime("%m-%d %H:%M:%S") + " Model para number = %.2f" % (
                 sum(param.numel() for param in self.speaker_encoder.parameters()) / 1024 / 1024))
 
-    def train_network(self, epoch, loader):
+    def train_network(self, epoch, loader, val_loader):
         self.train()
         # Update the learning rate based on the current epcoh
         self.scheduler.step(epoch - 1)
         index, top1, loss = 0, 0, 0
         lr = self.optim.param_groups[0]['lr']
+        alpha_entropies = AverageMeter('Entropy', ':.4e')
         for num, (data, labels) in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
             labels = torch.LongTensor(labels).to(self.device)
-            speaker_embedding = self.speaker_encoder.forward(data.to(self.device), aug=True)
+            data = data.to(self.device)
+
+            # step architecture
+            input_search, target_search = next(iter(val_loader))
+            input_search = input_search.to(self.device)
+            target_search = target_search.to(self.device)
+
+            self.architect.step(input_search, target_search)
+
+            alpha_entropy = self.architect.model.compute_arch_entropy()
+            alpha_entropies.update(alpha_entropy.mean(), data.size(0))
+
+            speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
             nloss.backward()
             self.optim.step()

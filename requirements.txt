@@ -14,3 +14,5 @@ pandas
 matplotlib
 yaml
 pyyaml
+python-dateutil
+yacs

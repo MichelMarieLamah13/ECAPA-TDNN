@@ -5,7 +5,7 @@ This is the main code of the ECAPATDNN project, to define the parameters and bui
 import argparse, glob, os, torch, warnings, time
 
 import yaml
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, random_split
 
 from NASSEARCHModel import NASSEARCHModel
 from tools import *
@@ -53,10 +53,19 @@ if __name__ == "__main__":
     args = init_args(args)
 
     # Define the data loader
-    trainloader = train_loader(**vars(args))
-    trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True,
+    full_dataset = train_loader(**vars(args))
+    train_size = int(0.8 * len(full_dataset))
+    val_size = len(full_dataset) - train_size
+
+    train_dataset, val_dataset = random_split(full_dataset, [train_size, val_size])
+
+    trainLoader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
                              num_workers=args.n_cpu,
                              drop_last=True)
+
+    valLoader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False,
+                           num_workers=args.n_cpu,
+                           drop_last=False)
 
     # Search for the exist models
     modelfiles = glob.glob('%s/model_0*.model' % args.model_save_path)
@@ -99,7 +108,7 @@ if __name__ == "__main__":
             s.set_drop_proba(args.drop_proba * epoch / (args.max_epoch - 1))
 
         # Training for one epoch
-        loss, lr, acc = s.train_network(epoch=epoch, loader=trainLoader)
+        loss, lr, acc = s.train_network(epoch=epoch, loader=trainLoader, val_loader=valLoader)
 
         # Evaluation every [test_step] epochs
         if epoch % args.test_step == 0:
