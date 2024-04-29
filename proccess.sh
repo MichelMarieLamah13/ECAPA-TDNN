@@ -21,7 +21,7 @@ conda activate ecapa_tdnn
 #rm -rf ./../dataset/db
 #du -sh /local_disk/helios/mmlamah/
 
-rm -rf /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist
-du -sh /local_disk/helios/mmlamah/
+#rm -rf /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/nist
+#du -sh /local_disk/helios/mmlamah/
 
 conda deactivate
