@@ -63,15 +63,17 @@ class NASSEARCHModel(nn.Module):
         super(NASSEARCHModel, self).__init__()
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        # Classifier
+        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
+
         self.speaker_encoder = NASSEARCH(
             C=C,
             emb_size=192,
             layers=n_layers,
             primitives=primitives_2,
+            criterion=self.speaker_loss,
             drop_path_prob=drop_proba
         ).to(self.device)
-        # Classifier
-        self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
         self.architect = Architect(self.speaker_encoder, cfg)

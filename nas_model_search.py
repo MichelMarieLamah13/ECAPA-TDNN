@@ -133,7 +133,7 @@ class Cell(nn.Module):
 
 class NASSEARCH(nn.Module):
 
-    def __init__(self, C, emb_size, layers, primitives,
+    def __init__(self, C, emb_size, layers, primitives, criterion,
                  steps=4, multiplier=4, stem_multiplier=3, drop_path_prob=0.0):
         super(NASSEARCH, self).__init__()
 
@@ -149,6 +149,7 @@ class NASSEARCH(nn.Module):
         self._layers = layers
         self._steps = steps
         self._multiplier = multiplier
+        self._criterion = criterion
         self.drop_path_prob = drop_path_prob
 
         nn.Module.PRIMITIVES = primitives
@@ -221,6 +222,10 @@ class NASSEARCH(nn.Module):
     def forward_classifier(self, x):
         x = self.classifier(x)
         return x
+
+    def _loss(self, input, target):
+        logits = self(input)
+        return self._criterion(logits, target)
 
     def _initialize_alphas(self):
         k = sum(1 for i in range(self._steps) for n in range(2 + i))
