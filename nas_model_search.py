@@ -224,7 +224,7 @@ class NASSEARCH(nn.Module):
         return x
 
     def _loss(self, input, target):
-        logits = self(input)
+        logits = self.forward(input, aug=True)
         return self._criterion(logits, target)
 
     def _initialize_alphas(self):
