@@ -85,8 +85,9 @@ class NASModel(nn.Module):
         lr = self.optim.param_groups[0]['lr']
         for num, (data, labels) in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
-            labels = torch.LongTensor(labels).to(self.device)
-            speaker_embedding = self.speaker_encoder.forward(data.to(self.device), aug=True)
+            labels = torch.LongTensor(labels).to(self.device, non_blocking=True)
+            data = data.to(self.device,  non_blocking=True)
+            speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
             nloss.backward()
             self.optim.step()
