@@ -76,32 +76,20 @@ class NASSEARCHModel(nn.Module):
         ).to(self.device)
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
-        self.architect = Architect(self.speaker_encoder, cfg)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
         print(time.strftime("%m-%d %H:%M:%S") + " Model para number = %.2f" % (
                 sum(param.numel() for param in self.speaker_encoder.parameters()) / 1024 / 1024))
 
-    def train_network(self, epoch, loader, val_loader):
+    def train_network(self, epoch, loader):
         self.train()
         # Update the learning rate based on the current epcoh
         self.scheduler.step(epoch - 1)
         index, top1, loss = 0, 0, 0
         lr = self.optim.param_groups[0]['lr']
-        alpha_entropies = AverageMeter('Entropy', ':.4e')
         for num, (data, labels) in tqdm.tqdm(enumerate(loader, start=1), total=len(loader)):
             self.zero_grad()
-            labels = torch.LongTensor(labels).to(self.device,  non_blocking=True)
-            data = data.to(self.device,  non_blocking=True)
-
-            # step architecture
-            input_search, target_search = next(iter(val_loader))
-            input_search = input_search.to(self.device,  non_blocking=True)
-            target_search = target_search.to(self.device,  non_blocking=True)
-
-            self.architect.step(input_search, target_search)
-
-            alpha_entropy = self.architect.model.compute_arch_entropy()
-            alpha_entropies.update(alpha_entropy.mean(), data.size(0))
+            labels = torch.LongTensor(labels).to(self.device)
+            data = data.to(self.device)
 
             speaker_embedding = self.speaker_encoder.forward(data, aug=True)
             nloss, prec = self.speaker_loss.forward(speaker_embedding, labels)
