@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job names: nas(voxceleb) nas_vc(vietnam-celeb), nas_cc(cn-celeb)
-#SBATCH --job-name=nas_vc
+#SBATCH --job-name=nas_vc_42
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_12GB
