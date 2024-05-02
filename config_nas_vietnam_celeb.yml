@@ -63,13 +63,14 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_nas_vietnam_celeb_relu_42
+  value: exps/exp_nas_vietnam_celeb_relu_47
   help: |
     Path to save the score.txt and models
     Pretrain without relu: exps/exp_nas_vietnam_celeb
     Pretrain with relu: exps/exp_nas_vietnam_celeb_relu
     exps/exp_nas_vietnam_celeb_relu_20 (model_0020.genotype - iteration 20)
     exps/exp_nas_vietnam_celeb_relu_26
+    exps/exp_nas_vietnam_celeb_relu_42
 
 initial_model:
   value: ""
@@ -100,12 +101,13 @@ n_layers:
   help: "Number of layers for cell"
     
 genotype_path:
-  value: "exps/exp_nas_search_vietnam_celeb/model_0042.genotype"
+  value: "exps/exp_nas_search_vietnam_celeb/model_0047.genotype"
   help: |
     The path for the genotype
     exps/exp_nas_search_vietnam_celeb/pretrain.genotype
     exps/exp_nas_search_vietnam_celeb/model_0020.genotype
     exps/exp_nas_search_vietnam_celeb/model_0026.genotype
+    exps/exp_nas_search_vietnam_celeb/model_0042.genotype
     
 
 drop_proba:
