@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job names: nas_search(voxceleb) nas_search_vc(vietnam-celeb), nas_search_cc(cn-celeb)
-#SBATCH --job-name=nas_search_cc
+#SBATCH --job-name=nas_search_vc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_16GB
@@ -16,8 +16,8 @@ source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
 # python3 trainNASSEARCHModel.py --config config_nas_search.yml
-python3 trainNASSEARCHModel.py --config config_nas_search_cn_celeb.yml
-# python3 trainNASSEARCHModel.py --config config_nas_search_vietnam_celeb.yml
+# python3 trainNASSEARCHModel.py --config config_nas_search_cn_celeb.yml
+python3 trainNASSEARCHModel.py --config config_nas_search_vietnam_celeb.yml
 # python3 trainNASSEARCHModel.py --config config_nas_search_finetuner_vietnam_celeb.yml
 # python3 -m pdb trainNASSEARCHModel.py
 
