@@ -45,7 +45,7 @@ train_path:
 
     
 eval_list:
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/lists/trials.lst.edited
+  value:  /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-e.txt.edited
   help: |
     All paths to evaluation list
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/veri_test2.txt.edited
@@ -54,7 +54,7 @@ eval_list:
 
 
 eval_path:
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/wav
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
   help: |
     All paths to evaluation data
     /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
