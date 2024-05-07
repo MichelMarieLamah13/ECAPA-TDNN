@@ -69,7 +69,7 @@ save_path:
     Ce que le prof m'a donné: exps/exp_resnet5 (même architecture, mais entraînement pas commencé au debut)    
 
 initial_model:
-  value: ""
+  value: "exps/exp_resnet5/model/best.model"
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0080.model
