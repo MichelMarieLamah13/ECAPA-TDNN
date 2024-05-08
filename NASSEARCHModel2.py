@@ -77,6 +77,7 @@ class NASSEARCHModel(nn.Module):
 
         self.optim = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=2e-5)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
+        self.architect = Architect(self.speaker_encoder, cfg)
         print(time.strftime("%m-%d %H:%M:%S") + " Model para number = %.2f" % (
                 sum(param.numel() for param in self.speaker_encoder.parameters()) / 1024 / 1024))
 
