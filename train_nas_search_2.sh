@@ -3,7 +3,7 @@
 #SBATCH --job-name=nas_search_vc_2
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --constraint=GPURAM_Min_12GB
+#SBATCH --constraint=GPURAM_Min_16GB
 #SBATCH --time=7-00:00:00
 ##SBATCH --exclude=eris,apollon,helios
 #SBATCH --mem=32GB

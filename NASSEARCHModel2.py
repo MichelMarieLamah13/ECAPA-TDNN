@@ -89,13 +89,13 @@ class NASSEARCHModel(nn.Module):
         lr = self.optim.param_groups[0]['lr']
         for num, (data, labels) in tqdm.tqdm(enumerate(trainloader, start=1), total=len(trainloader)):
             self.zero_grad()
-            labels = torch.LongTensor(labels).to(self.device)
-            data = data.to(self.device)
+            labels = torch.LongTensor(labels).to(self.device, non_blocking=True)
+            data = data.to(self.device, non_blocking=True)
 
             # step architecture
             input_search, target_search = next(iter(valloader))
-            input_search = input_search.to(self.device)
-            target_search = target_search.to(self.device)
+            input_search = input_search.to(self.device, non_blocking=True)
+            target_search = target_search.to(self.device, non_blocking=True)
 
             self.architect.step(input_search, target_search)
 
