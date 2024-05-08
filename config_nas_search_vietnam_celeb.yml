@@ -63,8 +63,10 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_nas_search_vietnam_celeb
-  help: "Path to save the score.txt and models"
+  value: exps/exp_nas_search_2_vietnam_celeb
+  help: |
+    Path to save the score.txt and models
+    exps/exp_nas_search_vietnam_celeb
 
 initial_model:
   value: ""
