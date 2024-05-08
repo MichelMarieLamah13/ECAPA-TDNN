@@ -60,11 +60,12 @@ if __name__ == "__main__":
     train_dataset, val_dataset = random_split(full_dataset, [train_size, val_size])
 
     trainLoader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
-                             num_workers=args.n_cpu // 2,
+                             num_workers=args.n_cpu//2,
+                             pin_memory=True,
                              drop_last=True)
 
     valLoader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False,
-                           num_workers=args.n_cpu // 2,
+                           pin_memory=True,
                            drop_last=False)
 
     # Search for the exist models
