@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job names: resnet(voxceleb) resnet_vc(vietnam-celeb), resnet_cc(cn-celeb)
 # Job names: resnet_f_vc (finetuner vietnam-celeb), resnet_f_cc (finetuner cn-celeb)
-#SBATCH --job-name=resnet_vox_ft_vt_cn
+#SBATCH --job-name=resnet_vox_ft_vt_vt
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 ##SBATCH --constraint=GPURAM_Min_12GB
