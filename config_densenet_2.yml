@@ -96,6 +96,18 @@ stride:
     Stride for first convolution
     First version: 2 but too much division
     Second version: 1
+
+pooling_mode:
+  value: "mean"
+  help: "Pooling_mode"
+
+growth_rate:
+  value: 8
+  help: "Growth rate"
+
+num_init_features:
+  value: 8
+  help: "Number of channel init"
     
     
 
