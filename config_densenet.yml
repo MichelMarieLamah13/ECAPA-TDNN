@@ -16,7 +16,7 @@ batch_size:
   help: "Batch size"
 
 n_cpu:
-  value: 4
+  value: 8
   help: "Number of loader threads"
 
 test_step:
