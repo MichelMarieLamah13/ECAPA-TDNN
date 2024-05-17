@@ -15,8 +15,8 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-# python3 trainDENSENETModel_orig.py --config config_densenet_orig_vietnam_celeb.yml
-python3 trainDENSENETModel_orig.py --config config_densenet_orig_cn_celeb.yml
+python3 trainDENSENETModel_orig.py --config config_densenet_orig_vietnam_celeb.yml
+# python3 trainDENSENETModel_orig.py --config config_densenet_orig_cn_celeb.yml
 # python3 trainDENSENETModel_orig.py --config config_densenet_orig.yml
 
 
