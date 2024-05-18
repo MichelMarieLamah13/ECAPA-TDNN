@@ -53,7 +53,8 @@ class EmbeddingsDataset(Dataset):
 
 
 class DENSENETModel(nn.Module):
-    def __init__(self, milestones, lr, lr_decay, C, n_class, m, s, stride, pooling_mode, growth_rate, num_init_features, test_step, **kwargs):
+    def __init__(self, milestones, lr, lr_decay, C, n_class, m, s, stride, pooling_mode, growth_rate, num_init_features,
+                 test_step, **kwargs):
         super(DENSENETModel, self).__init__()
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -73,8 +74,13 @@ class DENSENETModel(nn.Module):
             dampening=0,
             nesterov=True
         )
-        milestones = [int(i.strip()) for i in milestones]
-        self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optim, milestones=milestones, gamma=lr_decay)
+        milestones_ = []
+        for m in milestones:
+            m = m.strip()
+            if len(m) > 0:
+                milestones_.append(m)
+
+        self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optim, milestones=milestones_, gamma=lr_decay)
         print(time.strftime("%m-%d %H:%M:%S") + " Model para number = %.2f" % (
                 sum(param.numel() for param in self.speaker_encoder.parameters()) / 1024 / 1024))
 
