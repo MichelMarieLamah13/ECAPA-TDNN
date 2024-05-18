@@ -79,7 +79,7 @@ class DENSENETModel(nn.Module):
         for m in milestones:
             m = m.strip()
             if len(m) > 0:
-                milestones_.append(m)
+                milestones_.append(int(m))
 
         self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optim, milestones=milestones_, gamma=lr_decay)
         print(time.strftime("%m-%d %H:%M:%S") + " Model para number = %.2f" % (
