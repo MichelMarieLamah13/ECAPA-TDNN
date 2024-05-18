@@ -28,7 +28,7 @@ lr:
   help: "Learning rate"
 
 lr_decay:
-  value: 10
+  value: 0.1
   help: "Learning rate decay every [test_step] epochs"
 
 milestones:
