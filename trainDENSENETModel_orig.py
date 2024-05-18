@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # Define the data loader
     trainloader = train_loader(**vars(args))
     trainLoader = DataLoader(trainloader, batch_size=args.batch_size, shuffle=True,
-                             num_workers=args.n_cpu - 2,
+                             num_workers=args.n_cpu // 2,
                              drop_last=True)
 
     # Search for the exist models
