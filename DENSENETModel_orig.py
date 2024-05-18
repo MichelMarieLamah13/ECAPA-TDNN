@@ -75,6 +75,7 @@ class DENSENETModel(nn.Module):
             nesterov=True
         )
         milestones_ = []
+        milestones = milestones.strip().split('\n')
         for m in milestones:
             m = m.strip()
             if len(m) > 0:
