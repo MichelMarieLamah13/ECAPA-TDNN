@@ -73,6 +73,7 @@ class DENSENETModel(nn.Module):
             dampening=0,
             nesterov=True
         )
+        milestones = [int(i.strip()) for i in milestones]
         self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optim, milestones=milestones, gamma=lr_decay)
         print(time.strftime("%m-%d %H:%M:%S") + " Model para number = %.2f" % (
                 sum(param.numel() for param in self.speaker_encoder.parameters()) / 1024 / 1024))
