@@ -34,8 +34,14 @@ lr_decay:
 milestones:
   help: "Steps where to decay the learning rate 50% and 75% of the total epoch"
   value: |
+    10
+    20
+    30
+    40
     50
-    75
+    70
+    80
+    90
 
 
 # Training and evaluation path/lists, save path
