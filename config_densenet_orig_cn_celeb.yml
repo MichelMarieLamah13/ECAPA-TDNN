@@ -24,18 +24,12 @@ test_step:
   help: "Test and save every [test_step] epochs"
 
 lr:
-  value: 0.1
+  value: 0.001
   help: "Learning rate"
 
 lr_decay:
-  value: 0.1
+  value: 0.97
   help: "Learning rate decay every [test_step] epochs"
-
-milestones:
-  help: "Steps where to decay the learning rate 50% and 75% of the total epoch"
-  value: |
-    50
-    75
 
 
 # Training and evaluation path/lists, save path

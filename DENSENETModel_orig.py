@@ -53,7 +53,7 @@ class EmbeddingsDataset(Dataset):
 
 
 class DENSENETModel(nn.Module):
-    def __init__(self, milestones, lr, lr_decay, C, n_class, m, s, stride, pooling_mode, growth_rate, num_init_features,
+    def __init__(self, lr, lr_decay, C, n_class, m, s, stride, pooling_mode, growth_rate, num_init_features,
                  test_step, **kwargs):
         super(DENSENETModel, self).__init__()
         # Densenet
@@ -74,14 +74,7 @@ class DENSENETModel(nn.Module):
             dampening=0,
             nesterov=True
         )
-        milestones_ = []
-        milestones = milestones.strip().split('\n')
-        for m in milestones:
-            m = m.strip()
-            if len(m) > 0:
-                milestones_.append(int(m))
-
-        self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optim, milestones=milestones_, gamma=lr_decay)
+        self.scheduler = torch.optim.lr_scheduler.StepLR(self.optim, step_size=test_step, gamma=lr_decay)
         print(time.strftime("%m-%d %H:%M:%S") + " Model para number = %.2f" % (
                 sum(param.numel() for param in self.speaker_encoder.parameters()) / 1024 / 1024))
 
