@@ -6,7 +6,7 @@
 #SBATCH --job-name=densenet_3_std_cc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --constraint=GPURAM_Min_12GB
+##SBATCH --constraint=GPURAM_Min_12GB
 #SBATCH --time=7-00:00:00
 #SBATCH --exclude=helios,apollon,eris
 #SBATCH --mem=32GB
