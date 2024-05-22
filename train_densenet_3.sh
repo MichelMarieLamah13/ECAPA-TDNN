@@ -3,7 +3,7 @@
 # JobNames: densenet_3_std(voxceleb), densenet_cc_3_std (cn-celeb), densenet_vc_3_std (vietnam-celeb)
 # JobNames: densenet_3_std_2(voxceleb), densenet_cc_3_std_2 (cn-celeb), densenet_vc_3_std_2 (vietnam-celeb)
 # JobNames: densenet_3_std_3(voxceleb), densenet_cc_3_std_3 (cn-celeb), densenet_vc_3_std_3 (vietnam-celeb)
-#SBATCH --job-name=densenet_3_std
+#SBATCH --job-name=densenet_3_std_cc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_12GB
