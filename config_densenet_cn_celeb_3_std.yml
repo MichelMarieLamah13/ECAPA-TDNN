@@ -67,7 +67,7 @@ save_path:
   help: "Path to save the score.txt and models"
 
 initial_model:
-  value: ""
+  value: "exps/exp_densenet_cn_celeb_3_std_relu/model/model_0001.model"
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0080.model
@@ -111,6 +111,6 @@ num_init_features:
 
 # Command
 eval:
-  value: false
+  value: true
   help: "Only do evaluation"
 
