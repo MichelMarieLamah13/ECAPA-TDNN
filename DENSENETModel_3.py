@@ -146,6 +146,8 @@ class DENSENETModel(nn.Module):
         print("BEGIN final score", flush=True)
         # Coumpute EER and minDCF
         EER, minDCF = 0, 0
+        labels, scores = remove_nan_values(labels, scores)
+
         if len(scores) > 0 and len(labels) > 0:
             EER = tuneThresholdfromScore(scores, labels, [1, 0.1])[1]
             fnrs, fprs, thresholds = ComputeErrorRates(scores, labels)

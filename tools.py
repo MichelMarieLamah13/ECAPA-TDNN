@@ -4,6 +4,8 @@ These functions are all copied from voxceleb_trainer: https://github.com/clovaai
 '''
 
 import os, numpy, torch
+
+import numpy as np
 from sklearn import metrics
 from operator import itemgetter
 import torch.nn.functional as F
@@ -16,7 +18,20 @@ def init_args(args):
     return args
 
 
+def remove_nan_values(labels, scores):
+    labels_ = np.array(labels)
+    scores_ = np.array(scores)
+
+    nan_mask = np.isnan(labels_) | np.isnan(scores_)
+
+    labels_clean = labels_[~nan_mask]
+    scores_clean = scores_[~nan_mask]
+
+    return labels_clean.tolist(), scores_clean.tolist()
+
+
 def tuneThresholdfromScore(scores, labels, target_fa, target_fr=None):
+
     fpr, tpr, thresholds = metrics.roc_curve(labels, scores, pos_label=1)
     fnr = 1 - tpr
     tunedThreshold = []
