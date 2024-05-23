@@ -24,8 +24,11 @@ test_step:
   help: "Test and save every [test_step] epochs"
 
 lr:
-  value: 0.001
-  help: "Learning rate"
+  value: 0.000218
+  help: |
+    Learning rate
+    0.001
+    0.000218
 
 lr_decay:
   value: 0.97
@@ -63,8 +66,11 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_densenet_cn_celeb
-  help: "Path to save the score.txt and models"
+  value: exps/exp_densenet_cn_celeb_LR_0_000218
+  help: |
+    Path to save the score.txt and models
+    exps/exp_densenet_cn_celeb
+    exps/exp_densenet_cn_celeb_LR_0_000218
 
 initial_model:
   value: ""
