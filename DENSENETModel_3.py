@@ -8,7 +8,7 @@ import torch, sys, os, tqdm, numpy, soundfile, time, pickle
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
-from model_densenet_3 import DenseNet, densenet264, densenet201, densenet169, densenet161
+from model_densenet_3 import DenseNet, densenet264, densenet201, densenet169, densenet161, densenet121
 from tools import *
 from loss import AAMsoftmax
 from model_resnet import ResNet
@@ -68,7 +68,7 @@ class DENSENETModel(nn.Module):
         elif arch == "densenet161":
             self.speaker_encoder = densenet161(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
         else:
-            self.speaker_encoder = densenet161(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+            self.speaker_encoder = densenet121(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
         # Classifier
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
