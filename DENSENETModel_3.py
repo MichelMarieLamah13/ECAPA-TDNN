@@ -60,15 +60,15 @@ class DENSENETModel(nn.Module):
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if arch == "densenet264":
-            self.speaker_encoder = densenet264(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+            self.speaker_encoder = densenet264(stride=stride, pooling_mode=pooling_mode).to(self.device)
         elif arch == "densenet201":
-            self.speaker_encoder = densenet201(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+            self.speaker_encoder = densenet201(stride=stride, pooling_mode=pooling_mode).to(self.device)
         elif arch == "densenet169":
-            self.speaker_encoder = densenet169(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+            self.speaker_encoder = densenet169(stride=stride, pooling_mode=pooling_mode).to(self.device)
         elif arch == "densenet161":
-            self.speaker_encoder = densenet161(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+            self.speaker_encoder = densenet161(stride=stride, pooling_mode=pooling_mode).to(self.device)
         else:
-            self.speaker_encoder = densenet121(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+            self.speaker_encoder = densenet121(stride=stride, pooling_mode=pooling_mode).to(self.device)
         # Classifier
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 

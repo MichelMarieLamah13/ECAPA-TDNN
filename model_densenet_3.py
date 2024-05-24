@@ -283,30 +283,26 @@ def _load_state_dict(model, model_url, progress):
     model.load_state_dict(state_dict)
 
 
-def _densenet(arch, growth_rate, block_config, num_init_features, pretrained, progress, stride, pooling_mode,
-              **kwargs):
+def _densenet(arch, growth_rate, block_config, num_init_features, pretrained, progress, stride, pooling_mode):
     model = DenseNet(
         growth_rate=growth_rate,
         block_config=block_config,
         num_init_features=num_init_features,
         stride=stride,
-        pooling_mode=pooling_mode,
-        **kwargs
+        pooling_mode=pooling_mode
     )
     if pretrained:
         _load_state_dict(model, model_urls[arch], progress)
     return model
 
 
-def densenet121(pretrained=False, progress=True, stride=2, pooling_mode="std", **kwargs):
+def densenet121(pretrained=False, progress=True, stride=2, pooling_mode="std"):
     r"""Densenet-121 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
-        memory_efficient (bool) - If True, uses checkpointing. Much more memory efficient,
-          but slower. Default: *False*. See `"paper" <https://arxiv.org/pdf/1707.06990.pdf>`_
         stride (int):
         pooling_mode (str):
     """
@@ -318,19 +314,16 @@ def densenet121(pretrained=False, progress=True, stride=2, pooling_mode="std", *
         pretrained=pretrained,
         progress=progress,
         stride=stride,
-        pooling_mode=pooling_mode,
-        **kwargs)
+        pooling_mode=pooling_mode)
 
 
-def densenet161(pretrained=False, progress=True, stride=2, pooling_mode="std", **kwargs):
+def densenet161(pretrained=False, progress=True, stride=2, pooling_mode="std"):
     r"""Densenet-161 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
-        memory_efficient (bool) - If True, uses checkpointing. Much more memory efficient,
-          but slower. Default: *False*. See `"paper" <https://arxiv.org/pdf/1707.06990.pdf>`_
         stride(int):
         pooling_mode(str):
     """
@@ -342,20 +335,17 @@ def densenet161(pretrained=False, progress=True, stride=2, pooling_mode="std", *
         pretrained=pretrained,
         progress=progress,
         stride=stride,
-        pooling_mode=pooling_mode,
-        **kwargs
+        pooling_mode=pooling_mode
     )
 
 
-def densenet169(pretrained=False, progress=True, stride=2, pooling_mode="std", **kwargs):
+def densenet169(pretrained=False, progress=True, stride=2, pooling_mode="std"):
     r"""Densenet-169 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
-        memory_efficient (bool) - If True, uses checkpointing. Much more memory efficient,
-          but slower. Default: *False*. See `"paper" <https://arxiv.org/pdf/1707.06990.pdf>`_
         stride(int):
         pooling_mode(str):
     """
@@ -367,19 +357,17 @@ def densenet169(pretrained=False, progress=True, stride=2, pooling_mode="std", *
         pretrained=pretrained,
         progress=progress,
         stride=stride,
-        pooling_mode=pooling_mode,
-        **kwargs)
+        pooling_mode=pooling_mode
+    )
 
 
-def densenet201(pretrained=False, progress=True, stride=2, pooling_mode="std", **kwargs):
+def densenet201(pretrained=False, progress=True, stride=2, pooling_mode="std"):
     r"""Densenet-201 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
-        memory_efficient (bool) - If True, uses checkpointing. Much more memory efficient,
-          but slower. Default: *False*. See `"paper" <https://arxiv.org/pdf/1707.06990.pdf>`_
         stride(int):
         pooling_mode(str):
     """
@@ -391,20 +379,17 @@ def densenet201(pretrained=False, progress=True, stride=2, pooling_mode="std", *
         pretrained=pretrained,
         progress=progress,
         stride=stride,
-        pooling_mode=pooling_mode,
-        **kwargs
+        pooling_mode=pooling_mode
     )
 
 
-def densenet264(pretrained=False, progress=True, stride=2, pooling_mode="std", **kwargs):
+def densenet264(pretrained=False, progress=True, stride=2, pooling_mode="std"):
     r"""Densenet-264 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
-        memory_efficient (bool) - If True, uses checkpointing. Much more memory efficient,
-          but slower. Default: *False*. See `"paper" <https://arxiv.org/pdf/1707.06990.pdf>`_
         stride(int):
         pooling_mode(str):
     """
@@ -416,6 +401,5 @@ def densenet264(pretrained=False, progress=True, stride=2, pooling_mode="std", *
         pretrained=pretrained,
         progress=progress,
         stride=stride,
-        pooling_mode=pooling_mode,
-        **kwargs
+        pooling_mode=pooling_mode
     )
