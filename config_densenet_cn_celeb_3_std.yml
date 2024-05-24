@@ -109,6 +109,17 @@ num_init_features:
   value: 64
   help: "Number of channel init"
 
+
+arch:
+  value: "densenet264"
+  help: |
+    The architecture to use
+    densenet121
+    densenet161
+    densenet169
+    densenet201
+    densenet264
+
 # Command
 eval:
   value: false

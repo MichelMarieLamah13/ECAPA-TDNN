@@ -8,7 +8,7 @@ import torch, sys, os, tqdm, numpy, soundfile, time, pickle
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
-from model_densenet_3 import DenseNet
+from model_densenet_3 import DenseNet, densenet264, densenet201, densenet169, densenet161
 from tools import *
 from loss import AAMsoftmax
 from model_resnet import ResNet
@@ -53,17 +53,22 @@ class EmbeddingsDataset(Dataset):
 
 
 class DENSENETModel(nn.Module):
-    def __init__(self, lr, lr_decay, C, n_class, m, s, test_step, stride, pooling_mode, num_init_features, growth_rate,
+    def __init__(self, arch, lr, lr_decay, C, n_class, m, s, test_step, stride, pooling_mode, num_init_features,
+                 growth_rate,
                  **kwargs):
         super(DENSENETModel, self).__init__()
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.speaker_encoder = DenseNet(
-            num_init_features=num_init_features,
-            growth_rate=growth_rate,
-            stride=stride,
-            pooling_mode=pooling_mode
-        ).to(self.device)
+        if arch == "densenet264":
+            self.speaker_encoder = densenet264(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+        elif arch == "densenet201":
+            self.speaker_encoder = densenet201(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+        elif arch == "densenet169":
+            self.speaker_encoder = densenet169(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+        elif arch == "densenet161":
+            self.speaker_encoder = densenet161(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
+        else:
+            self.speaker_encoder = densenet161(stride=stride, pooling_mode=pooling_mode, **kwargs).to(self.device)
         # Classifier
         self.speaker_loss = AAMsoftmax(n_class=n_class, m=m, s=s).to(self.device)
 
