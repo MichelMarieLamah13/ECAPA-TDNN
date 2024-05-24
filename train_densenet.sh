@@ -1,6 +1,6 @@
 #!/bin/bash
 # JobNames v1: densenet(voxceleb), densenet_cc (cn-celeb), densenet_vc (vietnam-celeb)
-#SBATCH --job-name=densenet
+#SBATCH --job-name=densenet_cc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_12GB
