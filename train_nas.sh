@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job names: nas(voxceleb) nas_vc(vietnam-celeb), nas_cc(cn-celeb)
-#SBATCH --job-name=nas
+#SBATCH --job-name=nas_cc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=GPURAM_Min_16GB
@@ -15,8 +15,8 @@
 source /etc/profile.d/conda.sh
 conda activate ecapa_tdnn
 
-python3 trainNASModel.py --config config_nas.yml
-# python3 trainNASModel.py --config config_nas_cn_celeb.yml
+# python3 trainNASModel.py --config config_nas.yml
+python3 trainNASModel.py --config config_nas_cn_celeb.yml
 # python3 trainNASModel.py --config config_nas_vietnam_celeb.yml
 # python3 trainNASModel.py --config config_nas_finetuner_vietnam_celeb.yml
 # python3 -m pdb trainNASModel.py

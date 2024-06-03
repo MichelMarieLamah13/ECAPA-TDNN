@@ -63,7 +63,7 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_nas_cn_celeb_0026
+  value: exps/exp_nas_cn_celeb_0025
   help: |
     Path to save the score.txt and models
     exps/exp_nas_cn_celeb_vc26
@@ -98,7 +98,7 @@ n_layers:
 
     
 genotype_path:
-  value: "exps/exp_nas_search_cn_celeb/model_0026.genotype"
+  value: "exps/exp_nas_search_cn_celeb/model_0025.genotype"
   help: |
     The path for the genotype
     exps/exp_nas_search_vietnam_celeb/pretrain.genotype
