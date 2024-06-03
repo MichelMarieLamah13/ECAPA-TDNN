@@ -12,7 +12,7 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 32
+  value: 128
   help: "Batch size"
 
 n_cpu:
@@ -63,8 +63,10 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_nas_cn_celeb_vc26
-  help: "Path to save the score.txt and models"
+  value: exps/exp_nas_cn_celeb_0026
+  help: |
+    Path to save the score.txt and models
+    exps/exp_nas_cn_celeb_vc26
 
 initial_model:
   value: ""
@@ -96,7 +98,7 @@ n_layers:
 
     
 genotype_path:
-  value: "exps/exp_nas_search_vietnam_celeb/model_0026.genotype"
+  value: "exps/exp_nas_search_cn_celeb/model_0026.genotype"
   help: |
     The path for the genotype
     exps/exp_nas_search_vietnam_celeb/pretrain.genotype

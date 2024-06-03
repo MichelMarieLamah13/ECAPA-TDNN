@@ -106,7 +106,8 @@ if __name__ == "__main__":
             s.save_parameters(args.model_save_path + "/model_%04d.model" % epoch, delete=True)
             s.save_genotype(args.model_save_path + "/model_%04d.genotype" % epoch, delete=True)
 
-            EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, n_cpu=args.n_cpu)[0])
+            EERs.append(s.eval_network(eval_list=args.eval_list, eval_path=args.eval_path, batch_size=args.batch_size,
+                                       n_cpu=args.n_cpu)[0])
             print(time.strftime("%Y-%m-%d %H:%M:%S"),
                   "%d epoch, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%" % (epoch, acc, EERs[-1], min(EERs)), flush=True)
             score_file.write("%d epoch, LR %f, LOSS %f, ACC %2.2f%%, EER %2.2f%%, bestEER %2.2f%%\n" % (
