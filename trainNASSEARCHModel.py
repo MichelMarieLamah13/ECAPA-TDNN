@@ -114,8 +114,8 @@ if __name__ == "__main__":
                 epoch, lr, loss, acc, EERs[-1], min(EERs)))
             score_file.flush()
             if EERs[-1] <= min(EERs):
-                s.save_parameters(args.model_save_path + "/best.model")
-                s.save_genotype(args.model_save_path + "/best.genotype")
+                s.save_parameters(args.model_save_path + "/best_%04d.model" % epoch)
+                s.save_genotype(args.model_save_path + "/best_%04d.genotype" % epoch)
 
         if epoch >= args.max_epoch:
             quit()

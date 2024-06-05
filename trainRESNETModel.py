@@ -107,7 +107,7 @@ if __name__ == "__main__":
                 epoch, lr, loss, acc, EERs[-1], min(EERs)))
             score_file.flush()
             if EERs[-1] <= min(EERs):
-                s.save_parameters(args.model_save_path + "/best.model")
+                s.save_parameters(args.model_save_path + "/best_%04d.model" % epoch)
 
         if epoch >= args.max_epoch:
             quit()

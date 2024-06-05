@@ -166,7 +166,7 @@ if __name__ == "__main__":
                 epoch, lr, loss, acc, mean_eer, min(EERs['mean'])))
             score_file.flush()
             if mean_eer <= min(EERs['mean']):
-                s.save_parameters(args.model_save_path + "/best.model")
+                s.save_parameters(args.model_save_path + "/best_%04d.model" % epoch)
 
         if epoch >= args.max_epoch:
             quit()
