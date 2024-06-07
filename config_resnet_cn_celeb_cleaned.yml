@@ -75,12 +75,12 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/cleaned/exp_resnet_vietnam_celeb_spk1501_utt99
+  value: exps/cleaned/exp_resnet_cn_celeb_spk1501_utt99
   help: |
     Path to save the score.txt and models
-    Q1: exp_resnet_vietnam_celeb_spk1501_utt99
-    Q2: exp_resnet_vietnam_celeb_spk1002_utt218
-    Q3: exp_resnet_vietnam_celeb_spk503_utt320
+    Q1: exp_resnet_cn_celeb_spk1501_utt99
+    Q2: exp_resnet_cn_celeb_spk1002_utt218
+    Q3: exp_resnet_cn_celeb_spk503_utt320
 
 initial_model:
   value: ""
