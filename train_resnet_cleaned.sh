@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job names: resnet_cleaned_vox(voxceleb) resnet_cleaned_vc(vietnam-celeb), resnet_cleaned_cc(cn-celeb)
-#SBATCH --job-name=resnet_cleaned_vox
+#SBATCH --job-name=resnet_cleaned_cc
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 ##SBATCH --constraint=GPURAM_Min_16GB
