@@ -12,7 +12,7 @@ max_epoch:
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 128
+  value: 64
   help: "Batch size"
 
 n_cpu:
@@ -103,8 +103,12 @@ s:
   help: "Loss scale in AAM softmax"
 
 n_class:
-  help: "Number of speakers"
-  value: 5994
+  value: 4519
+  help: |
+    Number of speakers
+    Q1: 4519
+    Q2: 3000
+    Q3: 1504
     
     
 
