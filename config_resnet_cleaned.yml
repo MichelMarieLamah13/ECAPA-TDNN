@@ -76,11 +76,12 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_resnet_voxceleb_LR_0_001
+  value: exps/cleaned/exp_resnet_voxceleb_spk4519_utt65
   help: |
-    Path to save the score.txt and models: exps/exp_resnet_voxceleb
-    Ce que le prof m'a donné: exps/exp_resnet5 (même architecture, mais entraînement pas commencé au debut)    
-    exps/exp_resnet_voxceleb
+    Path to save the score.txt and models
+    Q1: exp_resnet_voxceleb_spk4519_utt65
+    Q2: exp_resnet_voxceleb_spk3000_utt133
+    Q3: exp_resnet_voxceleb_spk1504_utt260
 
 initial_model:
   value: ""
