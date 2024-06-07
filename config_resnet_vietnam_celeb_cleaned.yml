@@ -1,0 +1,119 @@
+# Training Settings
+base_path:
+  value: "/local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/"
+  help: "base directory of your data"
+
+num_frames:
+  value: 200
+  help: "Duration of the input segments, eg: 200 for 2 second"
+
+max_epoch:
+  value: 200
+  help: "Maximum number of epochs"
+
+batch_size:
+  value: 128
+  help: "Batch size"
+
+n_cpu:
+  value: 8
+  help: "Number of loader threads"
+
+test_step:
+  value: 1
+  help: "Test and save every [test_step] epochs"
+
+lr:
+  value: 0.001
+  help: "Learning rate"
+
+lr_decay:
+  value: 0.97
+  help: "Learning rate decay every [test_step] epochs"
+
+
+# Training and evaluation path/lists, save path
+
+train_list:
+  value: /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk667-utt13.txt
+  help: |
+    All paths to training list
+    Q1 (8.671 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk667-utt13.txt
+    Q2 (19.393 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk451-utt43.txt
+    Q3 (20.293 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk223-utt91.txt
+
+
+train_path:
+  help: "Directory to training data where speaker audio are stored"
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
+
+    
+eval_list:
+  value:  /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk54-utt42.txt
+  help: |
+    All paths to evaluation list
+    Q1 (2.268 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk54-utt42.txt
+    Q2 (3.360 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk36-utt110.txt
+    Q3 (9.198 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk18-utt511.txt
+    
+
+
+eval_path:
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
+  help: |
+    All paths to evaluation data
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/cn_celeb/CN-Celeb_flac/eval/wav
+    /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
+
+musan_path:
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/musan_split
+  help: 'The path to the MUSAN set, eg:"data/musan_split" in my case'
+
+rir_path:
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/rirs_noises/RIRS_NOISES/simulated_rirs
+  help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
+
+save_path:
+  value: exps/cleaned/exp_resnet_vietnam_celeb_spk667_utt13
+  help: |
+    Path to save the score.txt and models
+    Q1: exp_resnet_vietnam_celeb_spk667_utt13 
+    Q2: exp_resnet_vietnam_celeb_spk451_utt43
+    Q3: exp_resnet_vietnam_celeb_spk223_utt91
+
+initial_model:
+  value: ""
+  help: |
+    Path of the initial_model
+    exps/exp_resnet5/model/model_0080.model
+    exps/exp_resnet5/model/best.model
+
+# Model and Loss settings
+C:
+  value: 1024
+  help: "Channel size for the speaker encoder"
+
+m:
+  value: 0.2
+  help: "Loss margin in AAM softmax"
+
+s:
+  value: 30
+  help: "Loss scale in AAM softmax"
+
+n_class:
+  value: 667
+  help: |
+    Number of speakers
+    Q1: 667
+    Q2: 451
+    Q3: 223
+    
+    
+
+# Command
+eval:
+  value: false
+  help: "Only do evaluation"
+
