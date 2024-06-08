@@ -8,11 +8,11 @@ num_frames:
   help: "Duration of the input segments, eg: 200 for 2 second"
 
 max_epoch:
-  value: 200
+  value: 100
   help: "Maximum number of epochs"
 
 batch_size:
-  value: 128
+  value: 64
   help: "Batch size"
 
 n_cpu:
@@ -35,23 +35,31 @@ lr_decay:
 # Training and evaluation path/lists, save path
 
 train_list:
-  help: "All paths to training list"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-t.txt.edited
+  value: /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/voxceleb-train-spk4519-utt65.txt
+  help: |
+    All paths to training list
+    Q1 (293.735 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/voxceleb-train-spk4519-utt65.txt
+    Q2 (399.000 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/voxceleb-train-spk3000-utt133.txt
+    Q3 (391.040 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/voxceleb-train-spk1504-utt260.txt
 
 
 train_path:
   help: "Directory to training data where speaker audio are stored"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb2/wav
 
     
 eval_list:
-  help: "All paths to evaluation list"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-e.txt.edited
+  value:  /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/voxceleb-eval-spk10-utt1266.txt
+  help: |
+    All paths to evaluation list
+    Q1 (16.080 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/voxceleb-eval-spk30-utt536.txt
+    Q2 (14.300 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/voxceleb-eval-spk20-utt715.txt
+    Q3 (12.660 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/voxceleb-eval-spk10-utt1266.txt
 
 
 eval_path:
   help: "All paths to evaluation data"
-  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/data
+  value: /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/voxceleb1/wav
 
 
 musan_path:
@@ -63,18 +71,19 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/exp_densenet264_vietnam_celeb_3_std_relu
+  value: exps/cleaned/exp_densenet_voxceleb_spk4519_utt65
   help: |
-    exps/exp_densenet_vietnam_celeb_3_std (without relu after features)
-    exps/exp_densenet_vietnam_celeb_3_std_relu (with relu after features)
-    exps/exp_densenet264_vietnam_celeb_3_std_relu
+    Path to save the score.txt and models
+    Q1: exp_densenet_voxceleb_spk4519_utt65
+    Q2: exp_densenet_voxceleb_spk3000_utt133
+    Q3: exp_densenet_voxceleb_spk1504_utt260
 
 initial_model:
   value: ""
   help: |
     Path of the initial_model
-    exps/exp_resnet5/model/model_0080.model
-    exps/exp_resnet5/model/best.model
+    exps/exp_densenet/model/model_0001.model
+    exps/exp_densenet/model/best.model
 
 # Model and Loss settings
 C:
@@ -90,8 +99,12 @@ s:
   help: "Loss scale in AAM softmax"
 
 n_class:
-  help: "Number of speakers"
-  value: 880
+  value: 4519
+  help: |
+    Number of speakers
+    Q1: 4519
+    Q2: 3000
+    Q3: 1504
 
 stride:
   value: 2
@@ -114,7 +127,7 @@ num_init_features:
 
 
 arch:
-  value: "densenet264"
+  value: "densenet37"
   help: |
     The architecture to use
     densenet37

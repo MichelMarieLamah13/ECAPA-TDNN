@@ -117,6 +117,7 @@ arch:
   value: "densenet264"
   help: |
     The architecture to use
+    densenet37
     densenet121
     densenet161
     densenet169

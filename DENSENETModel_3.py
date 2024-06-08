@@ -8,7 +8,7 @@ import torch, sys, os, tqdm, numpy, soundfile, time, pickle
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
-from model_densenet_3 import DenseNet, densenet264, densenet201, densenet169, densenet161, densenet121
+from model_densenet_3 import DenseNet, densenet264, densenet201, densenet169, densenet161, densenet121, densenet37
 from tools import *
 from loss import AAMsoftmax
 from model_resnet import ResNet
@@ -59,7 +59,9 @@ class DENSENETModel(nn.Module):
         super(DENSENETModel, self).__init__()
         # Densenet
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if arch == "densenet264":
+        if arch == "densenet37":
+            self.speaker_encoder = densenet37(stride=stride, pooling_mode=pooling_mode).to(self.device)
+        elif arch == "densenet264":
             self.speaker_encoder = densenet264(stride=stride, pooling_mode=pooling_mode).to(self.device)
         elif arch == "densenet201":
             self.speaker_encoder = densenet201(stride=stride, pooling_mode=pooling_mode).to(self.device)

@@ -296,6 +296,27 @@ def _densenet(arch, growth_rate, block_config, num_init_features, pretrained, pr
     return model
 
 
+def densenet37(pretrained=False, progress=True, stride=2, pooling_mode="std"):
+    r"""Densenet-37 model from
+    `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
+
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+        progress (bool): If True, displays a progress bar of the download to stderr
+        stride (int):
+        pooling_mode (str):
+    """
+    return _densenet(
+        arch='densenet37',
+        growth_rate=32,
+        block_config=(3, 4, 6, 3),
+        num_init_features=64,
+        pretrained=pretrained,
+        progress=progress,
+        stride=stride,
+        pooling_mode=pooling_mode)
+
+
 def densenet121(pretrained=False, progress=True, stride=2, pooling_mode="std"):
     r"""Densenet-121 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
