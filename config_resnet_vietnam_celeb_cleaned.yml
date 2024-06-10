@@ -35,12 +35,13 @@ lr_decay:
 # Training and evaluation path/lists, save path
 
 train_list:
-  value: /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk223-utt91.txt
+  value: /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-clean-spk880.txt
   help: |
     All paths to training list
     Q1 (8.671 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk667-utt13.txt
     Q2 (19.393 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk451-utt43.txt
     Q3 (20.293 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-spk223-utt91.txt
+    All: /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/train/vietnam-celeb-train-clean-spk880.txt
 
 
 train_path:
@@ -55,6 +56,7 @@ eval_list:
     Q1 (2.268 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk54-utt42.txt
     Q2 (3.360 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk36-utt110.txt
     Q3 (9.198 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk18-utt511.txt
+    All: /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean.txt
     
 
 
@@ -75,12 +77,13 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/cleaned/exp_resnet_vietnam_celeb_spk223_utt91
+  value: exps/cleaned/exp_resnet_vietnam_celeb
   help: |
     Path to save the score.txt and models
     Q1: exp_resnet_vietnam_celeb_spk667_utt13 
     Q2: exp_resnet_vietnam_celeb_spk451_utt43
     Q3: exp_resnet_vietnam_celeb_spk223_utt91
+    All: exp_resnet_vietnam_celeb
 
 initial_model:
   value: ""
@@ -103,12 +106,13 @@ s:
   help: "Loss scale in AAM softmax"
 
 n_class:
-  value: 223
+  value: 880
   help: |
     Number of speakers
     Q1: 667
     Q2: 451
     Q3: 223
+    All: 880
     
     
 
