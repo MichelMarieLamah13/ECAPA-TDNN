@@ -140,7 +140,7 @@ class FbankAug(nn.Module):
 
 class ECAPA_TDNN(nn.Module):
 
-    def __init__(self, C, feat_dim=80, feat_type='fbank', model_name='facebook/wav2vec2-base-960h'):
+    def __init__(self, C, feat_dim=80, scale=8, feat_type='fbank', model_name='facebook/wav2vec2-base-960h'):
         super(ECAPA_TDNN, self).__init__()
         self.feat_dim = feat_dim
         self.feat_type = feat_type
@@ -161,9 +161,9 @@ class ECAPA_TDNN(nn.Module):
         self.conv1 = nn.Conv1d(self.feat_dim, C, kernel_size=5, stride=1, padding=2)
         self.relu = nn.ReLU()
         self.bn1 = nn.BatchNorm1d(C)
-        self.layer1 = Bottle2neck(C, C, kernel_size=3, dilation=2, scale=8)
-        self.layer2 = Bottle2neck(C, C, kernel_size=3, dilation=3, scale=8)
-        self.layer3 = Bottle2neck(C, C, kernel_size=3, dilation=4, scale=8)
+        self.layer1 = Bottle2neck(C, C, kernel_size=3, dilation=2, scale=scale)
+        self.layer2 = Bottle2neck(C, C, kernel_size=3, dilation=3, scale=scale)
+        self.layer3 = Bottle2neck(C, C, kernel_size=3, dilation=4, scale=scale)
         # I fixed the shape of the output from MFA layer, that is close to the setting from ECAPA paper.
         self.layer4 = nn.Conv1d(3 * C, 1536, kernel_size=1)
         self.attention = nn.Sequential(
@@ -220,3 +220,19 @@ class ECAPA_TDNN(nn.Module):
         x = self.bn6(x)
 
         return x
+
+
+def ecapa_tdnn_38(c, feat_dim, feat_type, model_name):
+    """
+        A small funtion that initialize a ecapa-tdnn 38.
+        Usage:
+            model = ecapa_tdnn_38()
+    """
+    model = ECAPA_TDNN(
+        C=c,
+        feat_dim=feat_dim,
+        feat_type=feat_type,
+        model_name=model_name,
+        scale=8
+    )
+    return model
