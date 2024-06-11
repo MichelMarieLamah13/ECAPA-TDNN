@@ -102,7 +102,7 @@ s:
   help: "Loss scale in AAM softmax"
 
 n_class:
-  value: 223
+  value: 667
   help: |
     Number of speakers
     Q1: 667
