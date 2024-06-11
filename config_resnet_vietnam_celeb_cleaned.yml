@@ -86,7 +86,7 @@ save_path:
     All: exp_resnet_vietnam_celeb
 
 initial_model:
-  value: "exps/cleaned/exp_resnet_vietnam_celeb_spk223_utt91/model/best_0099.modell"
+  value: "exps/cleaned/exp_resnet_vietnam_celeb_spk223_utt91/model/best_0099.model"
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0080.model
