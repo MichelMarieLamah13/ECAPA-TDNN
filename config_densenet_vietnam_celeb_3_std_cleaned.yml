@@ -73,7 +73,7 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/cleaned/exp_densenet37_vietnam_celeb_spk451_utt43
+  value: exps/cleaned/exp_densenet37_vietnam_celeb_spk223_utt91
   help: |
     Path to save the score.txt and models
     Q1: exp_densenet121_vietnam_celeb_spk667_utt13 
@@ -82,7 +82,7 @@ save_path:
     All: exps/cleaned/exp_densenet121_vietnam_celeb
 
 initial_model:
-  value: "exps/cleaned/exp_densenet37_vietnam_celeb_spk451_utt43/model/best_0064.model"
+  value: "exps/cleaned/exp_densenet37_vietnam_celeb_spk223_utt91/model/best_0046.model"
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0080.model
@@ -102,7 +102,7 @@ s:
   help: "Loss scale in AAM softmax"
 
 n_class:
-  value: 451
+  value: 223
   help: |
     Number of speakers
     Q1: 667
