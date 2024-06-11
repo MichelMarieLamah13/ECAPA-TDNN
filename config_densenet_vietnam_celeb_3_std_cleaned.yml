@@ -50,7 +50,7 @@ train_path:
 
     
 eval_list:
-  value:  /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk36-utt110.txt
+  value:  /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk18-utt511.txt
   help: |
     All paths to evaluation list
     Q1 (2.268 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk54-utt42.txt
@@ -73,7 +73,7 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/cleaned/exp_densenet37_vietnam_celeb_spk223_utt91
+  value: exps/cleaned/exp_densenet121_vietnam_celeb_spk667_utt13
   help: |
     Path to save the score.txt and models
     Q1: exp_densenet121_vietnam_celeb_spk667_utt13 
@@ -82,7 +82,7 @@ save_path:
     All: exps/cleaned/exp_densenet121_vietnam_celeb
 
 initial_model:
-  value: "exps/cleaned/exp_densenet37_vietnam_celeb_spk223_utt91/model/best_0046.model"
+  value: "exps/cleaned/exp_densenet121_vietnam_celeb_spk667_utt13/model/best_0076.model"
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0080.model
@@ -102,7 +102,7 @@ s:
   help: "Loss scale in AAM softmax"
 
 n_class:
-  value: 223
+  value: 667
   help: |
     Number of speakers
     Q1: 667
@@ -131,7 +131,7 @@ num_init_features:
 
 
 arch:
-  value: "densenet37"
+  value: "densenet121"
   help: |
     The architecture to use
     densenet37
