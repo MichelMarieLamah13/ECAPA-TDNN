@@ -18,7 +18,7 @@ conda activate ecapa_tdnn
 
 # python3 trainRESNETModel.py --config config_resnet.yml
 # python3 trainRESNETModel.py --config config_resnet_cn_celeb.yml
-python3 trainRESNETModel.py --config config_resnet_vietnam_celeb.yml
+# python3 trainRESNETModel.py --config config_resnet_vietnam_celeb.yml
 # python3 trainRESNETModel.py --config config_resnet_finetuner_vietnam_celeb.yml
 # python3 trainRESNETModel.py --config config_resnet_finetuner_cn_celeb.yml
 # python3 trainRESNETModel.py --config config_resnet_finetuner.yml
