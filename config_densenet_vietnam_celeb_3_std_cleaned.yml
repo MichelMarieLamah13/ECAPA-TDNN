@@ -50,7 +50,7 @@ train_path:
 
     
 eval_list:
-  value:  /local_disk/helios/mmlamah/projects/kiwano-project/recipes/resnet/db/vietnam_celeb/vietnam-celeb-e.txt.edited
+  value:  /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean.txt
   help: |
     All paths to evaluation list
     Q1 (2.268 audio): /local_disk/helios/mmlamah/projects/ECAPA-TDNN/cleaned/eval/vietnam-celeb-eval-clean-spk54-utt42.txt
