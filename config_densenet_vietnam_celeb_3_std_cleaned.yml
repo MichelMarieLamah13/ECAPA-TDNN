@@ -74,7 +74,7 @@ rir_path:
   help: 'The path to the RIR set, eg:"data/RIRS_NOISES/simulated_rirs" in my case'
 
 save_path:
-  value: exps/cleaned/exp_densenet37_vietnam_celeb_spk667_utt13
+  value: exps/cleaned/exp_densenet121_vietnam_celeb_spk667_utt13
   help: |
     Path to save the score.txt and models
     Q1: exp_densenet121_vietnam_celeb_spk667_utt13 
@@ -83,7 +83,7 @@ save_path:
     All: exps/cleaned/exp_densenet121_vietnam_celeb
 
 initial_model:
-  value: "exps/cleaned/exp_densenet37_vietnam_celeb_spk667_utt13/model/best_0079.model"
+  value: "exps/cleaned/exp_densenet121_vietnam_celeb_spk667_utt13/model/best_0076.model"
   help: |
     Path of the initial_model
     exps/exp_resnet5/model/model_0080.model
@@ -140,7 +140,7 @@ num_init_features:
 
 
 arch:
-  value: "densenet37"
+  value: "densenet121"
   help: |
     The architecture to use
     densenet37
