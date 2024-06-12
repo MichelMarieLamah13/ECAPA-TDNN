@@ -114,7 +114,7 @@ num_init_features:
 
 
 arch:
-  value: "densenet121"
+  value: "densenet264"
   help: |
     The architecture to use
     densenet37
